@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 const Home: NextPage = () => (
   <Flex width="100%" justifyContent="center">
     <Center>
-      <Text> this is center</Text>
+      <Text> Home Page</Text>
     </Center>
   </Flex>
 );
