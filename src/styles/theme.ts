@@ -9,6 +9,8 @@ export const Theme = extendTheme({
       secondary: 'rgba(245, 242, 255, 0.9)',
       default_white: '#FFFFFF',
       default_black: '#000000',
+      facebook_blue: '#4065B4',
+      purple_email_button: '#A2A4FF',
     },
   },
 });

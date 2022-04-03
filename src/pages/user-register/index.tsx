@@ -22,7 +22,7 @@ const UserRegister = () => {
           align="center"
         >
           <Flex width="100%" maxWidth="300px" direction="column">
-            <Stack direction="row" align="center" spacing={3}>
+            <Stack direction="row" align="center" spacing={5}>
               <Heading as="h2" fontSize="24px" color="default_white">
                 Cadastre-se já!
               </Heading>
