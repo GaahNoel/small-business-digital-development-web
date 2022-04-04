@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
+import { Button, Icon, Stack, Text } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 
 type LoginButtonProps = {

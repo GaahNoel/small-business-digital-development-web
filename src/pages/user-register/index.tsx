@@ -9,18 +9,13 @@ import {
 } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
 import FormInput from '../../components/user-register/form-input';
+import HeaderHalfCircleTop from '../../components/shared/header-half-circle-top';
 
 const UserRegister = () => {
   return (
     <>
       <Flex bg="secondary" direction="column" height="100vh">
-        <Flex
-          direction="column"
-          bg="primary"
-          padding="80px 0px"
-          borderBottomRadius="200px"
-          align="center"
-        >
+        <HeaderHalfCircleTop>
           <Flex width="100%" maxWidth="300px" direction="column">
             <Stack direction="row" align="center" spacing={5}>
               <Heading as="h2" fontSize="24px" color="default_white">
@@ -32,7 +27,7 @@ const UserRegister = () => {
               Aproveite nossa plataforma
             </Text>
           </Flex>
-        </Flex>
+        </HeaderHalfCircleTop>
         <FormControl width="100%" maxWidth="275px" margin="20px auto">
           <FormInput
             id="name"
