@@ -19,6 +19,7 @@ const LoginButton = ({
       <Button
         bg={colorButton}
         color={colorText}
+        _hover={{ bgColor: `${colorButton}_hover` }}
         variant="solid"
         width="100%"
         height="50px"

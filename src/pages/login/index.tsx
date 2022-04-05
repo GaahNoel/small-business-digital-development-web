@@ -1,4 +1,4 @@
-import { Flex, Heading, Image, Stack } from '@chakra-ui/react';
+import { Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import LoginButton from '../../components/login/login-button';
 import HeaderHalfCircleTop from '../../components/shared/header-half-circle-top';
 import { FaFacebookSquare, FaGoogle, FaRegEnvelope } from 'react-icons/fa';
@@ -23,13 +23,10 @@ const Login = () => {
             maxWidth="300px"
             margin="20px auto"
             direction="column"
-            align="center"
           >
-            <Heading as="h3" fontSize="18px" color="default_black">
-              Entre e venha aproveitar nossos
-            </Heading>
-            <Heading as="h3" fontSize="18px" color="primary">
-              Produtos e Serviços
+            <Heading as="h3" fontSize="18px" textAlign="center">
+              <Text color="default_black">Entre e venha aproveitar nossos</Text>
+              <Text color="primary">Produtos e Serviços</Text>
             </Heading>
           </Flex>
           <Stack
@@ -54,7 +51,7 @@ const Login = () => {
             />
             <LoginButton
               text="Email"
-              colorButton="purple_email_button"
+              colorButton="light_purple"
               colorText="default_white"
               icon={FaRegEnvelope}
             />

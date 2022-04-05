@@ -7,7 +7,7 @@ type FormInputProps = {
   placeholder: string;
 };
 
-const FormInput = ({ id, field, type, placeholder }: FormInputProps) => {
+export const FormInput = ({ id, field, type, placeholder }: FormInputProps) => {
   return (
     <>
       <Flex direction="column" marginBottom="10px">
@@ -24,5 +24,3 @@ const FormInput = ({ id, field, type, placeholder }: FormInputProps) => {
     </>
   );
 };
-
-export default FormInput;

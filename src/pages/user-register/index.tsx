@@ -1,15 +1,7 @@
-import {
-  Button,
-  Flex,
-  FormControl,
-  Heading,
-  Icon,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
-import FormInput from '../../components/user-register/form-input';
 import HeaderHalfCircleTop from '../../components/shared/header-half-circle-top';
+import { RegisterForm } from '../../components/user-register/register-form';
 
 const UserRegister = () => {
   return (
@@ -28,50 +20,7 @@ const UserRegister = () => {
             </Text>
           </Flex>
         </HeaderHalfCircleTop>
-        <FormControl width="100%" maxWidth="275px" margin="20px auto">
-          <FormInput
-            id="name"
-            field="Nome"
-            type="text"
-            placeholder="Digite o nome desejado"
-          />
-          <FormInput
-            id="email"
-            field="Email"
-            type="email"
-            placeholder="Digite o email desejado"
-          />
-          <FormInput
-            id="password"
-            field="Senha"
-            type="password"
-            placeholder="Digite sua senha"
-          />
-          <FormInput
-            id="confirm_password"
-            field="Confirmar Senha"
-            type="password"
-            placeholder="Confirme sua senha"
-          />
-          <Stack direction="row" justify="center" spacing={25} marginTop="30px">
-            <Button
-              bg="default_black"
-              color="default_white"
-              variant="solid"
-              width="125px"
-            >
-              Cancelar
-            </Button>
-            <Button
-              bg="primary"
-              color="default_white"
-              variant="solid"
-              width="125px"
-            >
-              Enviar
-            </Button>
-          </Stack>
-        </FormControl>
+        <RegisterForm />
       </Flex>
     </>
   );
