@@ -1,6 +1,6 @@
 import { Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
-import LoginButton from '../../components/login/login-button';
-import HeaderHalfCircleTop from '../../components/shared/header-half-circle-top';
+import { LoginButton } from '../../components/login/login-button';
+import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
 import { FaFacebookSquare, FaGoogle, FaRegEnvelope } from 'react-icons/fa';
 
 const Login = () => {

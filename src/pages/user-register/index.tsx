@@ -1,6 +1,6 @@
 import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
-import HeaderHalfCircleTop from '../../components/shared/header-half-circle-top';
+import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
 import { RegisterForm } from '../../components/user-register/register-form';
 
 const UserRegister = () => {

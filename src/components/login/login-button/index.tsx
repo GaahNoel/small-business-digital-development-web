@@ -8,7 +8,7 @@ type LoginButtonProps = {
   icon: IconType;
 };
 
-const LoginButton = ({
+export const LoginButton = ({
   text,
   colorButton,
   colorText,
@@ -33,5 +33,3 @@ const LoginButton = ({
     </>
   );
 };
-
-export default LoginButton;

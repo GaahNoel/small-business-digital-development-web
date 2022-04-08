@@ -6,7 +6,7 @@ type DefaultButtonProps = {
   text: string;
 };
 
-const DefaultButton = ({ bg, color, text }: DefaultButtonProps) => {
+export const DefaultButton = ({ bg, color, text }: DefaultButtonProps) => {
   return (
     <>
       <Button
@@ -21,5 +21,3 @@ const DefaultButton = ({ bg, color, text }: DefaultButtonProps) => {
     </>
   );
 };
-
-export default DefaultButton;

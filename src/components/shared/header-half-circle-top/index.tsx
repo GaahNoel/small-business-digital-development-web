@@ -4,7 +4,7 @@ type HeaderHalfCircleTopProps = {
   children: JSX.Element;
 };
 
-const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
+export const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
   return (
     <>
       <Flex
@@ -21,5 +21,3 @@ const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
     </>
   );
 };
-
-export default HeaderHalfCircleTop;

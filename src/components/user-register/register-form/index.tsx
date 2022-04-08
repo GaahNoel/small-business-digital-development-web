@@ -1,5 +1,5 @@
 import { FormControl, Stack } from '@chakra-ui/react';
-import DefaultButton from '../../shared/default-button';
+import { DefaultButton } from '../../shared/default-button';
 import { FormInput } from '../form-input';
 
 export const RegisterForm = () => {
