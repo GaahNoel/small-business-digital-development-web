@@ -5,6 +5,7 @@ const primary = '#5647B2';
 const secondary = 'rgba(245, 242, 255, 0.9)';
 const default_white = '#FFFFFF';
 const default_black = '#000000';
+const card_white = '#F7F5FF';
 const facebook_blue = '#4065B4';
 const light_purple = '#A2A4FF';
 const default_orange = '#FE7040';
@@ -24,6 +25,8 @@ export const Theme = extendTheme({
       default_white_hover: darken(0.2, default_white),
       default_black,
       default_black_hover: lighten(0.2, default_black),
+      card_white,
+      card_white_hover: darken(0.05, card_white),
       facebook_blue,
       facebook_blue_hover: darken(0.2, facebook_blue),
       light_purple,

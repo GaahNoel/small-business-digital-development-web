@@ -1,6 +1,6 @@
 import { Button, IconButton, Stack } from '@chakra-ui/react';
 import { IconMenu } from '../icon-menu';
-import { FiHome, FiSearch, FiUser } from 'react-icons/fi';
+import { FiHome, FiSearch, FiUser, FiLayers } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
 
 export const FooterMenu = () => {
@@ -12,8 +12,11 @@ export const FooterMenu = () => {
         justify="center"
         spacing={10}
         bg="default_white"
+        width="100%"
         padding="10px"
         borderTopRadius="2xl"
+        position="fixed"
+        bottom="0"
       >
         <IconMenu
           icon={FiHome}
@@ -22,7 +25,7 @@ export const FooterMenu = () => {
           }}
         />
         <IconMenu
-          icon={FiHome}
+          icon={FiLayers}
           handleClick={() => {
             console.log('oi');
           }}
