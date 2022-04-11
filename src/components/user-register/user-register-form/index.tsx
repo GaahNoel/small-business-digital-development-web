@@ -1,30 +1,30 @@
 import { FormControl, Stack } from '@chakra-ui/react';
 import { DefaultButton } from '../../shared/default-button';
-import { FormInput } from '../form-input';
+import { UserFormInput } from '../user-form-input';
 
-export const RegisterForm = () => {
+export const UserRegisterForm = () => {
   return (
     <>
       <FormControl width="100%" maxWidth="275px" margin="20px auto">
-        <FormInput
+        <UserFormInput
           id="name"
           field="Nome"
           type="text"
           placeholder="Digite o nome desejado"
         />
-        <FormInput
+        <UserFormInput
           id="email"
           field="Email"
           type="email"
           placeholder="Digite o email desejado"
         />
-        <FormInput
+        <UserFormInput
           id="password"
           field="Senha"
           type="password"
           placeholder="Digite sua senha"
         />
-        <FormInput
+        <UserFormInput
           id="confirm_password"
           field="Confirmar Senha"
           type="password"

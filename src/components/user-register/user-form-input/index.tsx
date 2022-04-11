@@ -7,7 +7,12 @@ type FormInputProps = {
   placeholder: string;
 };
 
-export const FormInput = ({ id, field, type, placeholder }: FormInputProps) => {
+export const UserFormInput = ({
+  id,
+  field,
+  type,
+  placeholder,
+}: FormInputProps) => {
   return (
     <>
       <Flex direction="column" marginBottom="10px">

@@ -1,7 +1,7 @@
 import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
-import { RegisterForm } from '../../components/user-register/register-form';
+import { UserRegisterForm } from '../../components/user-register/user-register-form';
 
 const UserRegister = () => {
   return (
@@ -20,7 +20,7 @@ const UserRegister = () => {
             </Text>
           </Flex>
         </HeaderHalfCircleTop>
-        <RegisterForm />
+        <UserRegisterForm />
       </Flex>
     </>
   );

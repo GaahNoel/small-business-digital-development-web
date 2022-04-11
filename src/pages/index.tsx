@@ -49,7 +49,12 @@ const Home: NextPage = () => (
           border="none"
         />
       </Stack>
-      <Flex bg="secondary" direction="column" borderTopLeftRadius="105px">
+      <Flex
+        bg="secondary"
+        direction="column"
+        height="100%"
+        borderTopLeftRadius="105px"
+      >
         <Stack direction="row" justify="center" spacing={5}>
           <PrincipalButton
             colorButton="default_orange"

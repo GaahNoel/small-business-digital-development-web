@@ -1,7 +1,7 @@
 import { Flex, IconButton, Img, Stack, Text } from '@chakra-ui/react';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { ModifyButton } from '../../entrepreneur/modify-button';
+import { ModifyButton } from '../modify-button';
 
 type DefaultCardProps = {
   name: string;
