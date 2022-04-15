@@ -1,34 +1,40 @@
 import { FormControl, Stack } from '@chakra-ui/react';
 import { DefaultButton } from '../../shared/default-button';
-import { UserFormInput } from '../user-form-input';
+import { FormInput } from '../../shared/form-input';
+import { FiUser } from 'react-icons/fi';
+import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 
 export const UserRegisterForm = () => {
   return (
     <>
       <FormControl width="100%" maxWidth="275px" margin="20px auto">
-        <UserFormInput
+        <FormInput
           id="name"
           field="Nome"
           type="text"
           placeholder="Digite o nome desejado"
+          icon={FiUser}
         />
-        <UserFormInput
+        <FormInput
           id="email"
           field="Email"
           type="email"
           placeholder="Digite o email desejado"
+          icon={MdOutlineMail}
         />
-        <UserFormInput
+        <FormInput
           id="password"
           field="Senha"
           type="password"
           placeholder="Digite sua senha"
+          icon={MdOutlineLock}
         />
-        <UserFormInput
+        <FormInput
           id="confirm_password"
           field="Confirmar Senha"
           type="password"
           placeholder="Confirme sua senha"
+          icon={MdOutlineLock}
         />
         <Stack direction="row" justify="center" spacing={25} marginTop="30px">
           <DefaultButton

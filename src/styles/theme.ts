@@ -8,6 +8,9 @@ const default_black = '#000000';
 const card_white = '#F7F5FF';
 const facebook_blue = '#4065B4';
 const light_purple = '#A2A4FF';
+const product_bg_purple = '#AD96F8';
+const product_form_purple = '#CFC5FF';
+const drop_file_bg_purple = 'rgba(86, 72, 177, 0.21)';
 const default_orange = '#FE7040';
 const service_blue = '#4FAAFF';
 const shop_yellow = '#F2B705';
@@ -31,6 +34,12 @@ export const Theme = extendTheme({
       facebook_blue_hover: darken(0.2, facebook_blue),
       light_purple,
       light_purple_hover: darken(0.2, light_purple),
+      product_bg_purple,
+      product_bg_purple_hover: darken(0.2, product_bg_purple),
+      product_form_purple,
+      product_form_purple_hover: darken(0.2, product_form_purple),
+      drop_file_bg_purple,
+      drop_file_bg_purple_hover: darken(0.2, drop_file_bg_purple),
       default_orange,
       default_orange_hover: darken(0.2, default_orange),
       service_blue,

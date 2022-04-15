@@ -15,8 +15,6 @@ import { FooterMenu } from '../components/shared/footer-menu';
 import { BsBoxSeam, BsShop, BsArrowUpRight } from 'react-icons/bs';
 import { FiTool } from 'react-icons/fi';
 import { FiSearch } from 'react-icons/fi';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper';
 import { DefaultHeader } from '../components/shared/default-header';
 
 const Home: NextPage = () => (
