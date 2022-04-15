@@ -2,6 +2,8 @@ import { Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import { LoginButton } from '../../components/login/login-button';
 import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
 import { FaFacebookSquare, FaGoogle, FaRegEnvelope } from 'react-icons/fa';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const Login = () => {
   return (
@@ -42,24 +44,45 @@ const Login = () => {
               colorButton="facebook_blue"
               colorText="default_white"
               icon={FaFacebookSquare}
+              provider="facebook"
             />
             <LoginButton
               text="Google"
               colorButton="default_white"
               colorText="default_black"
               icon={FaGoogle}
+              provider="google"
             />
             <LoginButton
               text="Email"
               colorButton="light_purple"
               colorText="default_white"
               icon={FaRegEnvelope}
+              provider="custom"
             />
           </Stack>
         </Stack>
       </Flex>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({ req });
+  console.log(session);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default Login;
