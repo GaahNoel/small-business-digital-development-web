@@ -30,14 +30,14 @@ export const FormInput = ({
           htmlFor={`${id}_label`}
           color="primary"
           fontWeight="bold"
-          fontSize="1.1rem"
+          fontSize="1rem"
         >
           {field}
         </FormLabel>
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
-            children={<Icon as={icon} color="gray.500" fontSize="1.1rem" />}
+            children={<Icon as={icon} color="gray.500" fontSize="1rem" />}
           />
           <Input
             id={`${id}`}
@@ -46,7 +46,7 @@ export const FormInput = ({
             border="2px"
             borderColor="primary"
             bg="default_white"
-            fontSize="1.1rem"
+            fontSize="1rem"
           />
         </InputGroup>
       </Flex>

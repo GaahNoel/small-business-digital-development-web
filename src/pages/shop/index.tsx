@@ -1,0 +1,65 @@
+import { Button, ButtonGroup, Flex, Stack } from '@chakra-ui/react';
+import { useState } from 'react';
+import { FooterMenu } from '../../components/shared/footer-menu';
+import { SwitchButton } from '../../components/shared/switch-button';
+import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
+import { ShopHeader } from '../../components/shop/shop-header';
+
+const Shop = () => {
+  const [formOption, setFormOption] = useState('Consumidor');
+
+  const changeOption = (option: string) => {
+    console.log(option);
+    if (formOption != option) {
+      setFormOption(option);
+    }
+  };
+  return (
+    <>
+      <Flex height="100vh" direction="column" bg="secondary">
+        <Stack
+          bg="primary"
+          spacing={2}
+          borderBottomRadius="90px"
+          height="25vh"
+          marginBottom="20px"
+        >
+          <ShopHeader />
+          <Flex justify="center">
+            <ButtonGroup
+              spacing={0}
+              padding="2px"
+              bg="secondary"
+              borderRadius="14px"
+            >
+              <Button
+                bg="default_orange"
+                color="default_white"
+                borderRadius="14px"
+                onClick={() => {
+                  changeOption('Consumidor');
+                }}
+              >
+                Consumidor
+              </Button>
+              <Button
+                bg="secondary"
+                color="primary"
+                borderRadius="14px"
+                onClick={() => {
+                  changeOption('Empreendedor');
+                }}
+              >
+                Empreendedor
+              </Button>
+            </ButtonGroup>
+          </Flex>
+        </Stack>
+        <EntrepreneurItems />
+        <FooterMenu />
+      </Flex>
+    </>
+  );
+};
+
+export default Shop;

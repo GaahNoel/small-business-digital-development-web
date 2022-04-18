@@ -17,8 +17,9 @@ import { FilePond, registerPlugin } from 'react-filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import { DefaultTextArea } from '../../shared/default-text-area';
+import { DefaultMapInput } from '../../shared/default-map-input';
 
-export const SecondProductForm = () => {
+export const EstablishmentForm = () => {
   return (
     <>
       <FormControl
@@ -27,7 +28,7 @@ export const SecondProductForm = () => {
         margin="0px auto"
         bg="secondary"
         padding="30px 0px"
-        borderTopLeftRadius="65px"
+        borderTopRightRadius="65px"
       >
         <Stack direction="column" spacing={3} maxWidth="70vw" margin="0px auto">
           <FormInput
@@ -37,17 +38,23 @@ export const SecondProductForm = () => {
             placeholder="Digite o nome do produto"
             icon={BsBoxSeam}
           />
-          <FormInput
-            id="preco"
-            field="Preço"
-            type="text"
-            placeholder="Digite o preço do produto"
-            icon={MdAttachMoney}
-          />
           <DefaultTextArea
             text="Descrição"
-            placeholder="Digite a descrição do produto"
+            placeholder="Digite a descrição do estabelecimento"
           />
+          <Flex direction="column">
+            <FormLabel
+              htmlFor={`descricao_label`}
+              color="primary"
+              fontWeight="bold"
+              fontSize="1rem"
+            >
+              Localização
+            </FormLabel>
+            <Flex border="2px" borderColor="primary">
+              <DefaultMapInput />
+            </Flex>
+          </Flex>
         </Stack>
         <Box width="70vw" margin="30px auto">
           <FilePond

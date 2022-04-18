@@ -13,7 +13,7 @@ const product_form_purple = '#CFC5FF';
 const drop_file_bg_purple = 'rgba(86, 72, 177, 0.21)';
 const default_orange = '#FE7040';
 const service_blue = '#4FAAFF';
-const shop_yellow = '#F2B705';
+const yellow_default = '#F2B705';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -44,8 +44,8 @@ export const Theme = extendTheme({
       default_orange_hover: darken(0.2, default_orange),
       service_blue,
       service_blue_hover: darken(0.2, service_blue),
-      shop_yellow,
-      shop_yellow_hover: darken(0.2, shop_yellow),
+      yellow_default,
+      yellow_default_hover: darken(0.2, yellow_default),
     },
   },
 });
