@@ -5,22 +5,23 @@ export const EntrepreneurItems = () => {
   return (
     <>
       <Grid
-        h="200px"
+        width="100%"
+        justifyItems="center"
         templateRows="repeat(4, 1fr)"
         templateColumns="repeat(2, 1fr)"
-        gap={4}
+        gap={2}
       >
         <GridItem>
-          <ItemCard img="Cupom50.png" iconColor="yellow_default" price="50" />
+          <ItemCard iconColor="yellow_default" price="100" text="10" />
         </GridItem>
         <GridItem>
-          <ItemCard img="Cupom50.png" iconColor="yellow_default" price="50" />
+          <ItemCard iconColor="default_orange" price="100" text="200" />
         </GridItem>
         <GridItem>
-          <ItemCard img="Cupom50.png" iconColor="yellow_default" price="50" />
+          <ItemCard iconColor="yellow_default" price="100" text="200" />
         </GridItem>
         <GridItem>
-          <ItemCard img="Cupom50.png" iconColor="yellow_default" price="50" />
+          <ItemCard iconColor="yellow_default" price="100" text="Teste" />
         </GridItem>
       </Grid>
     </>

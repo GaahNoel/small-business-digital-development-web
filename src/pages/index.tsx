@@ -16,6 +16,8 @@ import { BsBoxSeam, BsShop, BsArrowUpRight } from 'react-icons/bs';
 import { FiTool } from 'react-icons/fi';
 import { FiSearch } from 'react-icons/fi';
 import { DefaultHeader } from '../components/shared/default-header';
+import { useRouter } from 'next/router';
+import { EntrepreneurButton } from '../components/home/entrepreneur-button';
 
 const Home: NextPage = () => (
   <>
@@ -59,18 +61,21 @@ const Home: NextPage = () => (
             colorText="default_white"
             icon={BsBoxSeam}
             text="Produtos"
+            page="/"
           />
           <PrincipalButton
             colorButton="service_blue"
             colorText="default_white"
             icon={FiTool}
             text="Serviços"
+            page="/"
           />
           <PrincipalButton
-            colorButton="shop_yellow"
+            colorButton="yellow_default"
             colorText="default_white"
             icon={BsShop}
             text="Loja"
+            page="/shop"
           />
         </Stack>
         <Flex direction="column" align="center" margin="7px 0px">
@@ -81,31 +86,7 @@ const Home: NextPage = () => (
             Busque produtos e serviços que deseja
           </Text>
         </Flex>
-        <Button
-          bg="primary"
-          _hover={{ bg: 'primary_hover' }}
-          padding="50px"
-          maxW="300px"
-          margin="45px auto"
-          boxShadow="dark-lg"
-        >
-          <Stack
-            direction="row"
-            align="center"
-            spacing={4}
-            color="default_white"
-          >
-            <Flex bg="default_white" padding="14px" borderRadius="full">
-              <Icon as={BsArrowUpRight} color="primary" fontSize="25px" />
-            </Flex>
-            <Flex direction="column" align="flex-start">
-              <Text fontSize="1.2rem">Área do empreendedor</Text>
-              <Text fontSize="1rem" fontWeight="normal">
-                Anuncie já seus produtos
-              </Text>
-            </Flex>
-          </Stack>
-        </Button>
+        <EntrepreneurButton />
         <FooterMenu />
       </Flex>
     </Flex>

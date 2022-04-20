@@ -2,8 +2,13 @@ import { Button, IconButton, Stack } from '@chakra-ui/react';
 import { IconMenu } from '../icon-menu';
 import { FiHome, FiSearch, FiUser, FiLayers } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 export const FooterMenu = () => {
+  const router = useRouter();
+  const handleClick = (page: string) => {
+    router.push(page);
+  };
   return (
     <>
       <Stack
@@ -18,12 +23,7 @@ export const FooterMenu = () => {
         position="fixed"
         bottom="0"
       >
-        <IconMenu
-          icon={FiHome}
-          handleClick={() => {
-            console.log('oi');
-          }}
-        />
+        <IconMenu icon={FiHome} handleClick={() => handleClick('/')} />
         <IconMenu
           icon={FiLayers}
           handleClick={() => {

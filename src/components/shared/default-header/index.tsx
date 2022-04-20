@@ -1,6 +1,8 @@
 import { Button, Img, Stack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 export const DefaultHeader = () => {
+  const router = useRouter();
   return (
     <>
       <Stack
@@ -16,6 +18,9 @@ export const DefaultHeader = () => {
           _hover={{ bg: 'default_white_hover' }}
           color="primary"
           borderRadius="10px"
+          onClick={() => {
+            router.push('/login');
+          }}
         >
           Login
         </Button>

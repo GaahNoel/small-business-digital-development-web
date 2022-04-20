@@ -7,7 +7,7 @@ import { DefaultCard } from '../../components/shared/default-card';
 const Enterpreneur = () => {
   return (
     <>
-      <Flex width="100%" bg="primary" direction="column" height="100vh">
+      <Flex width="100%" bg="primary" direction="column">
         <DefaultHeader />
         <Stack
           margin="30px auto 90px auto"

@@ -2,6 +2,7 @@ import { Button, ButtonGroup, Flex, Stack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { SwitchButton } from '../../components/shared/switch-button';
+import { ConsumerItems } from '../../components/shop/consumer-items';
 import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
 import { ShopHeader } from '../../components/shop/shop-header';
 
@@ -14,9 +15,10 @@ const Shop = () => {
       setFormOption(option);
     }
   };
+
   return (
     <>
-      <Flex height="100vh" direction="column" bg="secondary">
+      <Flex direction="column" bg="secondary">
         <Stack
           bg="primary"
           spacing={2}
@@ -32,30 +34,61 @@ const Shop = () => {
               bg="secondary"
               borderRadius="14px"
             >
-              <Button
-                bg="default_orange"
-                color="default_white"
-                borderRadius="14px"
-                onClick={() => {
-                  changeOption('Consumidor');
-                }}
-              >
-                Consumidor
-              </Button>
-              <Button
-                bg="secondary"
-                color="primary"
-                borderRadius="14px"
-                onClick={() => {
-                  changeOption('Empreendedor');
-                }}
-              >
-                Empreendedor
-              </Button>
+              {formOption === 'Consumidor' ? (
+                <>
+                  <Button
+                    bg="default_orange"
+                    color="default_white"
+                    borderRadius="14px"
+                    onClick={() => {
+                      changeOption('Consumidor');
+                    }}
+                  >
+                    Consumidor
+                  </Button>
+                  <Button
+                    bg="secondary"
+                    color="primary"
+                    borderRadius="14px"
+                    onClick={() => {
+                      changeOption('Empreendedor');
+                    }}
+                  >
+                    Empreendedor
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    bg="secondary"
+                    color="primary"
+                    borderRadius="14px"
+                    onClick={() => {
+                      changeOption('Consumidor');
+                    }}
+                  >
+                    Consumidor
+                  </Button>
+                  <Button
+                    bg="default_orange"
+                    color="default_white"
+                    borderRadius="14px"
+                    onClick={() => {
+                      changeOption('Empreendedor');
+                    }}
+                  >
+                    Empreendedor
+                  </Button>
+                </>
+              )}
             </ButtonGroup>
           </Flex>
         </Stack>
-        <EntrepreneurItems />
+        {formOption === 'Consumidor' ? (
+          <ConsumerItems />
+        ) : (
+          <EntrepreneurItems />
+        )}
         <FooterMenu />
       </Flex>
     </>

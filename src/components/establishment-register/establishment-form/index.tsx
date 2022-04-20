@@ -24,7 +24,6 @@ export const EstablishmentForm = () => {
     <>
       <FormControl
         width="100%"
-        height="100vh"
         margin="0px auto"
         bg="secondary"
         padding="30px 0px"
@@ -51,9 +50,8 @@ export const EstablishmentForm = () => {
             >
               Localização
             </FormLabel>
-            <Flex border="2px" borderColor="primary">
-              <DefaultMapInput />
-            </Flex>
+
+            <DefaultMapInput />
           </Flex>
         </Stack>
         <Box width="70vw" margin="30px auto">

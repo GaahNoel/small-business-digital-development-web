@@ -4,9 +4,15 @@ type ItemFormSelectProps = {
   id: string;
   disabled: boolean;
   text: string;
+  options?: string[];
 };
 
-export const ItemFormSelect = ({ id, disabled, text }: ItemFormSelectProps) => {
+export const ItemFormSelect = ({
+  id,
+  disabled,
+  text,
+  options,
+}: ItemFormSelectProps) => {
   return (
     <>
       <Flex direction="column">
@@ -14,8 +20,13 @@ export const ItemFormSelect = ({ id, disabled, text }: ItemFormSelectProps) => {
           {text}
         </FormLabel>
         <Select id={id} size="md" borderColor="primary" isDisabled={disabled}>
-          <option value="1">1</option>
-          <option value="2">2</option>
+          {options?.map((option, iterator) => {
+            return (
+              <option value={option} key={iterator}>
+                {option}
+              </option>
+            );
+          })}
         </Select>
       </Flex>
     </>

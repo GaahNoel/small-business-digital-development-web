@@ -1,4 +1,5 @@
 import { Button, Icon, Stack, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { IconType } from 'react-icons';
 
 type PrincipalButtonProps = {
@@ -6,6 +7,7 @@ type PrincipalButtonProps = {
   colorText: string;
   icon: IconType;
   text: string;
+  page: string;
 };
 
 export const PrincipalButton = ({
@@ -13,7 +15,12 @@ export const PrincipalButton = ({
   colorText,
   icon,
   text,
+  page,
 }: PrincipalButtonProps) => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(page);
+  };
   return (
     <Button
       bg={colorButton}
@@ -27,6 +34,7 @@ export const PrincipalButton = ({
       boxShadow="dark-lg"
       position="relative"
       top="-50"
+      onClick={() => handleClick()}
     >
       <Stack direction="column" align="center" spacing={2}>
         <Icon as={icon} fontSize="3rem" color={colorText} />

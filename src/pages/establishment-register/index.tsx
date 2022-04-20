@@ -6,7 +6,7 @@ import { HeaderTitle } from '../../components/shared/header-title';
 const EstablishmentRegister = () => {
   return (
     <>
-      <Flex bg="primary" height="100vh" align="center" direction="column">
+      <Flex bg="primary" align="center" direction="column">
         <HeaderTitle
           text="Cadastre já seu estabelecimento!"
           icon={FaShoppingBag}

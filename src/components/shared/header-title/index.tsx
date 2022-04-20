@@ -9,9 +9,9 @@ type HeaderTitleProps = {
 export const HeaderTitle = ({ text, icon }: HeaderTitleProps) => {
   return (
     <>
-      <Flex max-height="140px" height="100%">
-        <Heading as="h1" fontSize="1.4rem" color="default_white">
-          <Stack direction="row" spacing={2} align="center">
+      <Flex padding="40px 0px" width="90%">
+        <Heading as="h1" fontSize="1.2rem" color="default_white">
+          <Stack direction="row" spacing={2} align="center" justify="center">
             <Text>{text}</Text>
             <Icon as={icon}></Icon>
           </Stack>
