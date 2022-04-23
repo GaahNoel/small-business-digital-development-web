@@ -15,7 +15,7 @@ export const ShopHeader = () => {
         <Stack
           bg="default_white"
           borderRadius="14px"
-          color="yellow_default"
+          color="default_yellow"
           direction="row"
           align="center"
           justify="center"

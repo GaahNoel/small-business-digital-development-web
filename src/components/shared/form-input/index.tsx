@@ -7,6 +7,7 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
+import { useFormContext } from 'react-hook-form';
 
 type FormInputProps = {
   id: string;
@@ -23,6 +24,8 @@ export const FormInput = ({
   placeholder,
   icon,
 }: FormInputProps) => {
+  const { register } = useFormContext();
+
   return (
     <>
       <Flex direction="column">
@@ -40,9 +43,10 @@ export const FormInput = ({
             children={<Icon as={icon} color="gray.500" fontSize="1rem" />}
           />
           <Input
-            id={`${id}`}
-            type={`${type}`}
-            placeholder={`${placeholder}`}
+            {...register(id)}
+            id={id}
+            type={type}
+            placeholder={placeholder}
             border="2px"
             borderColor="primary"
             bg="default_white"

@@ -46,7 +46,12 @@ export const ItemCard = ({ iconColor, price, text, icon }: ItemCardProps) => {
         }}
       >
         <ItemIcon color={iconColor} text={text} icon={icon} />
-        <Stack direction="row" align="center" spacing={1}>
+        <Stack
+          direction="row"
+          align="center"
+          justifyContent="space-around"
+          spacing={1}
+        >
           <Stack
             bg="default_white"
             borderRadius="14px"

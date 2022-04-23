@@ -1,19 +1,19 @@
 import { extendTheme } from '@chakra-ui/react';
 import { darken, lighten } from 'polished';
 
-const primary = '#5647B2';
-const secondary = 'rgba(245, 242, 255, 0.9)';
-const default_white = '#FFFFFF';
-const default_black = '#000000';
-const card_white = '#F7F5FF';
-const facebook_blue = '#4065B4';
-const light_purple = '#A2A4FF';
-const product_bg_purple = '#AD96F8';
-const product_form_purple = '#CFC5FF';
-const drop_file_bg_purple = 'rgba(86, 72, 177, 0.21)';
-const default_orange = '#FE7040';
-const service_blue = '#4FAAFF';
-const yellow_default = '#F2B705';
+export const primary = '#5647B2';
+export const secondary = 'rgba(245, 242, 255, 0.9)';
+export const default_white = '#FFFFFF';
+export const default_black = '#000000';
+export const card_white = '#F7F5FF';
+export const facebook_blue = '#4065B4';
+export const light_purple = '#A2A4FF';
+export const product_bg_purple = '#AD96F8';
+export const product_form_purple = '#CFC5FF';
+export const drop_file_bg_purple = 'rgba(86, 72, 177, 0.21)';
+export const default_orange = '#FE7040';
+export const service_blue = '#4FAAFF';
+export const default_yellow = '#F2B705';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -44,8 +44,8 @@ export const Theme = extendTheme({
       default_orange_hover: darken(0.2, default_orange),
       service_blue,
       service_blue_hover: darken(0.2, service_blue),
-      yellow_default,
-      yellow_default_hover: darken(0.2, yellow_default),
+      default_yellow,
+      default_yellow_hover: darken(0.2, default_yellow),
     },
   },
 });

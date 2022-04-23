@@ -1,5 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { ItemCard } from '../item-card';
+import { default_orange, default_yellow } from '../../../styles/theme';
 
 export const EntrepreneurItems = () => {
   return (
@@ -12,16 +13,16 @@ export const EntrepreneurItems = () => {
         gap={2}
       >
         <GridItem>
-          <ItemCard iconColor="yellow_default" price="100" text="10" />
+          <ItemCard iconColor={default_orange} price="10" text="10" />
         </GridItem>
         <GridItem>
-          <ItemCard iconColor="default_orange" price="100" text="200" />
+          <ItemCard iconColor={default_orange} price="100" text="10%" />
         </GridItem>
         <GridItem>
-          <ItemCard iconColor="yellow_default" price="100" text="200" />
+          <ItemCard iconColor={default_yellow} price="100" text="Teste" />
         </GridItem>
         <GridItem>
-          <ItemCard iconColor="yellow_default" price="100" text="Teste" />
+          <ItemCard iconColor={default_orange} price="100" text="Teste" />
         </GridItem>
       </Grid>
     </>

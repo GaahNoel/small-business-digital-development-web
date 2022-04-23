@@ -71,7 +71,7 @@ const Home: NextPage = () => (
             page="/"
           />
           <PrincipalButton
-            colorButton="yellow_default"
+            colorButton="default_yellow"
             colorText="default_white"
             icon={BsShop}
             text="Loja"

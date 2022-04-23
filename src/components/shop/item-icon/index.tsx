@@ -1,5 +1,6 @@
-import { Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon, Image, Text } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
+import { SvgIcon } from '../svg-icon';
 
 type ItemIconProps = {
   color: string;
@@ -10,19 +11,11 @@ type ItemIconProps = {
 export const ItemIcon = ({ color, text, icon }: ItemIconProps) => {
   return (
     <>
-      <Flex
-        backgroundImage="Shop-Bg.svg"
-        bgRepeat="no-repeat"
-        bgPosition="center"
-        bgSize="100px"
-        boxSize="100px"
-        fill="primary"
-        fontSize="2.2rem"
-        align="center"
-        justify="center"
-        color="default_white"
-      >
-        {icon ? <Icon as={icon} /> : <Text>{text}</Text>}
+      <Flex boxSize="100px" align="center" justify="center">
+        <SvgIcon color={color} />
+        <Flex fontSize="36px" color="default_white" zIndex="0">
+          {icon ? <Icon as={icon} /> : <Text>{text}</Text>}
+        </Flex>
       </Flex>
     </>
   );
