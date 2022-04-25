@@ -25,7 +25,7 @@ export const DefaultCard = ({ img, name }: DefaultCardProps) => {
           <Text fontSize="14px" fontWeight="bold">
             {name}
           </Text>
-          <Flex>
+          <Flex justify="space-around" w="180px">
             <ModifyButton icon={FiTool} text="Editar" color="primary" />
             <ModifyButton
               icon={RiDeleteBinLine}

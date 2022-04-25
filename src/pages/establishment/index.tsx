@@ -18,7 +18,7 @@ const Establishment = () => {
       <Flex width="100%" bg="primary" direction="column">
         <DefaultHeader />
         <Stack
-          margin="30px auto 90px auto"
+          margin="20px auto 50px auto"
           maxW="400px"
           align="center"
           justify="center"

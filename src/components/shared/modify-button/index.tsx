@@ -10,7 +10,7 @@ type ModifyButtonProps = {
 export const ModifyButton = ({ icon, text, color }: ModifyButtonProps) => {
   return (
     <>
-      <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} w="85px">
+      <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} w="80px">
         <Stack
           direction="row"
           align="center"

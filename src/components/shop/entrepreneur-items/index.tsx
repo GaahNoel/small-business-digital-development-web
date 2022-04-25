@@ -8,8 +8,9 @@ export const EntrepreneurItems = () => {
       <Grid
         width="100%"
         justifyItems="center"
-        templateRows="repeat(4, 1fr)"
+        templateRows="repeat(2, 1fr)"
         templateColumns="repeat(2, 1fr)"
+        marginBottom="100px"
         gap={2}
       >
         <GridItem>
