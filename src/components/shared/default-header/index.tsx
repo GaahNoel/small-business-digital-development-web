@@ -1,8 +1,19 @@
-import { Button, Img, Stack } from '@chakra-ui/react';
+import { Button, Flex, Img, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 
 export const DefaultHeader = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+
+  const login = () => {
+    router.push('/login');
+  };
+
+  const logout = () => {
+    signOut();
+  };
+
   return (
     <>
       <Stack
@@ -13,17 +24,31 @@ export const DefaultHeader = () => {
         spacing={40}
       >
         <Img src="Logo.svg"></Img>
-        <Button
-          bg="default_white"
-          _hover={{ bg: 'default_white_hover' }}
-          color="primary"
-          borderRadius="10px"
-          onClick={() => {
-            router.push('/login');
-          }}
-        >
-          Login
-        </Button>
+        <Flex w="100px">
+          {!session ? (
+            <Button
+              bg="default_white"
+              _hover={{ bg: 'default_white_hover' }}
+              color="primary"
+              borderRadius="10px"
+              width="100%"
+              onClick={login}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              bg="default_white"
+              _hover={{ bg: 'default_white_hover' }}
+              color="primary"
+              borderRadius="10px"
+              width="100%"
+              onClick={logout}
+            >
+              Logout
+            </Button>
+          )}
+        </Flex>
       </Stack>
     </>
   );

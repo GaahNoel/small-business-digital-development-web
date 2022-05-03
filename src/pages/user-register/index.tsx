@@ -12,12 +12,13 @@ import { FaShoppingBag } from 'react-icons/fa';
 import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
 import { UserLoginForm } from '../../components/user-register/user-login-form';
 import { UserRegisterForm } from '../../components/user-register/user-register-form';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const UserRegister = () => {
   const [formOption, setFormOption] = useState('Registrar');
 
   const changeOption = (option: string) => {
-    console.log(option);
     if (formOption != option) {
       setFormOption(option);
     }
@@ -41,7 +42,7 @@ const UserRegister = () => {
         </HeaderHalfCircleTop>
         <Flex justify="center" marginTop="10px">
           <ButtonGroup
-            spacing={0}
+            spacing={2}
             padding="2px"
             bg="secondary"
             borderRadius="14px"
@@ -52,6 +53,7 @@ const UserRegister = () => {
                   bg="default_orange"
                   color="default_white"
                   borderRadius="14px"
+                  width="100px"
                   onClick={() => {
                     changeOption('Registrar');
                   }}
@@ -62,6 +64,7 @@ const UserRegister = () => {
                   bg="secondary"
                   color="primary"
                   borderRadius="14px"
+                  width="100px"
                   onClick={() => {
                     changeOption('Entrar');
                   }}
@@ -75,6 +78,7 @@ const UserRegister = () => {
                   bg="secondary"
                   color="primary"
                   borderRadius="14px"
+                  width="100px"
                   onClick={() => {
                     changeOption('Registrar');
                   }}
@@ -85,6 +89,7 @@ const UserRegister = () => {
                   bg="default_orange"
                   color="default_white"
                   borderRadius="14px"
+                  width="100px"
                   onClick={() => {
                     changeOption('Entrar');
                   }}
@@ -99,6 +104,23 @@ const UserRegister = () => {
       </Flex>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({ req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default UserRegister;

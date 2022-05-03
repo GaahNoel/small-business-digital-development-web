@@ -5,6 +5,7 @@ type DefaultButtonProps = {
   color: string;
   text: string;
   type?: 'button' | 'submit';
+  onClick?: () => void;
 };
 
 export const DefaultButton = ({
@@ -12,6 +13,7 @@ export const DefaultButton = ({
   color,
   text,
   type = 'button',
+  onClick,
 }: DefaultButtonProps) => {
   return (
     <>
@@ -22,6 +24,7 @@ export const DefaultButton = ({
         type={type}
         variant="solid"
         width="125px"
+        onClick={onClick}
       >
         {text}
       </Button>

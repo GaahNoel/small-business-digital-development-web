@@ -3,6 +3,7 @@ import { DefaultButton } from '../../shared/default-button';
 import { FormInput } from '../../shared/form-input';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
+import { useSession, signIn } from 'next-auth/react';
 
 type LoginFormData = {
   email: string;
@@ -16,6 +17,11 @@ export const UserLoginForm = () => {
     formState: { errors },
     setError,
   } = methods;
+
+  const login = () => {
+    signIn('credentials');
+  };
+
   return (
     <>
       <FormProvider {...methods}>
@@ -42,7 +48,13 @@ export const UserLoginForm = () => {
               color="default_white"
               text="Cancelar"
             />
-            <DefaultButton bg="primary" color="default_white" text="Entrar" />
+            <DefaultButton
+              bg="primary"
+              color="default_white"
+              text="Entrar"
+              type="submit"
+              onClick={login}
+            />
           </Stack>
         </FormControl>
       </FormProvider>
