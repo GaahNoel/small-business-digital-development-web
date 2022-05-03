@@ -19,7 +19,7 @@ export const UserLoginForm = () => {
   } = methods;
 
   const login = () => {
-    signIn('credentials');
+    signIn('credentials', { username: 'pato', password: '1234' });
   };
 
   return (
