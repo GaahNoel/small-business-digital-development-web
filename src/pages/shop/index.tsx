@@ -5,6 +5,8 @@ import { SwitchButton } from '../../components/shared/switch-button';
 import { ConsumerItems } from '../../components/shop/consumer-items';
 import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
 import { ShopHeader } from '../../components/shop/shop-header';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const Shop = () => {
   const [formOption, setFormOption] = useState('Consumidor');
@@ -93,6 +95,23 @@ const Shop = () => {
       </Flex>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default Shop;

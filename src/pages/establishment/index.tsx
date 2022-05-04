@@ -11,6 +11,8 @@ import { DefaultHeader } from '../../components/shared/default-header';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { FaPlus } from 'react-icons/fa';
 import { DefaultCard } from '../../components/shared/default-card';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const Establishment = () => {
   return (
@@ -83,4 +85,22 @@ const Establishment = () => {
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
 export default Establishment;

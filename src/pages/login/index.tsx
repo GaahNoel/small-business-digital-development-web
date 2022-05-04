@@ -69,7 +69,6 @@ const Login = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getToken({ req });
-  console.log(session);
 
   if (session) {
     return {

@@ -1,6 +1,8 @@
 import { Flex, Img } from '@chakra-ui/react';
 import { ItemRegisterForm } from '../../components/item-register/item-register-form';
 import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const ProductRegisterFirstStep = () => {
   return (
@@ -15,6 +17,23 @@ const ProductRegisterFirstStep = () => {
       </Flex>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default ProductRegisterFirstStep;

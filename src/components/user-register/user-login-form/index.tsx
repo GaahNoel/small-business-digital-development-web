@@ -2,8 +2,11 @@ import { FormControl, Stack } from '@chakra-ui/react';
 import { DefaultButton } from '../../shared/default-button';
 import { FormInput } from '../../shared/form-input';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
+import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { useSession, signIn } from 'next-auth/react';
+import { match } from 'assert';
+import { useEffect } from 'react';
 
 type LoginFormData = {
   email: string;
@@ -12,20 +15,45 @@ type LoginFormData = {
 
 export const UserLoginForm = () => {
   const methods = useForm<LoginFormData>();
+  const { data } = useSession();
+
   const {
     handleSubmit,
     formState: { errors },
     setError,
   } = methods;
 
-  const login = () => {
-    signIn('credentials', { username: 'pato', password: '1234' });
+  const onSubmit: SubmitHandler<LoginFormData> = async ({
+    email,
+    password,
+  }) => {
+    const response = await api.post('account/check-password', {
+      email,
+      password,
+    });
+    const { id, match } = response.data;
+    if (match === true) {
+      console.log(
+        await signIn('credentials', {
+          redirect: false,
+          id: id,
+          email: email,
+          password: password,
+        }),
+      );
+    }
   };
 
   return (
     <>
       <FormProvider {...methods}>
-        <FormControl width="100%" maxWidth="275px" margin="5px auto">
+        <FormControl
+          as="form"
+          width="100%"
+          maxWidth="275px"
+          margin="5px auto"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Stack justify="center" spacing={2}>
             <FormInput
               id="email"
@@ -53,7 +81,6 @@ export const UserLoginForm = () => {
               color="default_white"
               text="Entrar"
               type="submit"
-              onClick={login}
             />
           </Stack>
         </FormControl>
