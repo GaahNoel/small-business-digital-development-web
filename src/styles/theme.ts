@@ -14,6 +14,7 @@ export const drop_file_bg_purple = 'rgba(86, 72, 177, 0.21)';
 export const default_orange = '#FE7040';
 export const service_blue = '#4FAAFF';
 export const default_yellow = '#F2B705';
+export const default_gray = '#808080';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -46,6 +47,8 @@ export const Theme = extendTheme({
       service_blue_hover: darken(0.2, service_blue),
       default_yellow,
       default_yellow_hover: darken(0.2, default_yellow),
+      default_gray,
+      default_gray_hover: darken(0.2, default_gray),
     },
   },
 });

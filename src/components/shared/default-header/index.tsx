@@ -11,7 +11,8 @@ export const DefaultHeader = () => {
   };
 
   const logout = () => {
-    signOut();
+    console.log(session);
+    //signOut();
   };
 
   return (

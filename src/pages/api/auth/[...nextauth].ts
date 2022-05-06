@@ -2,12 +2,18 @@ import NextAuth from 'next-auth';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { MdPassword } from 'react-icons/md';
+import { api } from '../../../service/api';
 
 export default NextAuth({
   callbacks: {
     async session({ session, token, user }) {
-      session.id = '';
+      const response = await api.post('signup', {
+        name: 'Test',
+        email: session.user?.email,
+        provider: 'credentials',
+      });
+      const { id } = response.data;
+      session.id = id;
       return session;
     },
   },

@@ -5,6 +5,7 @@ import { FiUser } from 'react-icons/fi';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
+import Router from 'next/router';
 
 type RegisterFormData = {
   name: string;
@@ -31,12 +32,17 @@ export const UserRegisterForm = () => {
       setError('confirm_password', {
         message: 'Senhas não correspondem',
       });
-    const response = await api.post('signup', {
-      name,
-      email,
-      password,
-    });
-    console.log(response.data);
+    try {
+      const response = await api.post('signup', {
+        name,
+        email,
+        password,
+        provider: 'credentials',
+      });
+      console.log(response.data);
+    } catch (e: any) {
+      console.log(e);
+    }
   };
 
   return (

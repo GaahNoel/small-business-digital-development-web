@@ -4,14 +4,19 @@ import { IconType } from 'react-icons/lib';
 type HeaderTitleProps = {
   text: string;
   icon: IconType;
+  fontSize?: string;
 };
 
-export const HeaderTitle = ({ text, icon }: HeaderTitleProps) => {
+export const HeaderTitle = ({
+  text,
+  icon,
+  fontSize = '1.2rem',
+}: HeaderTitleProps) => {
   return (
     <>
-      <Flex padding="40px 0px" width="90%">
-        <Heading as="h1" fontSize="1.2rem" color="default_white">
-          <Stack direction="row" spacing={2} align="center" justify="center">
+      <Flex padding="40px 0px" width="90%" justify="center">
+        <Heading as="h1" fontSize={fontSize} color="default_white">
+          <Stack direction="row" spacing={2} align="center">
             <Text>{text}</Text>
             <Icon as={icon}></Icon>
           </Stack>
