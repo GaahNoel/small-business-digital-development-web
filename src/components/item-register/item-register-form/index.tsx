@@ -1,12 +1,15 @@
 import { Flex, FormControl, Stack, Text } from '@chakra-ui/react';
-import { useState } from 'react';
 import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
-export const ItemRegisterForm = () => {
+type ItemRegisterFormProps = {
+  categories: string[];
+};
+
+export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
   const establishmentOptions = ['Serviço 1'];
   const typeOptions = ['Produto', 'Serviço'];
-  const categoryOptions = ['Vestuário', 'Educação', 'Tecnologia', 'Outros'];
+  const categoryOptions = categories;
   return (
     <>
       <Flex direction="column" align="center" margin="20px 0px">

@@ -1,11 +1,11 @@
-import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
-import { SecondProductForm } from '../../components/product-register-second-step/second-product-form';
-import { HeaderTitle } from '../../components/shared/header-title';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { HeaderTitle } from '../../shared/header-title';
+import { SecondProductForm } from '../second-product-form';
 
-const ProductRegisterSecondStep = () => {
+export const ProductRegisterSecondStep = () => {
   return (
     <>
       <Flex bg="primary" height="100vh" align="center" direction="column">
@@ -32,5 +32,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     props: {},
   };
 };
-
-export default ProductRegisterSecondStep;

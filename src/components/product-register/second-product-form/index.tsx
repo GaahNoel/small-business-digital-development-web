@@ -7,17 +7,17 @@ import {
   Stack,
   Textarea,
 } from '@chakra-ui/react';
-import { FormInput } from '../../shared/form-input';
 import { BsBoxSeam } from 'react-icons/bs';
 import { MdAttachMoney } from 'react-icons/md';
-import { DefaultButton } from '../../shared/default-button';
 // Import React FilePond
 import { FilePond, registerPlugin } from 'react-filepond';
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import { DefaultTextArea } from '../../shared/default-text-area';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
+import { FormInput } from '../../shared/form-input';
+import { DefaultTextArea } from '../../shared/default-text-area';
+import { DefaultButton } from '../../shared/default-button';
 
 type ProductSecondFormData = {
   nome: string;
