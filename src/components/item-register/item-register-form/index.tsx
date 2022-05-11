@@ -1,4 +1,6 @@
 import { Flex, FormControl, Stack, Text } from '@chakra-ui/react';
+import { Router, useRouter } from 'next/router';
+import { useProductForm } from '../../../hooks/product-form';
 import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
@@ -7,9 +9,12 @@ type ItemRegisterFormProps = {
 };
 
 export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
+  const { setStage, form } = useProductForm();
+  const { type, setType, category, setCategory } = form;
   const establishmentOptions = ['Serviço 1'];
   const typeOptions = ['Produto', 'Serviço'];
   const categoryOptions = categories;
+  const router = useRouter();
   return (
     <>
       <Flex direction="column" align="center" margin="20px 0px">
@@ -42,8 +47,14 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              onClick={() => router.push('/')}
             />
-            <DefaultButton bg="primary" color="default_white" text="Avançar" />
+            <DefaultButton
+              bg="primary"
+              color="default_white"
+              text="Avançar"
+              onClick={() => setStage('second')}
+            />
           </Stack>
         </FormControl>
       </Flex>

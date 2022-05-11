@@ -1,9 +1,8 @@
-import { Text } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { useState } from 'react';
 import { ProductRegisterFirstStep } from '../../components/product-register/product-register-first-step';
 import { ProductRegisterSecondStep } from '../../components/product-register/product-register-second-step';
+import { useProductForm } from '../../hooks/product-form';
 import { api } from '../../service/api';
 
 type ProductRegisterProps = {
@@ -16,7 +15,7 @@ type CategoryProps = {
 };
 
 const ProductRegister = ({ categories }: ProductRegisterProps) => {
-    const [stage, setStage] = useState('first');
+    const { stage } = useProductForm();
     return (
         <>
             {stage === 'first' ? (
@@ -40,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const session = await getToken({ req });
 
     const categories = await getCategories();
-    console.log(categories);
 
     if (!session) {
         return {

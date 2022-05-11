@@ -39,7 +39,6 @@ export const UserRegisterForm = () => {
         password,
         provider: 'credentials',
       });
-      console.log(response.data);
     } catch (e: any) {
       console.log(e);
     }

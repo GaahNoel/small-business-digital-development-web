@@ -18,6 +18,7 @@ import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { FormInput } from '../../shared/form-input';
 import { DefaultTextArea } from '../../shared/default-text-area';
 import { DefaultButton } from '../../shared/default-button';
+import { useProductForm } from '../../../hooks/product-form';
 
 type ProductSecondFormData = {
   nome: string;
@@ -26,6 +27,7 @@ type ProductSecondFormData = {
 };
 
 export const SecondProductForm = () => {
+  const { setStage, form } = useProductForm();
   const methods = useForm<ProductSecondFormData>();
   const {
     handleSubmit,
@@ -85,6 +87,7 @@ export const SecondProductForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              onClick={() => setStage('first')}
             />
             <DefaultButton bg="primary" color="default_white" text="Enviar" />
           </Stack>

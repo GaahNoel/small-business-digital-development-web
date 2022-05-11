@@ -1,18 +1,31 @@
-import { Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
+import { Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { DefaultButton } from '../../components/shared/default-button';
-import { HeaderTitle } from '../../components/shared/header-title';
-import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { api } from '../../service/api';
 
 const EmailValidation = () => {
     const router = useRouter();
     const { id } = router.query;
+
     useEffect(() => {
-        console.log(id);
+        accountVerify();
     }, [id]);
+
+    const accountVerify = async () => {
+        console.log(id);
+        try {
+            const response = await api.put('account/verify', {
+                id,
+            });
+            console.log(response);
+        } catch (e: any) {
+            console.log(e);
+        }
+    };
+
     return (
         <>
             <Flex bg="primary" height="100vh" direction="column">
