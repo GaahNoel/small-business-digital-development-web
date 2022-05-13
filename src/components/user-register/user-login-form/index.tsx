@@ -5,8 +5,7 @@ import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { useSession, signIn } from 'next-auth/react';
-import { match } from 'assert';
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 type LoginFormData = {
   email: string;
@@ -16,6 +15,7 @@ type LoginFormData = {
 export const UserLoginForm = () => {
   const methods = useForm<LoginFormData>();
   const { data } = useSession();
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -31,16 +31,15 @@ export const UserLoginForm = () => {
       email,
       password,
     });
-    const { id, match } = response.data;
-    if (match === true) {
-      console.log(
-        await signIn('credentials', {
-          redirect: false,
-          id: id,
-          email: email,
-          password: password,
-        }),
-      );
+    const { id, match, verified } = response.data;
+    if (match && verified) {
+      await signIn('credentials', {
+        redirect: false,
+        id: id,
+        email: email,
+        password: password,
+      }),
+        router.push('/');
     }
   };
 

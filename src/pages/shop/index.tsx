@@ -36,53 +36,34 @@ const Shop = () => {
               bg="secondary"
               borderRadius="14px"
             >
-              {formOption === 'Consumidor' ? (
-                <>
-                  <Button
-                    bg="default_orange"
-                    color="default_white"
-                    borderRadius="14px"
-                    onClick={() => {
-                      changeOption('Consumidor');
-                    }}
-                  >
-                    Consumidor
-                  </Button>
-                  <Button
-                    bg="secondary"
-                    color="primary"
-                    borderRadius="14px"
-                    onClick={() => {
-                      changeOption('Empreendedor');
-                    }}
-                  >
-                    Empreendedor
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    bg="secondary"
-                    color="primary"
-                    borderRadius="14px"
-                    onClick={() => {
-                      changeOption('Consumidor');
-                    }}
-                  >
-                    Consumidor
-                  </Button>
-                  <Button
-                    bg="default_orange"
-                    color="default_white"
-                    borderRadius="14px"
-                    onClick={() => {
-                      changeOption('Empreendedor');
-                    }}
-                  >
-                    Empreendedor
-                  </Button>
-                </>
-              )}
+              <Button
+                bg={
+                  formOption === 'Consumidor' ? 'default_orange' : 'secondary'
+                }
+                color={
+                  formOption === 'Consumidor' ? 'default_white' : 'primary'
+                }
+                borderRadius="14px"
+                onClick={() => {
+                  changeOption('Consumidor');
+                }}
+              >
+                Consumidor
+              </Button>
+              <Button
+                bg={
+                  formOption === 'Empreendedor' ? 'default_orange' : 'secondary'
+                }
+                color={
+                  formOption === 'Empreendedor' ? 'default_white' : 'primary'
+                }
+                borderRadius="14px"
+                onClick={() => {
+                  changeOption('Empreendedor');
+                }}
+              >
+                Empreendedor
+              </Button>
             </ButtonGroup>
           </Flex>
         </Stack>

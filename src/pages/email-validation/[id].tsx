@@ -74,6 +74,7 @@ const EmailValidation = () => {
                             bg="primary"
                             color="default_white"
                             text="Confirmar"
+                            onClick={() => router.push('/user-register')}
                         />
                     </Stack>
                 </Stack>

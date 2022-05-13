@@ -10,7 +10,7 @@ export default NextAuth({
       const response = await api.post('signup', {
         name: 'Test',
         email: session.user?.email,
-        provider: 'credentials',
+        provider: 'socialMedia',
       });
       const { id } = response.data;
       session.id = id;

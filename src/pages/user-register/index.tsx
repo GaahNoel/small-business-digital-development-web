@@ -16,7 +16,7 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 const UserRegister = () => {
-  const [formOption, setFormOption] = useState('Registrar');
+  const [formOption, setFormOption] = useState('Entrar');
 
   const changeOption = (option: string) => {
     if (formOption != option) {
@@ -47,60 +47,31 @@ const UserRegister = () => {
             bg="secondary"
             borderRadius="14px"
           >
-            {formOption === 'Registrar' ? (
-              <>
-                <Button
-                  bg="default_orange"
-                  color="default_white"
-                  borderRadius="14px"
-                  width="100px"
-                  onClick={() => {
-                    changeOption('Registrar');
-                  }}
-                >
-                  Registrar
-                </Button>
-                <Button
-                  bg="secondary"
-                  color="primary"
-                  borderRadius="14px"
-                  width="100px"
-                  onClick={() => {
-                    changeOption('Entrar');
-                  }}
-                >
-                  Entrar
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  bg="secondary"
-                  color="primary"
-                  borderRadius="14px"
-                  width="100px"
-                  onClick={() => {
-                    changeOption('Registrar');
-                  }}
-                >
-                  Registrar
-                </Button>
-                <Button
-                  bg="default_orange"
-                  color="default_white"
-                  borderRadius="14px"
-                  width="100px"
-                  onClick={() => {
-                    changeOption('Entrar');
-                  }}
-                >
-                  Entrar
-                </Button>
-              </>
-            )}
+            <Button
+              bg={formOption === 'Entrar' ? 'default_orange' : 'secondary'}
+              color={formOption === 'Entrar' ? 'default_white' : 'primary'}
+              borderRadius="14px"
+              width="100px"
+              onClick={() => {
+                changeOption('Entrar');
+              }}
+            >
+              Entrar
+            </Button>
+            <Button
+              bg={formOption === 'Registrar' ? 'default_orange' : 'secondary'}
+              color={formOption === 'Registrar' ? 'default_white' : 'primary'}
+              borderRadius="14px"
+              width="100px"
+              onClick={() => {
+                changeOption('Registrar');
+              }}
+            >
+              Registrar
+            </Button>
           </ButtonGroup>
         </Flex>
-        {formOption === 'Registrar' ? <UserRegisterForm /> : <UserLoginForm />}
+        {formOption === 'Entrar' ? <UserLoginForm /> : <UserRegisterForm />}
       </Flex>
     </>
   );
