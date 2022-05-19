@@ -1,5 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getCsrfToken } from 'next-auth/react';
+import { useEffect } from 'react';
 import { ProductRegisterFirstStep } from '../../components/product-register/product-register-first-step';
 import { ProductRegisterSecondStep } from '../../components/product-register/product-register-second-step';
 import { useProductForm } from '../../hooks/product-form';
@@ -7,6 +9,7 @@ import { api } from '../../service/api';
 
 type ProductRegisterProps = {
     categories: string[];
+    session: string;
 };
 
 type CategoryProps = {
@@ -14,8 +17,14 @@ type CategoryProps = {
     name: string;
 };
 
-const ProductRegister = ({ categories }: ProductRegisterProps) => {
-    const { stage } = useProductForm();
+const ProductRegister = ({ categories, session }: ProductRegisterProps) => {
+    const { stage, form } = useProductForm();
+    const { setToken } = form;
+
+    useEffect(() => {
+        setToken(session);
+    }, []);
+
     return (
         <>
             {stage === 'first' ? (
@@ -29,6 +38,7 @@ const ProductRegister = ({ categories }: ProductRegisterProps) => {
 
 const getCategories = async () => {
     const response = await api.get('category/list', {});
+    console.log(response.data);
     const categories = response.data.map((category: CategoryProps) => {
         return category.name;
     });
@@ -36,7 +46,11 @@ const getCategories = async () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const session = await getToken({ req });
+    const session = await getToken({
+        req,
+        raw: true,
+        secret: process.env.NEXTAUTH_SECRET,
+    });
 
     const categories = await getCategories();
 
@@ -51,6 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
     return {
         props: {
+            session,
             categories,
         },
     };

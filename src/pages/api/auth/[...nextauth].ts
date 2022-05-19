@@ -2,20 +2,35 @@ import NextAuth from 'next-auth';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import * as jwt from 'jsonwebtoken';
 import { api } from '../../../service/api';
 
 export default NextAuth({
-  callbacks: {
-    async session({ session, token, user }) {
-      const response = await api.post('signup', {
-        name: 'Test',
-        email: session.user?.email,
-        provider: 'socialMedia',
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+    encode: async ({ secret, token }) => {
+      return jwt.sign({ ...token, userId: token.id }, secret, {
+        algorithm: 'HS256',
       });
-      const { id } = response.data;
-      session.id = id;
-      return session;
     },
+    decode: async ({ secret, token }) => {
+      return jwt.verify(token, secret, { algorithms: ['HS256'] });
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    // async session({ session, token, user }) {
+    //   const response = await api.post('signup', {
+    //     name: 'Test',
+    //     email: session.user?.email,
+    //     provider: 'socialMedia',
+    //   });
+    //   const { id } = response.data;
+    //   session.id = id;
+    //   return session;
+    // },
   },
   providers: [
     FacebookProvider({
