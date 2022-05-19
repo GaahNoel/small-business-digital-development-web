@@ -4,7 +4,12 @@ type ItemFormSelectProps = {
   id: string;
   disabled: boolean;
   text: string;
-  options?: string[];
+  options?: [
+    {
+      id: string;
+      name: string;
+    },
+  ];
   register?: any;
 };
 
@@ -30,8 +35,8 @@ export const ItemFormSelect = ({
         >
           {options?.map((option, iterator) => {
             return (
-              <option value={option} key={iterator}>
-                {option}
+              <option value={option.id} key={iterator}>
+                {option.name}
               </option>
             );
           })}

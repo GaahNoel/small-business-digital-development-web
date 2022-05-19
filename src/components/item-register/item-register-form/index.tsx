@@ -24,8 +24,13 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
   } = methods;
   const { setStage, form } = useProductForm();
   const { type, setType, category, setCategory } = form;
-  const establishmentOptions = ['Serviço 1'];
-  const typeOptions = ['Produto', 'Serviço'];
+  const establishmentOptions = [
+    { id: 'cd7ab1c6-1d39-4fb0-8e87-5c8ece62b966', name: 'Serviço 1' },
+  ];
+  const typeOptions = [
+    { id: '1', name: 'Produto' },
+    { id: '2', name: 'Serviço' },
+  ];
   const categoryOptions = categories;
   const router = useRouter();
 
@@ -33,7 +38,7 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
     type,
     category,
   }) => {
-    setType(type === 'Produto' ? 'product' : 'service');
+    setType(type === '1' ? 'product' : 'service');
     setCategory(category);
     setStage('secondary');
   };

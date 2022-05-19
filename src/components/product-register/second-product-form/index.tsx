@@ -104,11 +104,11 @@ export const SecondProductForm = () => {
           name,
           type,
           description,
-          listPrice: price,
-          salePrice: price as number,
+          listPrice: parseFloat(price),
+          salePrice: parseFloat(price),
           imageUrl: imageUrlReturned,
           businessId: 'cd7ab1c6-1d39-4fb0-8e87-5c8ece62b966',
-          categoryId: 'e2b8e7a3-3b15-41ae-93d9-8141fe3ffec1',
+          categoryId: category,
         },
         {
           headers: {

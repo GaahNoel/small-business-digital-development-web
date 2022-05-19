@@ -42,7 +42,7 @@ const getCategories = async () => {
     const categories = response.data.map((category: CategoryProps) => {
         return category.name;
     });
-    return categories;
+    return response.data;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
