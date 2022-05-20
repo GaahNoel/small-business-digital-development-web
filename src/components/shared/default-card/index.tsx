@@ -6,9 +6,10 @@ import { ModifyButton } from '../modify-button';
 type DefaultCardProps = {
   name: string;
   img: string;
+  detailClick: () => void;
 };
 
-export const DefaultCard = ({ img, name }: DefaultCardProps) => {
+export const DefaultCard = ({ img, name, detailClick }: DefaultCardProps) => {
   return (
     <>
       <Stack
@@ -39,6 +40,9 @@ export const DefaultCard = ({ img, name }: DefaultCardProps) => {
           bg="card_white"
           _hover={{ bg: 'card_white_hover' }}
           cursor="pointer"
+          onClick={() => {
+            detailClick();
+          }}
         />
       </Stack>
     </>

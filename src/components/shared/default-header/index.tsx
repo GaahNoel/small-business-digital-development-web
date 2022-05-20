@@ -24,7 +24,13 @@ export const DefaultHeader = () => {
         margin="15px 0px 10px 0px"
         spacing={40}
       >
-        <Img src="Logo.svg"></Img>
+        <Img
+          src="/Logo.svg"
+          cursor="pointer"
+          onClick={() => {
+            router.push('/');
+          }}
+        ></Img>
         <Flex w="100px">
           {!session ? (
             <Button

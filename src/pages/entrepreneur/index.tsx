@@ -5,11 +5,44 @@ import { FaPlus } from 'react-icons/fa';
 import { DefaultCard } from '../../components/shared/default-card';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { api } from '../../service/api';
+import { getSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { Router, useRouter } from 'next/router';
+import { useEstablishmentForm } from '../../hooks/establishment-form';
+import { NoItemsText } from '../../components/shared/no-items-text';
 
-const Enterpreneur = () => {
+type EnterpreneurProps = {
+  businesses: {
+    id: string;
+    name: string;
+    description: string;
+    createdAt: string;
+    imageUrl: string;
+    latitude: string;
+    longitude: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  }[];
+};
+
+const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
+  const router = useRouter();
+  const { setId, setName, setImageUrl } = useEstablishmentForm();
+
+  const clickCard = (id: string, name: string, imageUrl: string) => {
+    setId(id);
+    setName(name);
+    setImageUrl(imageUrl);
+    router.push(`/establishment/${id}`);
+  };
+
   return (
     <>
-      <Flex width="100%" bg="primary" direction="column">
+      <Flex width="100%" bg="primary" direction="column" minH="100vh">
         <DefaultHeader />
         <Stack
           margin="30px auto 90px auto"
@@ -22,7 +55,7 @@ const Enterpreneur = () => {
           <Heading as="h3">Área do empreendedor</Heading>
           <Text>Gerencie seus estabelecimentos e produtos</Text>
         </Stack>
-        <Flex bg="secondary" direction="column" borderTopRadius="56px">
+        <Flex bg="secondary" direction="column" borderTopRadius="56px" flex="1">
           <Flex maxW="250px" margin="0px auto">
             <Button
               bg="default_orange"
@@ -56,9 +89,27 @@ const Enterpreneur = () => {
               Seus estabelecimentos cadastrados
             </Text>
             <Stack spacing={4}>
-              <DefaultCard name="Estabelecimento 1" img="Shop.svg" />
-              <DefaultCard name="Estabelecimento 2" img="Shop.svg" />
-              <DefaultCard name="Estabelecimento 3" img="Shop.svg" />
+              {businesses.length > 0 ? (
+                businesses.map((establishment, key) => (
+                  <DefaultCard
+                    key={key}
+                    name={establishment.name}
+                    img={establishment.imageUrl}
+                    detailClick={() => {
+                      clickCard(
+                        establishment.id,
+                        establishment.name,
+                        establishment.imageUrl,
+                      );
+                    }}
+                  />
+                ))
+              ) : (
+                <NoItemsText
+                  color="primary"
+                  text="Nenhum estabelecimento cadastrado para o usuário."
+                />
+              )}
             </Stack>
           </Flex>
           <FooterMenu />
@@ -68,8 +119,13 @@ const Enterpreneur = () => {
   );
 };
 
+const getBusinessList = async (id: string) => {
+  const response = await api.get(`business/list/${id}`, {});
+  return response.data;
+};
+
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+  const session = await getSession({ req });
 
   if (!session) {
     return {
@@ -80,8 +136,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
+  const businesses = await getBusinessList(session.id as string);
+
   return {
-    props: {},
+    props: { businesses },
   };
 };
 

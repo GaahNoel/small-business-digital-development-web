@@ -7,6 +7,7 @@ import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
 import { ShopHeader } from '../../components/shop/shop-header';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 const Shop = () => {
   const [formOption, setFormOption] = useState('Consumidor');
@@ -79,7 +80,7 @@ const Shop = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+  const session = await getSession({ req });
 
   if (!session) {
     return {

@@ -13,11 +13,37 @@ import { FaPlus } from 'react-icons/fa';
 import { DefaultCard } from '../../components/shared/default-card';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { api } from '../../service/api';
+import { useEstablishmentForm } from '../../hooks/establishment-form';
+import { NoItemsText } from '../../components/shared/no-items-text';
 
-const Establishment = () => {
+type ParamsProps = {
+  id: string;
+};
+
+type ProductsProps = {
+  products: {
+    id: string;
+    name: string;
+    listPrice: number;
+    salePrice: number;
+    description: string;
+    createdAt: string;
+    businessId: string;
+    imageUrl: string;
+    type: string;
+    categoryId: string;
+  }[];
+};
+
+const Establishment = ({ products }: ProductsProps) => {
+  const { id, name, imageUrl } = useEstablishmentForm();
   return (
     <>
-      <Flex width="100%" bg="primary" direction="column">
+      <Flex width="100%" minH="100vh" bg="primary" direction="column">
         <DefaultHeader />
         <Stack
           margin="20px auto 50px auto"
@@ -28,18 +54,19 @@ const Establishment = () => {
           spacing={1}
         >
           <Img
-            src="vercel.svg"
-            width="80px"
-            height="80px"
+            src={imageUrl}
+            width="120px"
+            height="120px"
             borderRadius="full"
           />
-          <Heading as="h3">Estabelecimento 1</Heading>
+          <Heading as="h3">{name}</Heading>
         </Stack>
         <Flex
           bg="secondary"
           direction="column"
           borderTopRadius="56px"
           height="100%"
+          flex="1"
         >
           <Flex maxW="250px" margin="0px auto">
             <Button
@@ -74,9 +101,23 @@ const Establishment = () => {
               Seus produtos cadastrados
             </Text>
             <Stack spacing={4}>
-              <DefaultCard name="Produto 1" img="Shop.svg" />
-              <DefaultCard name="Produto 2" img="Shop.svg" />
-              <DefaultCard name="Produto 3" img="Shop.svg" />
+              {products.length > 0 ? (
+                products.map((product, key) => (
+                  <DefaultCard
+                    name={product.name}
+                    img={product.imageUrl}
+                    detailClick={() => {
+                      console.log('a');
+                    }}
+                    key={key}
+                  />
+                ))
+              ) : (
+                <NoItemsText
+                  color="primary"
+                  text="Nenhum produto cadastrado para o estabelecimento."
+                />
+              )}
             </Stack>
           </Flex>
           <FooterMenu />
@@ -86,8 +127,19 @@ const Establishment = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+const getProductList = async (id: string) => {
+  const response = await api.get(`product/list/${id}`);
+  return response.data;
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params,
+}) => {
+  const session = await getSession({ req });
+  const { id } = params as ParamsProps;
+
+  const products = await getProductList(id);
 
   if (!session) {
     return {
@@ -99,7 +151,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    props: {},
+    props: { products },
   };
 };
 

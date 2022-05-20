@@ -14,6 +14,7 @@ import { UserLoginForm } from '../../components/user-register/user-login-form';
 import { UserRegisterForm } from '../../components/user-register/user-register-form';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 const UserRegister = () => {
   const [formOption, setFormOption] = useState('Entrar');
@@ -78,7 +79,7 @@ const UserRegister = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+  const session = await getSession({ req });
 
   if (session) {
     return {

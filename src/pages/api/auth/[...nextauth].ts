@@ -21,16 +21,16 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    // async session({ session, token, user }) {
-    //   const response = await api.post('signup', {
-    //     name: 'Test',
-    //     email: session.user?.email,
-    //     provider: 'socialMedia',
-    //   });
-    //   const { id } = response.data;
-    //   session.id = id;
-    //   return session;
-    // },
+    async session({ session, token, user }) {
+      const response = await api.post('signup', {
+        name: 'Test',
+        email: session.user?.email,
+        provider: 'socialMedia',
+      });
+      const { id } = response.data;
+      session.id = id;
+      return session;
+    },
   },
   providers: [
     FacebookProvider({
@@ -68,7 +68,6 @@ export default NextAuth({
         },
       },
       async authorize(credentials, req) {
-        console.log(credentials);
         // Add logic here to look up the user from the credentials supplied
         const user = {
           id: credentials?.id,

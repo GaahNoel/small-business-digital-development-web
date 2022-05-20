@@ -4,6 +4,7 @@ import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-
 import { FaFacebookSquare, FaGoogle, FaRegEnvelope } from 'react-icons/fa';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 const Login = () => {
   return (
@@ -68,7 +69,7 @@ const Login = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+  const session = await getSession({ req });
 
   if (session) {
     return {

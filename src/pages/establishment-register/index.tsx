@@ -4,6 +4,7 @@ import { EstablishmentForm } from '../../components/establishment-register/estab
 import { HeaderTitle } from '../../components/shared/header-title';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 
 const EstablishmentRegister = () => {
   return (
@@ -20,7 +21,7 @@ const EstablishmentRegister = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({ req });
+  const session = await getSession({ req });
 
   if (!session) {
     return {
