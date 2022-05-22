@@ -23,9 +23,16 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
     setError,
   } = methods;
   const { setStage, form } = useProductForm();
-  const { type, setType, category, setCategory } = form;
+  const {
+    establishmentId,
+    establishmentName,
+    type,
+    setType,
+    category,
+    setCategory,
+  } = form;
   const establishmentOptions = [
-    { id: 'cd7ab1c6-1d39-4fb0-8e87-5c8ece62b966', name: 'Serviço 1' },
+    { id: establishmentId, name: establishmentName },
   ];
   const typeOptions = [
     { id: '1', name: 'Produto' },

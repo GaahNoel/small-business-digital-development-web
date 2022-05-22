@@ -14,11 +14,12 @@ import { DefaultCard } from '../../components/shared/default-card';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { api } from '../../service/api';
 import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
+import { useProductForm } from '../../hooks/product-form';
 
 type ParamsProps = {
   id: string;
@@ -40,7 +41,17 @@ type ProductsProps = {
 };
 
 const Establishment = ({ products }: ProductsProps) => {
+  const router = useRouter();
   const { id, name, imageUrl } = useEstablishmentForm();
+  const { form } = useProductForm();
+  const { setEstablishmentId, setEstablishmentName } = form;
+
+  const clickNewProduct = (id: string, name: string) => {
+    setEstablishmentId(id);
+    setEstablishmentName(name);
+    router.push('/product-register');
+  };
+
   return (
     <>
       <Flex width="100%" minH="100vh" bg="primary" direction="column">
@@ -79,6 +90,9 @@ const Establishment = ({ products }: ProductsProps) => {
               borderRadius="2xl"
               position="relative"
               top="-23px"
+              onClick={() => {
+                clickNewProduct(id, name);
+              }}
             >
               <Stack
                 direction="row"

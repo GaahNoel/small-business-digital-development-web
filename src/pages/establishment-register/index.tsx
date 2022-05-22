@@ -5,23 +5,41 @@ import { HeaderTitle } from '../../components/shared/header-title';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
-const EstablishmentRegister = () => {
+type EstablishmentRegisterProps = {
+  session: string;
+};
+
+const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
+  useEffect(() => {
+    console.log(session);
+  }, []);
   return (
     <>
-      <Flex bg="primary" align="center" direction="column">
+      <Flex
+        bg="primary"
+        align="center"
+        direction="column"
+        minHeight="100vh"
+        flex="1"
+      >
         <HeaderTitle
           text="Cadastre já seu estabelecimento!"
           icon={FaShoppingBag}
         />
-        <EstablishmentForm />
+        <EstablishmentForm session={session} />
       </Flex>
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
+  const session = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
   if (!session) {
     return {
@@ -33,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    props: {},
+    props: { session },
   };
 };
 

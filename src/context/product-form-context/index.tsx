@@ -8,6 +8,10 @@ export type ProductFormData = {
   stage: string;
   setStage: (param: string) => void;
   form: {
+    establishmentId: string;
+    setEstablishmentId: (param: string) => void;
+    establishmentName: string;
+    setEstablishmentName: (param: string) => void;
     token: string;
     setToken: (param: string) => void;
     type: string;
@@ -30,6 +34,8 @@ export const ProductFormContext = createContext<ProductFormData>(
 );
 
 export function ProductFormProvider({ children }: ProductFormProviderProps) {
+  const [establishmentId, setEstablishmentId] = useState('');
+  const [establishmentName, setEstablishmentName] = useState('');
   const [stage, setStage] = useState('first');
   const [token, setToken] = useState('');
   const [type, setType] = useState('');
@@ -39,6 +45,10 @@ export function ProductFormProvider({ children }: ProductFormProviderProps) {
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const productForm = {
+    establishmentId,
+    setEstablishmentId,
+    establishmentName,
+    setEstablishmentName,
     token,
     setToken,
     type,

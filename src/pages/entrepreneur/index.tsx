@@ -67,6 +67,9 @@ const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
               borderRadius="2xl"
               position="relative"
               top="-23px"
+              onClick={() => {
+                router.push('/establishment-register');
+              }}
             >
               <Stack
                 direction="row"

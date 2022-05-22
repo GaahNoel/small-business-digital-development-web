@@ -10,15 +10,6 @@ import {
 import { BsBoxSeam } from 'react-icons/bs';
 import { MdAttachMoney } from 'react-icons/md';
 
-// Import React FilePond
-import { FilePond, registerPlugin } from 'react-filepond';
-
-// Import FilePond styles
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// Import FilePond styles
-import 'filepond/dist/filepond.min.css';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { FormInput } from '../../shared/form-input';
 import { DefaultTextArea } from '../../shared/default-text-area';
@@ -27,6 +18,18 @@ import { useProductForm } from '../../../hooks/product-form';
 import { useEffect, useState } from 'react';
 import { imgbbApi } from '../../../service/imgbb-api';
 import { api } from '../../../service/api';
+import { useRouter } from 'next/router';
+
+// Import React FilePond
+import { FilePond, registerPlugin } from 'react-filepond';
+
+// Import FilePond styles
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+// Import FilePond styles
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -40,6 +43,7 @@ type ProductSecondFormData = {
 export const SecondProductForm = () => {
   const { setStage, form } = useProductForm();
   const {
+    establishmentId,
     token,
     type,
     category,
@@ -60,6 +64,7 @@ export const SecondProductForm = () => {
     register,
   } = methods;
   const [files, setFiles] = useState<any>([]);
+  const router = useRouter();
 
   useEffect(() => {
     console.log(token);
@@ -97,6 +102,7 @@ export const SecondProductForm = () => {
     setPrice(price);
     setDescription(description);
     setImageUrl(imageUrlReturned);
+    console.log(name);
     try {
       const response = await api.post(
         'product/create',
@@ -107,7 +113,7 @@ export const SecondProductForm = () => {
           listPrice: parseFloat(price),
           salePrice: parseFloat(price),
           imageUrl: imageUrlReturned,
-          businessId: 'cd7ab1c6-1d39-4fb0-8e87-5c8ece62b966',
+          businessId: establishmentId,
           categoryId: category,
         },
         {
@@ -117,6 +123,7 @@ export const SecondProductForm = () => {
           },
         },
       );
+      router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);
     }
@@ -164,25 +171,6 @@ export const SecondProductForm = () => {
             />
           </Stack>
           <Box width="70vw" margin="30px auto">
-            {/* <FilePond
-              files={files}
-              onupdatefiles={setFiles}
-              server="https://api.imgbb.com/1/upload"
-              name="files"
-              credits={false}
-              allowFileTypeValidation={true}
-              acceptedFileTypes={['image/*']}
-              labelFileTypeNotAllowed="Tipo de arquivo não suportado"
-              labelIdle='Arraste uma imagem ou <span class="filepond--label-action">selecione um arquivo</span>'
-            /> */}
-            {/* <FilePond
-              files={files}
-              onupdatefiles={setFiles}
-              allowMultiple={true}
-              server="https://api.imgbb.com/1/api/"
-              name="files"
-              labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
-            /> */}
             <FilePond
               files={files}
               onupdatefiles={setFiles}
