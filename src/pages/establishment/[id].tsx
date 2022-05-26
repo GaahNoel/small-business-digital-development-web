@@ -4,8 +4,10 @@ import {
   Heading,
   Icon,
   Img,
+  Modal,
   Stack,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { FooterMenu } from '../../components/shared/footer-menu';
@@ -15,11 +17,13 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
 import Router, { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../service/api';
 import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { useProductForm } from '../../hooks/product-form';
+import { EstablishmentModal } from '../../components/establishment/establishment-modal';
+import { type } from 'os';
 
 type ParamsProps = {
   id: string;
@@ -40,16 +44,46 @@ type ProductsProps = {
   }[];
 };
 
+type ProductModalProps = {
+  name: string;
+  description: string;
+  listPrice: number;
+  salePrice: number;
+  type: string;
+  imageUrl: string;
+};
+
 const Establishment = ({ products }: ProductsProps) => {
   const router = useRouter();
   const { id, name, imageUrl } = useEstablishmentForm();
   const { form } = useProductForm();
   const { setEstablishmentId, setEstablishmentName } = form;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [productModal, setProductModal] = useState<ProductModalProps>();
 
   const clickNewProduct = (id: string, name: string) => {
     setEstablishmentId(id);
     setEstablishmentName(name);
     router.push('/product-register');
+  };
+
+  const openModal = ({
+    name,
+    description,
+    listPrice,
+    salePrice,
+    type,
+    imageUrl,
+  }: ProductModalProps) => {
+    setProductModal({
+      name,
+      description,
+      listPrice,
+      salePrice,
+      type,
+      imageUrl,
+    });
+    onOpen();
   };
 
   return (
@@ -105,6 +139,20 @@ const Establishment = ({ products }: ProductsProps) => {
               </Stack>
             </Button>
           </Flex>
+          <EstablishmentModal
+            name={productModal?.name as string}
+            description={productModal?.description as string}
+            type={
+              productModal?.type === 'product'
+                ? 'Produto'
+                : ('Serviço' as string)
+            }
+            grossPrice={productModal?.listPrice as number}
+            netPrice={productModal?.salePrice as number}
+            imageUrl={productModal?.imageUrl as string}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
           <Flex
             direction="column"
             margin="0px auto"
@@ -121,7 +169,14 @@ const Establishment = ({ products }: ProductsProps) => {
                     name={product.name}
                     img={product.imageUrl}
                     detailClick={() => {
-                      console.log('a');
+                      openModal({
+                        name: product.name,
+                        description: product.description,
+                        listPrice: product.listPrice,
+                        salePrice: product.salePrice,
+                        type: product.type,
+                        imageUrl: product.imageUrl,
+                      });
                     }}
                     key={key}
                   />

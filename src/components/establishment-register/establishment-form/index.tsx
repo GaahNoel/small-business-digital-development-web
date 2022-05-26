@@ -168,7 +168,7 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
             />
             <Flex direction="column">
               <FormLabel
-                htmlFor={`descricao_label`}
+                htmlFor={`map_label`}
                 color="primary"
                 fontWeight="bold"
                 fontSize="1rem"
@@ -196,6 +196,9 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              onClick={() => {
+                router.push('/entrepreneur');
+              }}
             />
             <DefaultButton
               bg="primary"

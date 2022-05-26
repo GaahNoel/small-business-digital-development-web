@@ -27,12 +27,18 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 
+// Import the plugin code
+import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
+
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+
+// Register the plugin
+registerPlugin(FilePondPluginImageValidateSize);
 
 type ProductSecondFormData = {
   name: string;
@@ -178,6 +184,11 @@ export const SecondProductForm = () => {
               credits={false}
               allowMultiple={false}
               name="files"
+              allowImageValidateSize={true}
+              imageValidateSizeMinWidth={600}
+              imageValidateSizeMinHeight={400}
+              imageValidateSizeMaxWidth={1024}
+              imageValidateSizeMaxHeight={800}
               labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
             />
           </Box>
