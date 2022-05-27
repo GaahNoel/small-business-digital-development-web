@@ -91,20 +91,6 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
     const imageUrlReturned = await postImageBB();
     const { lat, lng } = position.getLngLat();
 
-    console.log(
-      nome,
-      descricao,
-      imageUrlReturned,
-      userId,
-      'string',
-      'string',
-      lat,
-      lng,
-      'string',
-      'string',
-      'string',
-      session,
-    );
     try {
       const response = await api.post(
         'business/create',

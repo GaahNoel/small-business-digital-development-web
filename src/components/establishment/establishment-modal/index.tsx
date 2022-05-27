@@ -18,6 +18,7 @@ import {
   MdOutlineAttachMoney,
   MdOutlineMoneyOffCsred,
   MdOutlineDescription,
+  MdOutlineCategory,
 } from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
 import { ModalInfo } from '../modal-info';
@@ -29,6 +30,7 @@ type EstablishmentModalProps = {
   grossPrice: number;
   netPrice: number;
   imageUrl: string;
+  categoryName: string;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -41,6 +43,7 @@ export const EstablishmentModal = ({
   netPrice,
   imageUrl,
   isOpen,
+  categoryName,
   onClose,
 }: EstablishmentModalProps) => {
   const format = {
@@ -53,7 +56,7 @@ export const EstablishmentModal = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
-          maxW="90%"
+          maxW="90vw"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -75,6 +78,8 @@ export const EstablishmentModal = ({
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            width="90vw"
+            maxWidth="300px"
           >
             <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
             <Stack
@@ -92,6 +97,11 @@ export const EstablishmentModal = ({
                 </Flex>
                 <Text>{description}</Text>
               </Flex>
+              <ModalInfo
+                info="Categoria:"
+                data={categoryName}
+                icon={MdOutlineCategory}
+              />
               <ModalInfo
                 info="Tipo:"
                 data={type}

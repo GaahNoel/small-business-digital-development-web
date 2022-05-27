@@ -23,13 +23,16 @@ import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { useProductForm } from '../../hooks/product-form';
 import { EstablishmentModal } from '../../components/establishment/establishment-modal';
-import { type } from 'os';
+import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ParamsProps = {
   id: string;
 };
 
 type ProductsProps = {
+  token: string;
   products: {
     id: string;
     name: string;
@@ -40,7 +43,10 @@ type ProductsProps = {
     businessId: string;
     imageUrl: string;
     type: string;
-    categoryId: string;
+    category: {
+      id: string;
+      name: string;
+    };
   }[];
 };
 
@@ -51,19 +57,42 @@ type ProductModalProps = {
   salePrice: number;
   type: string;
   imageUrl: string;
+  categoryName: string;
 };
 
-const Establishment = ({ products }: ProductsProps) => {
+const Establishment = ({ token, products }: ProductsProps) => {
   const router = useRouter();
   const { id, name, imageUrl } = useEstablishmentForm();
-  const { form } = useProductForm();
+  const { form, setStage } = useProductForm();
   const { setEstablishmentId, setEstablishmentName } = form;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
+  const [productsState, setProductsState] = useState([
+    {
+      id: '',
+      name: '',
+      listPrice: 0,
+      salePrice: 0,
+      description: '',
+      createdAt: '',
+      businessId: '',
+      imageUrl: '',
+      type: '',
+      category: {
+        id: '',
+        name: '',
+      },
+    },
+  ]);
+
+  useEffect(() => {
+    setProductsState(products);
+  }, []);
 
   const clickNewProduct = (id: string, name: string) => {
     setEstablishmentId(id);
     setEstablishmentName(name);
+    setStage('first');
     router.push('/product-register');
   };
 
@@ -74,6 +103,7 @@ const Establishment = ({ products }: ProductsProps) => {
     salePrice,
     type,
     imageUrl,
+    categoryName,
   }: ProductModalProps) => {
     setProductModal({
       name,
@@ -82,12 +112,46 @@ const Establishment = ({ products }: ProductsProps) => {
       salePrice,
       type,
       imageUrl,
+      categoryName,
     });
     onOpen();
   };
 
+  const removeProductApi = async (productId: string, token: string) => {
+    try {
+      const response = await api.delete(`product/delete/${productId}`, {
+        headers: {
+          'content-type': 'application/json',
+          token,
+        },
+      });
+      setProductsState(
+        productsState.filter((product) => {
+          return product.id !== productId;
+        }),
+      );
+      toast.success('Produto apagado com sucesso!');
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  const removeProduct = (productId: string, token: string) => {
+    Swal.fire({
+      title: 'Tem certeza que deseja excluir o produto?',
+      showDenyButton: true,
+      confirmButtonText: 'Não',
+      denyButtonText: `Sim`,
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        removeProductApi(productId, token);
+      }
+    });
+  };
+
   return (
     <>
+      <ToastContainer />
       <Flex width="100%" minH="100vh" bg="primary" direction="column">
         <DefaultHeader />
         <Stack
@@ -150,6 +214,7 @@ const Establishment = ({ products }: ProductsProps) => {
             grossPrice={productModal?.listPrice as number}
             netPrice={productModal?.salePrice as number}
             imageUrl={productModal?.imageUrl as string}
+            categoryName={productModal?.categoryName as string}
             isOpen={isOpen}
             onClose={onClose}
           />
@@ -163,8 +228,8 @@ const Establishment = ({ products }: ProductsProps) => {
               Seus produtos cadastrados
             </Text>
             <Stack spacing={4}>
-              {products.length > 0 ? (
-                products.map((product, key) => (
+              {productsState.length > 0 ? (
+                productsState.map((product, key) => (
                   <DefaultCard
                     name={product.name}
                     img={product.imageUrl}
@@ -175,9 +240,11 @@ const Establishment = ({ products }: ProductsProps) => {
                         listPrice: product.listPrice,
                         salePrice: product.salePrice,
                         type: product.type,
+                        categoryName: product.category.name,
                         imageUrl: product.imageUrl,
                       });
                     }}
+                    removeItem={() => removeProduct(product.id, token)}
                     key={key}
                   />
                 ))
@@ -205,12 +272,16 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   params,
 }) => {
-  const session = await getSession({ req });
+  const token = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
   const { id } = params as ParamsProps;
 
   const products = await getProductList(id);
 
-  if (!session) {
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
@@ -220,7 +291,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    props: { products },
+    props: { products, token },
   };
 };
 

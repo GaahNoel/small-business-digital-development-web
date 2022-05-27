@@ -129,6 +129,7 @@ export const SecondProductForm = () => {
           },
         },
       );
+
       router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);

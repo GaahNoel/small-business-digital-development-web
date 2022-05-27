@@ -7,9 +7,15 @@ type DefaultCardProps = {
   name: string;
   img: string;
   detailClick: () => void;
+  removeItem?: () => void;
 };
 
-export const DefaultCard = ({ img, name, detailClick }: DefaultCardProps) => {
+export const DefaultCard = ({
+  img,
+  name,
+  detailClick,
+  removeItem,
+}: DefaultCardProps) => {
   return (
     <>
       <Stack
@@ -32,6 +38,7 @@ export const DefaultCard = ({ img, name, detailClick }: DefaultCardProps) => {
               icon={RiDeleteBinLine}
               text="Remover"
               color="default_orange"
+              onClick={() => removeItem()}
             />
           </Flex>
         </Stack>

@@ -5,9 +5,15 @@ type ModifyButtonProps = {
   icon: IconType;
   text: string;
   color: string;
+  onClick?: () => void;
 };
 
-export const ModifyButton = ({ icon, text, color }: ModifyButtonProps) => {
+export const ModifyButton = ({
+  icon,
+  text,
+  color,
+  onClick,
+}: ModifyButtonProps) => {
   return (
     <>
       <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} w="80px">
@@ -18,6 +24,7 @@ export const ModifyButton = ({ icon, text, color }: ModifyButtonProps) => {
           fontWeight="semibold"
           color={color}
           spacing={1}
+          onClick={() => onClick()}
         >
           <Icon as={icon} fontSize="18px" />
           <Text fontSize="14px">{text}</Text>

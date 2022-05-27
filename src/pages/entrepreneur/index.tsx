@@ -7,12 +7,17 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { api } from '../../service/api';
 import { getSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
 
 type EnterpreneurProps = {
+  token: string;
   businesses: {
     id: string;
     name: string;
@@ -29,9 +34,29 @@ type EnterpreneurProps = {
   }[];
 };
 
-const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
+const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
   const { setId, setName, setImageUrl } = useEstablishmentForm();
+  const [establishmentsState, setEstablishmentsState] = useState([
+    {
+      id: '',
+      name: '',
+      description: '',
+      createdAt: '',
+      imageUrl: '',
+      latitude: '',
+      longitude: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
+    },
+  ]);
+
+  useEffect(() => {
+    setEstablishmentsState(businesses);
+  }, []);
 
   const clickCard = (id: string, name: string, imageUrl: string) => {
     setId(id);
@@ -40,8 +65,41 @@ const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
     router.push(`/establishment/${id}`);
   };
 
+  const removeEstablishmentApi = async (businessId: string, token: string) => {
+    try {
+      const response = await api.delete(`business/delete/${businessId}`, {
+        headers: {
+          'content-type': 'application/json',
+          token,
+        },
+      });
+      setEstablishmentsState(
+        establishmentsState.filter((business) => {
+          return business.id !== businessId;
+        }),
+      );
+      toast.success('Estabelecimento apagado com sucesso!');
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  const removeEstablishment = (businessId: string, token: string) => {
+    Swal.fire({
+      title: 'Tem certeza que deseja excluir o estabelecimento?',
+      showDenyButton: true,
+      confirmButtonText: 'Não',
+      denyButtonText: `Sim`,
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        removeEstablishmentApi(businessId, token);
+      }
+    });
+  };
+
   return (
     <>
+      <ToastContainer />
       <Flex width="100%" bg="primary" direction="column" minH="100vh">
         <DefaultHeader />
         <Stack
@@ -92,8 +150,8 @@ const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
               Seus estabelecimentos cadastrados
             </Text>
             <Stack spacing={4}>
-              {businesses.length > 0 ? (
-                businesses.map((establishment, key) => (
+              {establishmentsState.length > 0 ? (
+                establishmentsState.map((establishment, key) => (
                   <DefaultCard
                     key={key}
                     name={establishment.name}
@@ -105,6 +163,9 @@ const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
                         establishment.imageUrl,
                       );
                     }}
+                    removeItem={() =>
+                      removeEstablishment(establishment.id, token)
+                    }
                   />
                 ))
               ) : (
@@ -122,15 +183,22 @@ const Enterpreneur = ({ businesses }: EnterpreneurProps) => {
   );
 };
 
-const getBusinessList = async (id: string) => {
+const getBusinessList = async (token: string) => {
+  const { sub: id } = jwt_decode(token) as {
+    sub: string;
+  };
   const response = await api.get(`business/list/${id}`, {});
   return response.data;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
+  const token = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  if (!session) {
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
@@ -139,10 +207,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const businesses = await getBusinessList(session.id as string);
+  const businesses = await getBusinessList(token);
 
   return {
-    props: { businesses },
+    props: { businesses, token },
   };
 };
 
