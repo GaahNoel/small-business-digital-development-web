@@ -1,12 +1,10 @@
 import { Button, ButtonGroup, Flex, Stack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FooterMenu } from '../../components/shared/footer-menu';
-import { SwitchButton } from '../../components/shared/switch-button';
 import { ConsumerItems } from '../../components/shop/consumer-items';
 import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
 import { ShopHeader } from '../../components/shop/shop-header';
 import { GetServerSideProps } from 'next';
-import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
 
 const Shop = () => {

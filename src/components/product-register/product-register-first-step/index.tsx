@@ -3,7 +3,7 @@ import { ItemRegisterForm } from '../../item-register/item-register-form';
 import { HeaderHalfCircleTop } from '../../shared/header-half-circle-top';
 
 type ProductRegisterFirstStepProps = {
-  categories: string[];
+  categories: { id: string; name: string }[];
 };
 
 export const ProductRegisterFirstStep = ({

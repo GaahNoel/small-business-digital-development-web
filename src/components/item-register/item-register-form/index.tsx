@@ -6,7 +6,7 @@ import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
 type ItemRegisterFormProps = {
-  categories: string[];
+  categories: { id: string; name: string }[];
 };
 
 type RegisterItemFormData = {

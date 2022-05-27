@@ -49,8 +49,12 @@ type EstablishmentFormData = {
   estado: string;
 };
 
+type PositionProps = {
+  getLngLat: () => { lng: number; lat: number };
+};
+
 export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
-  const [position, setPosition] = useState({});
+  const [position, setPosition] = useState<PositionProps>();
   const router = useRouter();
   const methods = useForm<EstablishmentFormData>();
   const {
@@ -89,7 +93,7 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
       sub: string;
     };
     const imageUrlReturned = await postImageBB();
-    const { lat, lng } = position.getLngLat();
+    const { lat, lng } = position!.getLngLat();
 
     try {
       const response = await api.post(
@@ -165,12 +169,15 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
               <DefaultMapInput setPosition={setPosition} />
             </Flex>
           </Stack>
-          <Box width="70vw" margin="30px auto">
+          <Box
+            width="70vw"
+            margin="30px auto"
+            sx={{ '.filepond--credits': { display: 'none' } }}
+          >
             <FilePond
               files={files}
               onupdatefiles={setFiles}
               instantUpload={false}
-              credits={false}
               allowMultiple={false}
               name="files"
               labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '

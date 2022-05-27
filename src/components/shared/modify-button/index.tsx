@@ -5,7 +5,7 @@ type ModifyButtonProps = {
   icon: IconType;
   text: string;
   color: string;
-  onClick?: () => void;
+  onClick: () => void;
 };
 
 export const ModifyButton = ({

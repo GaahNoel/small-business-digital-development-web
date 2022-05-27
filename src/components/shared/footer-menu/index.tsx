@@ -32,6 +32,7 @@ export const FooterMenu = () => {
         />
         <IconButton
           as={FaPlus}
+          aria-label="16px"
           bg="primary"
           _hover={{ bg: 'primary_hover' }}
           color="default_white"

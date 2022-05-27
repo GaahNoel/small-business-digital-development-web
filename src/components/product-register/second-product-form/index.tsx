@@ -177,12 +177,15 @@ export const SecondProductForm = () => {
               register={register}
             />
           </Stack>
-          <Box width="70vw" margin="30px auto">
+          <Box
+            width="70vw"
+            margin="30px auto"
+            sx={{ '.filepond--credits': { display: 'none' } }}
+          >
             <FilePond
               files={files}
               onupdatefiles={setFiles}
               instantUpload={false}
-              credits={false}
               allowMultiple={false}
               name="files"
               allowImageValidateSize={true}

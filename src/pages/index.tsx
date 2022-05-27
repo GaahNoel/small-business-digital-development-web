@@ -35,6 +35,7 @@ const Home: NextPage = () => (
       >
         <IconButton
           as={FiSearch}
+          aria-label="16px"
           color="primary"
           size="sm"
           bg="default_white"

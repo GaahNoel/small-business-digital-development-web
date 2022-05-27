@@ -13,8 +13,7 @@ export const DefaultMapInput = ({ setPosition }: DefaultMapInputProps) => {
   useEffect(() => {
     const location = navigator.geolocation.getCurrentPosition(
       (geolocaltion) => {
-        mapboxgl.accessToken =
-          'pk.eyJ1Ijoibmd1c3Rhdm8wMTEiLCJhIjoiY2wyMThtajRkMDIxZTNicDdiYnFjZzcxdCJ9.O4Gdd60lrmuXPt1PG894Dw';
+        mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
         const map = new mapboxgl.Map({
           container: 'map', // container ID
           style: 'mapbox://styles/mapbox/streets-v11', // style URL
@@ -35,14 +34,12 @@ export const DefaultMapInput = ({ setPosition }: DefaultMapInputProps) => {
         const geocoder = new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
           marker: false,
-          mapboxgl: mapboxgl,
+          mapboxgl: mapboxgl as any,
         });
         map.addControl(geocoder);
-        marker.on('dragend', function (e) {
-          const lngLat = e.target.getLngLat();
-          // console.log(lngLat['lat']);
-          // console.log(lngLat['lng']);
-        });
+        // marker.on('dragend', function (e: any) {
+        //   const lngLat = e.target.getLngLat();
+        // });
         geocoder.on('result', (e) => {
           marker.setLngLat(e.result.center);
         });

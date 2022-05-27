@@ -40,8 +40,9 @@ export const FormInput = ({
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
-            children={<Icon as={icon} color="gray.500" fontSize="1rem" />}
-          />
+          >
+            <Icon as={icon} color="gray.500" fontSize="1rem" />
+          </InputLeftElement>
           <Input
             {...register(id)}
             id={id}

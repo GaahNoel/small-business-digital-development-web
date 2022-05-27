@@ -4,17 +4,20 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import * as jwt from 'jsonwebtoken';
 import { api } from '../../../service/api';
+import { JWT } from 'next-auth/jwt';
 
 export default NextAuth({
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
     encode: async ({ secret, token }) => {
-      return jwt.sign({ ...token, userId: token.id }, secret, {
+      return jwt.sign({ ...token, userId: token?.id }, secret, {
         algorithm: 'HS256',
       });
     },
     decode: async ({ secret, token }) => {
-      return jwt.verify(token, secret, { algorithms: ['HS256'] });
+      return jwt.verify(token as string, secret, {
+        algorithms: ['HS256'],
+      }) as JWT;
     },
   },
   session: {

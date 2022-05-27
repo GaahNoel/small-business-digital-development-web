@@ -4,12 +4,11 @@ type ItemFormSelectProps = {
   id: string;
   disabled: boolean;
   text: string;
-  options?: [
-    {
-      id: string;
-      name: string;
-    },
-  ];
+  options?:
+    | {
+        id: string;
+        name: string;
+      }[];
   register?: any;
 };
 

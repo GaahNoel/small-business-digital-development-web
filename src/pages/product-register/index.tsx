@@ -8,7 +8,7 @@ import { useProductForm } from '../../hooks/product-form';
 import { api } from '../../service/api';
 
 type ProductRegisterProps = {
-  categories: string[];
+  categories: { id: string; name: string }[];
   session: string;
 };
 
@@ -39,8 +39,8 @@ const ProductRegister = ({ categories, session }: ProductRegisterProps) => {
 const getCategories = async () => {
   const response = await api.get('category/list', {});
   console.log(response.data);
-  const categories = response.data.map((category: CategoryProps) => {
-    return category.name;
+  const categories = response.data.map((category: CategoryProps, key: any) => {
+    return { id: key, name: category.name };
   });
   return response.data;
 };

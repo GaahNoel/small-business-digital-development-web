@@ -7,7 +7,7 @@ type DefaultCardProps = {
   name: string;
   img: string;
   detailClick: () => void;
-  removeItem?: () => void;
+  removeItem: () => void;
 };
 
 export const DefaultCard = ({
@@ -33,7 +33,12 @@ export const DefaultCard = ({
             {name}
           </Text>
           <Flex justify="space-around" w="180px">
-            <ModifyButton icon={FiTool} text="Editar" color="primary" />
+            <ModifyButton
+              icon={FiTool}
+              text="Editar"
+              color="primary"
+              onClick={() => console.log('oi')}
+            />
             <ModifyButton
               icon={RiDeleteBinLine}
               text="Remover"
@@ -45,6 +50,7 @@ export const DefaultCard = ({
         <IconButton
           as={FiChevronRight}
           bg="card_white"
+          aria-label="16px"
           _hover={{ bg: 'card_white_hover' }}
           cursor="pointer"
           onClick={() => {

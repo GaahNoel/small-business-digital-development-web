@@ -2,7 +2,7 @@ import { IconButton } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 
 type IconMenuProps = {
-  handleClick: () => {};
+  handleClick: () => void;
   icon: IconType;
 };
 
@@ -11,6 +11,7 @@ export const IconMenu = ({ icon, handleClick }: IconMenuProps) => {
     <>
       <IconButton
         as={icon}
+        aria-label="16px"
         size="xs"
         color="primary"
         _hover={{ color: 'primary_hover' }}
