@@ -16,6 +16,7 @@ const nextConfig = withImages(
       API_URL: process.env.API_URL,
       MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
       NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+      API_BASE_URL: process.env.API_BASE_URL,
     },
     images: {
       disableStaticImages: true,
