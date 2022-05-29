@@ -7,6 +7,7 @@ type DefaultCardProps = {
   name: string;
   img: string;
   detailClick: () => void;
+  editItem?: () => void;
   removeItem: () => void;
 };
 
@@ -14,6 +15,7 @@ export const DefaultCard = ({
   img,
   name,
   detailClick,
+  editItem,
   removeItem,
 }: DefaultCardProps) => {
   return (
@@ -37,7 +39,7 @@ export const DefaultCard = ({
               icon={FiTool}
               text="Editar"
               color="primary"
-              onClick={() => console.log('oi')}
+              onClick={() => editItem()}
             />
             <ModifyButton
               icon={RiDeleteBinLine}

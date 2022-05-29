@@ -56,7 +56,8 @@ export const EstablishmentModal = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
-          maxW="90vw"
+          width="90vw"
+          maxWidth="700px"
           display="flex"
           alignItems="center"
           justifyContent="center"

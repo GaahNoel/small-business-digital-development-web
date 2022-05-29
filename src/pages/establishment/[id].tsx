@@ -26,6 +26,7 @@ import { EstablishmentModal } from '../../components/establishment/establishment
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { EstablishmentEditModal } from '../../components/establishment/establishment-edit-modal';
 
 type ParamsProps = {
   id: string;
@@ -51,6 +52,7 @@ type ProductsProps = {
 };
 
 type ProductModalProps = {
+  id: string;
   name: string;
   description: string;
   listPrice: number;
@@ -64,8 +66,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
   const router = useRouter();
   const { id, name, imageUrl } = useEstablishmentForm();
   const { form, setStage } = useProductForm();
-  const { setEstablishmentId, setEstablishmentName } = form;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { setEstablishmentId, setEstablishmentName, setToken } = form;
+  const { isOpen: viewProductIsOpen, onOpen: viewProductOnOpen, onClose: viewProductOnClose } = useDisclosure();
+  const { isOpen: editProductIsOpen, onOpen: editProductOnOpen, onClose: editProductOnClose } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
   const [productsState, setProductsState] = useState([
     {
@@ -87,6 +90,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
 
   useEffect(() => {
     setProductsState(products);
+    setToken(token);
   }, []);
 
   const clickNewProduct = (id: string, name: string) => {
@@ -97,6 +101,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
   };
 
   const openModal = ({
+    id,
     name,
     description,
     listPrice,
@@ -106,6 +111,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
     categoryName,
   }: ProductModalProps) => {
     setProductModal({
+      id,
       name,
       description,
       listPrice,
@@ -114,8 +120,31 @@ const Establishment = ({ token, products }: ProductsProps) => {
       imageUrl,
       categoryName,
     });
-    onOpen();
+    viewProductOnOpen();
   };
+
+  const editProduct = ({
+    id,
+    name,
+    description,
+    listPrice,
+    salePrice,
+    type,
+    imageUrl,
+    categoryName,
+  }: ProductModalProps) =>{
+    setProductModal({
+      id,
+      name,
+      description,
+      listPrice,
+      salePrice,
+      type,
+      imageUrl,
+      categoryName,
+    });
+    editProductOnOpen();
+  }
 
   const removeProductApi = async (productId: string, token: string) => {
     try {
@@ -203,6 +232,8 @@ const Establishment = ({ token, products }: ProductsProps) => {
               </Stack>
             </Button>
           </Flex>
+          <EstablishmentEditModal id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
+            onClose={editProductOnClose}/>
           <EstablishmentModal
             name={productModal?.name as string}
             description={productModal?.description as string}
@@ -215,8 +246,8 @@ const Establishment = ({ token, products }: ProductsProps) => {
             netPrice={productModal?.salePrice as number}
             imageUrl={productModal?.imageUrl as string}
             categoryName={productModal?.categoryName as string}
-            isOpen={isOpen}
-            onClose={onClose}
+            isOpen={viewProductIsOpen}
+            onClose={viewProductOnClose}
           />
           <Flex
             direction="column"
@@ -235,6 +266,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
                     img={product.imageUrl}
                     detailClick={() => {
                       openModal({
+                        id: product.id,
                         name: product.name,
                         description: product.description,
                         listPrice: product.listPrice,
@@ -244,6 +276,16 @@ const Establishment = ({ token, products }: ProductsProps) => {
                         imageUrl: product.imageUrl,
                       });
                     }}
+                    editItem={()=> editProduct({
+                      id: product.id,
+                      name: product.name,
+                      description: product.description,
+                      listPrice: product.listPrice,
+                      salePrice: product.salePrice,
+                      type: product.type,
+                      categoryName: product.category.name,
+                      imageUrl: product.imageUrl,
+                    })}
                     removeItem={() => removeProduct(product.id, token)}
                     key={key}
                   />
@@ -265,6 +307,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
 
 const getProductList = async (id: string) => {
   const response = await api.get(`product/list/${id}`);
+  console.log(response);
   return response.data;
 };
 

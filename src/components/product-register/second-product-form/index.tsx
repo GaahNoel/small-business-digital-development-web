@@ -33,6 +33,7 @@ import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import { runIfFn } from '@chakra-ui/utils';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -40,26 +41,32 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 // Register the plugin
 registerPlugin(FilePondPluginImageValidateSize);
 
+type ProductSecondFormProps = {
+  id?: string;
+  name: string;
+  price: string;
+  description: string;
+  imageUrl?: string;
+  registerForm: boolean;
+  clickBackButton: () => void;
+};
+
 type ProductSecondFormData = {
   name: string;
   price: string;
   description: string;
-};
+}
 
-export const SecondProductForm = () => {
+export const SecondProductForm = (props: ProductSecondFormProps) => {
   const { setStage, form } = useProductForm();
   const {
     establishmentId,
     token,
     type,
     category,
-    name,
     setName,
-    price,
     setPrice,
-    description,
     setDescription,
-    imageUrl,
     setImageUrl,
   } = form;
   const methods = useForm<ProductSecondFormData>();
@@ -68,15 +75,17 @@ export const SecondProductForm = () => {
     formState: { errors },
     setError,
     register,
+    setValue,
   } = methods;
+
+  useEffect(()=>{
+    Object.keys(props).forEach((value) => {
+      setValue(value, props[value]);
+    })
+  },[])
+
   const [files, setFiles] = useState<any>([]);
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(token);
-    console.log(type);
-    console.log(category);
-  }, []);
 
   const postImageBB = async () => {
     const formData = new FormData();
@@ -98,17 +107,16 @@ export const SecondProductForm = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<ProductSecondFormData> = async ({
+  const registerProduct = async({
     name,
     price,
     description,
-  }) => {
+  }: ProductSecondFormData) =>{
     const imageUrlReturned = await postImageBB();
     setName(name);
     setPrice(price);
     setDescription(description);
     setImageUrl(imageUrlReturned);
-    console.log(name);
     try {
       const response = await api.post(
         'product/create',
@@ -134,6 +142,62 @@ export const SecondProductForm = () => {
     } catch (e: any) {
       console.log(e);
     }
+  }
+  
+  const editProduct = async({
+    name,
+    price,
+    description,
+  }: ProductSecondFormData) =>{
+    let imageUrlReturned;
+    if(files[0]){
+      console.log("Encontrou arquivo")
+      imageUrlReturned = await postImageBB();
+      setImageUrl(imageUrlReturned);
+    } else{
+      console.log("Não encontrou arquivo")
+      imageUrlReturned = props.imageUrl;
+    }
+
+    setName(name);
+    setPrice(price);
+    setDescription(description);
+    
+    try {
+      const response = await api.put(
+        `product/edit/${props.id}`,
+        {
+          name,
+          description,
+          listPrice: parseFloat(price),
+          salePrice: parseFloat(price),
+          imageUrl: imageUrlReturned,
+          productId: props.id,
+        },
+        {
+          headers: {
+            'content-type': 'application/json',
+            token,
+          },
+        },
+      );
+
+      router.push('/entrepreneur');
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
+
+  const onSubmit: SubmitHandler<ProductSecondFormData> = async ({
+    name,
+    price,
+    description,
+  }) => {
+    if(props.registerForm){
+      registerProduct({name, price, description});
+    }else{
+      editProduct({name, price, description});
+    }
   };
 
   return (
@@ -141,13 +205,6 @@ export const SecondProductForm = () => {
       <FormProvider {...methods}>
         <FormControl
           as="form"
-          width="100%"
-          height="100%"
-          flex="1"
-          margin="0px auto"
-          bg="secondary"
-          padding="30px 0px"
-          borderTopLeftRadius="65px"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack
@@ -178,7 +235,8 @@ export const SecondProductForm = () => {
             />
           </Stack>
           <Box
-            width="70vw"
+            width="100%"
+            maxWidth="70vw"
             margin="30px auto"
             sx={{ '.filepond--credits': { display: 'none' } }}
           >
@@ -202,7 +260,7 @@ export const SecondProductForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
-              onClick={() => setStage('first')}
+              onClick={() => props.clickBackButton()}
             />
             <DefaultButton
               bg="primary"
