@@ -31,6 +31,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { imgbbApi } from '../../../service/imgbb-api';
 import { api } from '../../../service/api';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -92,7 +93,13 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
     const { sub: userId } = jwt_decode(session) as {
       sub: string;
     };
-    const imageUrlReturned = await postImageBB();
+    let imageUrlReturned;
+    if(files[0]){
+      imageUrlReturned = await postImageBB();
+    }
+    else{
+      imageUrlReturned = 'https://i.ibb.co/RQ6vLP1/Group-1.png';
+    }
     const { lat, lng } = position!.getLngLat();
 
     try {
@@ -118,6 +125,7 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
           },
         },
       );
+      toast.success('Estabelecimento cadastrado com sucesso!');
       router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);

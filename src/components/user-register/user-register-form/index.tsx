@@ -5,7 +5,8 @@ import { FiUser } from 'react-icons/fi';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 type RegisterFormData = {
   name: string;
@@ -16,6 +17,7 @@ type RegisterFormData = {
 
 export const UserRegisterForm = () => {
   const methods = useForm<RegisterFormData>();
+  const router = useRouter();
   const {
     handleSubmit,
     formState: { errors },
@@ -39,6 +41,7 @@ export const UserRegisterForm = () => {
         password,
         provider: 'credentials',
       });
+      toast.success('E-mail de validação enviado!');
     } catch (e: any) {
       console.log(e);
     }
@@ -89,6 +92,7 @@ export const UserRegisterForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              onClick={()=>router.push("/login")}
             />
             <DefaultButton
               bg="primary"

@@ -34,6 +34,7 @@ import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { runIfFn } from '@chakra-ui/utils';
+import { toast } from 'react-toastify';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -112,7 +113,13 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     price,
     description,
   }: ProductSecondFormData) =>{
-    const imageUrlReturned = await postImageBB();
+    let imageUrlReturned;
+    if(files[0]){
+      imageUrlReturned = await postImageBB();
+      setImageUrl(imageUrlReturned);
+    } else {
+      imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
+    }
     setName(name);
     setPrice(price);
     setDescription(description);
@@ -137,7 +144,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
-
+      toast.success('Produto cadastrado com sucesso!');
       router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);
@@ -181,7 +188,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
-
+      toast.success('Produto alterado com sucesso!');
       router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);

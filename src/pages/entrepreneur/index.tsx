@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
@@ -99,7 +99,6 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 
   return (
     <>
-      <ToastContainer />
       <Flex width="100%" bg="primary" direction="column" minH="100vh">
         <DefaultHeader />
         <Stack

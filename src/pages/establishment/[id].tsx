@@ -24,8 +24,7 @@ import { NoItemsText } from '../../components/shared/no-items-text';
 import { useProductForm } from '../../hooks/product-form';
 import { EstablishmentModal } from '../../components/establishment/establishment-modal';
 import Swal from 'sweetalert2';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { EstablishmentEditModal } from '../../components/establishment/establishment-edit-modal';
 
 type ParamsProps = {
@@ -180,7 +179,6 @@ const Establishment = ({ token, products }: ProductsProps) => {
 
   return (
     <>
-      <ToastContainer />
       <Flex width="100%" minH="100vh" bg="primary" direction="column">
         <DefaultHeader />
         <Stack

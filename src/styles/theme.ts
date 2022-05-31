@@ -15,6 +15,7 @@ export const default_orange = '#FE7040';
 export const service_blue = '#4FAAFF';
 export const default_yellow = '#F2B705';
 export const default_gray = '#808080';
+export const error_red = '#FA0D0D';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -49,6 +50,8 @@ export const Theme = extendTheme({
       default_yellow_hover: darken(0.2, default_yellow),
       default_gray,
       default_gray_hover: darken(0.2, default_gray),
+      error_red,
+      error_red_hover: darken(0.2, error_red)
     },
   },
 });
