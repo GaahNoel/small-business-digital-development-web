@@ -15,7 +15,7 @@ import { DefaultButton } from '../../shared/default-button';
 import { DefaultTextArea } from '../../shared/default-text-area';
 import { DefaultMapInput } from '../../shared/default-map-input';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 
 // Import React FilePond
@@ -38,23 +38,26 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 type EstablishmentFormProps = {
   session: string;
+  id?: string;
+  nome: string;
+  descricao: string;
+  lat: string;
+  lng: string;
+  imageUrl: string;
+  registerForm: boolean;
+  clickBackButton: () => void;
 };
 
 type EstablishmentFormData = {
   nome: string;
   descricao: string;
-  rua: string;
-  bairro: string;
-  cep: string;
-  cidade: string;
-  estado: string;
 };
 
 type PositionProps = {
   getLngLat: () => { lng: number; lat: number };
 };
 
-export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
+export const EstablishmentForm = (props: EstablishmentFormProps) => {
   const [position, setPosition] = useState<PositionProps>();
   const router = useRouter();
   const methods = useForm<EstablishmentFormData>();
@@ -63,8 +66,15 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
     formState: { errors },
     setError,
     register,
+    setValue,
   } = methods;
   const [files, setFiles] = useState<any>([]);
+
+  useEffect(()=>{
+    Object.keys(props).forEach((value) => {
+      setValue(value, props[value]);
+    })
+  },[]);
 
   const postImageBB = async () => {
     const formData = new FormData();
@@ -86,11 +96,8 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
     }
   };
 
-  const onSubmit: SubmitHandler<EstablishmentFormData> = async ({
-    nome,
-    descricao,
-  }) => {
-    const { sub: userId } = jwt_decode(session) as {
+  const registerEstablishment = async({nome, descricao}: EstablishmentFormData) =>{
+    const { sub: userId } = jwt_decode(props.session) as {
       sub: string;
     };
     let imageUrlReturned;
@@ -121,7 +128,7 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
         {
           headers: {
             'content-type': 'application/json',
-            token: session,
+            token: props.session,
           },
         },
       );
@@ -130,6 +137,60 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
     } catch (e: any) {
       console.log(e);
     }
+  }
+
+  const editEstablishment = async({nome, descricao}: EstablishmentFormData) =>{
+    const { sub: userId } = jwt_decode(props.session) as {
+      sub: string;
+    };
+    let imageUrlReturned;
+    if(files[0]){
+      imageUrlReturned = await postImageBB();
+    }
+    else{
+      imageUrlReturned = props.imageUrl;
+    }
+    const { lat, lng } = position!.getLngLat();
+
+    try {
+      const response = await api.put(
+        `business/edit/${props.id}`,
+        {
+          name: nome,
+          description: descricao,
+          imageUrl: imageUrlReturned,
+          accountId: userId,
+          city: 'string',
+          country: 'string',
+          latitude: lat.toString(),
+          longitude: lng.toString(),
+          state: 'string',
+          street: 'string',
+          zip: 'string',
+        },
+        {
+          headers: {
+            'content-type': 'application/json',
+            token: props.session,
+          },
+        },
+      );
+      toast.success('Estabelecimento alterado com sucesso!');
+      props.clickBackButton();
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
+
+  const onSubmit: SubmitHandler<EstablishmentFormData> = async ({
+    nome,
+    descricao,
+  }) => {
+    if(props.registerForm){
+      registerEstablishment({nome, descricao});
+    }else{
+      editEstablishment({nome, descricao});
+    }
   };
 
   return (
@@ -137,12 +198,6 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
       <FormProvider {...methods}>
         <FormControl
           as="form"
-          width="100%"
-          flex="1"
-          margin="0px auto"
-          bg="secondary"
-          padding="30px 0px"
-          borderTopRightRadius="65px"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack
@@ -178,7 +233,8 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
             </Flex>
           </Stack>
           <Box
-            width="70vw"
+            width="100%"
+            maxWidth="70vw"
             margin="30px auto"
             sx={{ '.filepond--credits': { display: 'none' } }}
           >
@@ -198,7 +254,7 @@ export const EstablishmentForm = ({ session }: EstablishmentFormProps) => {
               color="default_white"
               text="Cancelar"
               onClick={() => {
-                router.push('/entrepreneur');
+                props.clickBackButton();
               }}
             />
             <DefaultButton

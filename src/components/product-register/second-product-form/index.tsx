@@ -35,6 +35,7 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { runIfFn } from '@chakra-ui/utils';
 import { toast } from 'react-toastify';
+import { stringify } from 'querystring';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -50,12 +51,19 @@ type ProductSecondFormProps = {
   imageUrl?: string;
   registerForm: boolean;
   clickBackButton: () => void;
+  updateState?: (id: string, productFound: ProductCardProps) => void;
 };
 
 type ProductSecondFormData = {
   name: string;
   price: string;
   description: string;
+}
+
+type ProductCardProps = {
+  id: string;
+  name: string;
+  imageUrl: string;
 }
 
 export const SecondProductForm = (props: ProductSecondFormProps) => {
@@ -83,7 +91,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     Object.keys(props).forEach((value) => {
       setValue(value, props[value]);
     })
-  },[])
+  },[]);
 
   const [files, setFiles] = useState<any>([]);
   const router = useRouter();
@@ -188,8 +196,18 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
+      if(props.updateState)
+        props.updateState(
+          props?.id as string, 
+          {
+            id: props?.id as string,
+            name: name,
+            imageUrl: imageUrlReturned 
+          }
+        );
       toast.success('Produto alterado com sucesso!');
-      router.push('/entrepreneur');
+      props.clickBackButton();
+      //router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);
     }

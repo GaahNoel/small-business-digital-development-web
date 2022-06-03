@@ -10,7 +10,7 @@ import {
   import { DefaultButton } from '../../shared/default-button';
 import { SecondProductForm } from '../../product-register/second-product-form';
   
-  type EstablishmentEditModalProps = {
+  type ProductEditModalProps = {
     id: string;
     name: string;
     description: string;
@@ -18,9 +18,16 @@ import { SecondProductForm } from '../../product-register/second-product-form';
     imageUrl: string;
     isOpen: boolean;
     onClose: () => void;
+    updateState: (id: string, productFound: ProductCardProps) => void;
   };
+
+  type ProductCardProps = {
+    id: string;
+    name: string;
+    imageUrl: string;
+  }
   
-  export const EstablishmentEditModal = ({
+  export const ProductEditModal = ({
     id,
     name,
     description,
@@ -28,7 +35,8 @@ import { SecondProductForm } from '../../product-register/second-product-form';
     imageUrl,
     isOpen,
     onClose,
-  }: EstablishmentEditModalProps) => {
+    updateState,
+  }: ProductEditModalProps) => {
 
     return (
       <>
@@ -61,7 +69,7 @@ import { SecondProductForm } from '../../product-register/second-product-form';
               width="90vw"
               maxWidth="500px"
             >
-              <SecondProductForm id={id} name={name} description={description} price={String(price)} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose}/>
+              <SecondProductForm id={id} name={name} description={description} price={String(price)} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose} updateState={updateState}/>
             </ModalBody>
             <ModalFooter>
             </ModalFooter>

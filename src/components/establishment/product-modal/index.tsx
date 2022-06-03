@@ -23,7 +23,7 @@ import {
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
 import { ModalInfo } from '../modal-info';
 
-type EstablishmentModalProps = {
+type ProductModalProps = {
   name: string;
   type: string;
   description: string;
@@ -35,7 +35,7 @@ type EstablishmentModalProps = {
   onClose: () => void;
 };
 
-export const EstablishmentModal = ({
+export const ProductModal = ({
   name,
   type,
   description,
@@ -45,7 +45,7 @@ export const EstablishmentModal = ({
   isOpen,
   categoryName,
   onClose,
-}: EstablishmentModalProps) => {
+}: ProductModalProps) => {
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',

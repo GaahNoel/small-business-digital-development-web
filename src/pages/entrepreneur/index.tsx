@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Icon, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { FaPlus } from 'react-icons/fa';
@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
+import { EstablishmentEditModal } from '../../components/entrepreneur/establishment-edit-modal';
 
 type EnterpreneurProps = {
   token: string;
@@ -34,9 +35,21 @@ type EnterpreneurProps = {
   }[];
 };
 
+type EstablishmentModalProps = {
+  session: string;
+  id: string;
+  name: string;
+  description: string;
+  lat: string;
+  lng: string;
+  imageUrl: string;
+}
+
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
   const { setId, setName, setImageUrl } = useEstablishmentForm();
+  const { isOpen: editEstablishmentIsOpen, onOpen: editEstablishmentOnOpen, onClose: editEstablishmentOnClose } = useDisclosure();
+  const [establishmentModal, setEstablishmentModal] = useState<EstablishmentModalProps>();
   const [establishmentsState, setEstablishmentsState] = useState([
     {
       id: '',
@@ -64,6 +77,27 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     setImageUrl(imageUrl);
     router.push(`/establishment/${id}`);
   };
+
+  const editEstablishment = ({
+    session,
+    id,
+    name,
+    description,
+    lat,
+    lng,
+    imageUrl
+  }: EstablishmentModalProps) =>{
+    setEstablishmentModal({
+      session,
+      id,
+      name,
+      description,
+      lat,
+      lng,
+      imageUrl,
+    });
+    editEstablishmentOnOpen();
+  }
 
   const removeEstablishmentApi = async (businessId: string, token: string) => {
     try {
@@ -99,6 +133,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 
   return (
     <>
+      <EstablishmentEditModal session={establishmentModal?.session as string} id={establishmentModal?.id as string} name={establishmentModal?.name as string}  description={establishmentModal?.description as string} lat={establishmentModal?.lat as string} lng={establishmentModal?.lng as string} imageUrl={establishmentModal?.imageUrl as string} isOpen={editEstablishmentIsOpen}
+            onClose={editEstablishmentOnClose}/>
       <Flex width="100%" bg="primary" direction="column" minH="100vh">
         <DefaultHeader />
         <Stack
@@ -162,6 +198,15 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                         establishment.imageUrl,
                       );
                     }}
+                    editItem={()=> editEstablishment({
+                      session: token,
+                      id: establishment.id,
+                      name: establishment.name,
+                      description: establishment.description,
+                      lat: establishment.latitude,
+                      lng: establishment.longitude,
+                      imageUrl: establishment.imageUrl,
+                    })}
                     removeItem={() =>
                       removeEstablishment(establishment.id, token)
                     }

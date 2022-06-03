@@ -15,40 +15,49 @@ import { FaPlus } from 'react-icons/fa';
 import { DefaultCard } from '../../components/shared/default-card';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { getSession } from 'next-auth/react';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { api } from '../../service/api';
 import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { useProductForm } from '../../hooks/product-form';
-import { EstablishmentModal } from '../../components/establishment/establishment-modal';
+import { ProductModal } from '../../components/establishment/product-modal';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
-import { EstablishmentEditModal } from '../../components/establishment/establishment-edit-modal';
+import { ProductEditModal } from '../../components/establishment/product-edit-modal';
 
 type ParamsProps = {
   id: string;
 };
 
-type ProductsProps = {
-  token: string;
-  products: {
+type ProductProps = {
+  id: string;
+  name: string;
+  listPrice: number;
+  salePrice: number;
+  description: string;
+  createdAt: string;
+  businessId: string;
+  imageUrl: string;
+  type: string;
+  category: {
     id: string;
     name: string;
-    listPrice: number;
-    salePrice: number;
-    description: string;
-    createdAt: string;
-    businessId: string;
-    imageUrl: string;
-    type: string;
-    category: {
-      id: string;
-      name: string;
-    };
-  }[];
+  }
+}
+
+type ProductsProps = {
+  token: string;
+  products: ProductProps[];
 };
+
+type ProductsStateProps = ProductProps[];
+
+type ProductCardProps = {
+  id: string;
+  name: string;
+  imageUrl: string;
+}
 
 type ProductModalProps = {
   id: string;
@@ -69,7 +78,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
   const { isOpen: viewProductIsOpen, onOpen: viewProductOnOpen, onClose: viewProductOnClose } = useDisclosure();
   const { isOpen: editProductIsOpen, onOpen: editProductOnOpen, onClose: editProductOnClose } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
-  const [productsState, setProductsState] = useState([
+  const [productsState, setProductsState] = useState<ProductsStateProps>([
     {
       id: '',
       name: '',
@@ -177,6 +186,18 @@ const Establishment = ({ token, products }: ProductsProps) => {
     });
   };
 
+  const updateProductState = (id: string, productFound: ProductCardProps) => {
+    const index = productsState.findIndex((product)=>{
+      if(product.id === id) 
+        return true;
+    })
+    productsState[index] = {
+      ...productsState[index], ...productFound
+    }
+    const newProductState: ProductsStateProps = productsState;
+    setProductsState(newProductState);
+  }
+
   return (
     <>
       <Flex width="100%" minH="100vh" bg="primary" direction="column">
@@ -230,9 +251,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
               </Stack>
             </Button>
           </Flex>
-          <EstablishmentEditModal id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
-            onClose={editProductOnClose}/>
-          <EstablishmentModal
+          <ProductEditModal id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
+            onClose={editProductOnClose} updateState={updateProductState}/>
+          <ProductModal
             name={productModal?.name as string}
             description={productModal?.description as string}
             type={
