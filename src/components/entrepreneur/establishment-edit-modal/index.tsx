@@ -9,6 +9,11 @@ import {
   } from '@chakra-ui/react';
   import { EstablishmentForm } from '../../establishment-register/establishment-form';
 
+  type EstablishmentCardProps = {
+    id: string;
+    name: string;
+    imageUrl: string;
+  }
   
   type EstablishmentEditModalProps = {
     session: string;
@@ -20,6 +25,7 @@ import {
     imageUrl: string;
     isOpen: boolean;
     onClose: () => void;
+    updateState: (id: string, establishmentFound: EstablishmentCardProps) => void;
   };
   
   export const EstablishmentEditModal = ({
@@ -32,6 +38,7 @@ import {
     imageUrl,
     isOpen,
     onClose,
+    updateState,
   }: EstablishmentEditModalProps) => {
 
     return (
@@ -65,7 +72,7 @@ import {
               width="90vw"
               maxWidth="500px"
             >
-                <EstablishmentForm session={session} id={id} nome={name} descricao={description} lat={lat} lng={lng} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose} />
+                <EstablishmentForm session={session} id={id} nome={name} descricao={description} lat={lat} lng={lng} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose} updateState={updateState} />
               </ModalBody>
             <ModalFooter>
             </ModalFooter>

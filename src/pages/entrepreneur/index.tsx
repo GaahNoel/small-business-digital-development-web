@@ -17,23 +17,33 @@ import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import { EstablishmentEditModal } from '../../components/entrepreneur/establishment-edit-modal';
 
+type EstablishmentProps = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+}
+
+type EstablishmentsProps = EstablishmentProps[];
+
 type EnterpreneurProps = {
   token: string;
-  businesses: {
-    id: string;
-    name: string;
-    description: string;
-    createdAt: string;
-    imageUrl: string;
-    latitude: string;
-    longitude: string;
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-    country: string;
-  }[];
+  businesses: EstablishmentProps[];
 };
+
+type EstablishmentCardProps = {
+  id: string;
+  name: string;
+  imageUrl: string;
+}
 
 type EstablishmentModalProps = {
   session: string;
@@ -50,7 +60,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const { setId, setName, setImageUrl } = useEstablishmentForm();
   const { isOpen: editEstablishmentIsOpen, onOpen: editEstablishmentOnOpen, onClose: editEstablishmentOnClose } = useDisclosure();
   const [establishmentModal, setEstablishmentModal] = useState<EstablishmentModalProps>();
-  const [establishmentsState, setEstablishmentsState] = useState([
+  const [establishmentsState, setEstablishmentsState] = useState<EstablishmentsProps>([
     {
       id: '',
       name: '',
@@ -131,10 +141,22 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     });
   };
 
+  const updateEstablishmentState = (id: string, establishmentFound: EstablishmentCardProps) => {
+    const index = establishmentsState.findIndex((establishment)=>{
+      if(establishment.id === id) 
+        return true;
+    })
+    establishmentsState[index] = {
+      ...establishmentsState[index], ...establishmentFound
+    }
+    const newEstablishmentState: EstablishmentsProps = establishmentsState;
+    setEstablishmentsState(newEstablishmentState);
+  }
+
   return (
     <>
       <EstablishmentEditModal session={establishmentModal?.session as string} id={establishmentModal?.id as string} name={establishmentModal?.name as string}  description={establishmentModal?.description as string} lat={establishmentModal?.lat as string} lng={establishmentModal?.lng as string} imageUrl={establishmentModal?.imageUrl as string} isOpen={editEstablishmentIsOpen}
-            onClose={editEstablishmentOnClose}/>
+            onClose={editEstablishmentOnClose} updateState={updateEstablishmentState}/>
       <Flex width="100%" bg="primary" direction="column" minH="100vh">
         <DefaultHeader />
         <Stack

@@ -46,6 +46,7 @@ type EstablishmentFormProps = {
   imageUrl: string;
   registerForm: boolean;
   clickBackButton: () => void;
+  updateState?: (id: string, establishmentFound: EstablishmentCardProps) => void;
 };
 
 type EstablishmentFormData = {
@@ -56,6 +57,12 @@ type EstablishmentFormData = {
 type PositionProps = {
   getLngLat: () => { lng: number; lat: number };
 };
+
+type EstablishmentCardProps = {
+  id: string;
+  name: string;
+  imageUrl: string;
+}
 
 export const EstablishmentForm = (props: EstablishmentFormProps) => {
   const [position, setPosition] = useState<PositionProps>();
@@ -175,6 +182,15 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           },
         },
       );
+      if(props.updateState)
+        props.updateState(
+          props?.id as string, 
+          {
+            id: props?.id as string,
+            name: nome,
+            imageUrl: imageUrlReturned 
+          }
+        );
       toast.success('Estabelecimento alterado com sucesso!');
       props.clickBackButton();
     } catch (e: any) {
