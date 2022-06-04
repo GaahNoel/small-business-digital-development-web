@@ -9,10 +9,19 @@ import {
   } from '@chakra-ui/react';
   import { EstablishmentForm } from '../../establishment-register/establishment-form';
 
-  type EstablishmentCardProps = {
+  type EstablishmentProps = {
     id: string;
     name: string;
+    description: string;
+    createdAt?: string;
     imageUrl: string;
+    latitude: string;
+    longitude: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
   }
   
   type EstablishmentEditModalProps = {
@@ -25,7 +34,7 @@ import {
     imageUrl: string;
     isOpen: boolean;
     onClose: () => void;
-    updateState: (id: string, establishmentFound: EstablishmentCardProps) => void;
+    updateState: (id: string, establishmentFound: EstablishmentProps) => void;
   };
   
   export const EstablishmentEditModal = ({

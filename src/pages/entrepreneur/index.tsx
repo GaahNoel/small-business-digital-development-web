@@ -21,15 +21,15 @@ type EstablishmentProps = {
   id: string;
   name: string;
   description: string;
-  createdAt: string;
+  createdAt?: string;
   imageUrl: string;
   latitude: string;
   longitude: string;
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
 }
 
 type EstablishmentsProps = EstablishmentProps[];
@@ -38,12 +38,6 @@ type EnterpreneurProps = {
   token: string;
   businesses: EstablishmentProps[];
 };
-
-type EstablishmentCardProps = {
-  id: string;
-  name: string;
-  imageUrl: string;
-}
 
 type EstablishmentModalProps = {
   session: string;
@@ -141,11 +135,12 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     });
   };
 
-  const updateEstablishmentState = (id: string, establishmentFound: EstablishmentCardProps) => {
+  const updateEstablishmentState = (id: string, establishmentFound: EstablishmentProps) => {
     const index = establishmentsState.findIndex((establishment)=>{
       if(establishment.id === id) 
         return true;
     })
+    console.log(establishmentFound)
     establishmentsState[index] = {
       ...establishmentsState[index], ...establishmentFound
     }

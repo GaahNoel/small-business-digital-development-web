@@ -51,7 +51,7 @@ type ProductSecondFormProps = {
   imageUrl?: string;
   registerForm: boolean;
   clickBackButton: () => void;
-  updateState?: (id: string, productFound: ProductCardProps) => void;
+  updateState?: (id: string, productFound: ProductProps) => void;
 };
 
 type ProductSecondFormData = {
@@ -60,10 +60,20 @@ type ProductSecondFormData = {
   description: string;
 }
 
-type ProductCardProps = {
+type ProductProps = {
   id: string;
   name: string;
+  listPrice: number;
+  salePrice: number;
+  description: string;
+  createdAt?: string;
+  businessId?: string;
   imageUrl: string;
+  type?: string;
+  category?: {
+    id: string;
+    name: string;
+  }
 }
 
 export const SecondProductForm = (props: ProductSecondFormProps) => {
@@ -202,7 +212,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           {
             id: props?.id as string,
             name: name,
-            imageUrl: imageUrlReturned 
+            description: description,
+            listPrice: parseFloat(price),
+            salePrice: parseFloat(price),
+            imageUrl: imageUrlReturned ,
           }
         );
       toast.success('Produto alterado com sucesso!');

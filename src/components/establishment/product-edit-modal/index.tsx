@@ -18,13 +18,23 @@ import { SecondProductForm } from '../../product-register/second-product-form';
     imageUrl: string;
     isOpen: boolean;
     onClose: () => void;
-    updateState: (id: string, productFound: ProductCardProps) => void;
+    updateState: (id: string, productFound: ProductProps) => void;
   };
 
-  type ProductCardProps = {
+  type ProductProps = {
     id: string;
     name: string;
+    listPrice: number;
+    salePrice: number;
+    description: string;
+    createdAt?: string;
+    businessId?: string;
     imageUrl: string;
+    type?: string;
+    category?: {
+      id: string;
+      name: string;
+    }
   }
   
   export const ProductEditModal = ({

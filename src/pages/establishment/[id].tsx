@@ -36,11 +36,11 @@ type ProductProps = {
   listPrice: number;
   salePrice: number;
   description: string;
-  createdAt: string;
-  businessId: string;
+  createdAt?: string;
+  businessId?: string;
   imageUrl: string;
-  type: string;
-  category: {
+  type?: string;
+  category?: {
     id: string;
     name: string;
   }
@@ -53,11 +53,6 @@ type ProductsProps = {
 
 type ProductsStateProps = ProductProps[];
 
-type ProductCardProps = {
-  id: string;
-  name: string;
-  imageUrl: string;
-}
 
 type ProductModalProps = {
   id: string;
@@ -186,7 +181,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
     });
   };
 
-  const updateProductState = (id: string, productFound: ProductCardProps) => {
+  const updateProductState = (id: string, productFound: ProductProps) => {
     const index = productsState.findIndex((product)=>{
       if(product.id === id) 
         return true;
@@ -290,8 +285,8 @@ const Establishment = ({ token, products }: ProductsProps) => {
                         description: product.description,
                         listPrice: product.listPrice,
                         salePrice: product.salePrice,
-                        type: product.type,
-                        categoryName: product.category.name,
+                        type: product?.type as string,
+                        categoryName: product.category?.name  as string,
                         imageUrl: product.imageUrl,
                       });
                     }}
@@ -302,7 +297,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
                       listPrice: product.listPrice,
                       salePrice: product.salePrice,
                       type: product.type,
-                      categoryName: product.category.name,
+                      categoryName: product.category?.name as string,
                       imageUrl: product.imageUrl,
                     })}
                     removeItem={() => removeProduct(product.id, token)}
