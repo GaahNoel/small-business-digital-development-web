@@ -6,18 +6,19 @@ import { useEffect, useState } from 'react';
 
 type DefaultMapInputProps = {
   setPosition: any;
+  editLng?: number | null;
+  editLat?: number | null;
 };
 
-export const DefaultMapInput = ({ setPosition }: DefaultMapInputProps) => {
+export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: DefaultMapInputProps) => {
   const [markerState, setMarkerState] = useState();
   useEffect(() => {
-    const location = navigator.geolocation.getCurrentPosition(
-      (geolocaltion) => {
+    if(editLat || editLng){
         mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
         const map = new mapboxgl.Map({
           container: 'map', // container ID
           style: 'mapbox://styles/mapbox/streets-v11', // style URL
-          center: [geolocaltion.coords.longitude, geolocaltion.coords.latitude], // starting position [lng, lat]
+          center: [editLng as number, editLat as number], // starting position [lng, lat]
           zoom: 15, // starting zoom
         });
         const marker = new mapboxgl.Marker({
@@ -27,8 +28,8 @@ export const DefaultMapInput = ({ setPosition }: DefaultMapInputProps) => {
         setPosition(marker as any);
         marker
           .setLngLat({
-            lng: geolocaltion.coords.longitude,
-            lat: geolocaltion.coords.latitude,
+            lng: editLng as number,
+            lat: editLat as number,
           })
           .addTo(map);
         const geocoder = new MapboxGeocoder({
@@ -43,8 +44,42 @@ export const DefaultMapInput = ({ setPosition }: DefaultMapInputProps) => {
         geocoder.on('result', (e) => {
           marker.setLngLat(e.result.center);
         });
-      },
-    );
+    }else{
+      const location = navigator.geolocation.getCurrentPosition(
+        (geolocaltion) => {
+          mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
+          const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [geolocaltion.coords.longitude, geolocaltion.coords.latitude], // starting position [lng, lat]
+            zoom: 15, // starting zoom
+          });
+          const marker = new mapboxgl.Marker({
+            draggable: true,
+          });
+          setMarkerState(marker as any);
+          setPosition(marker as any);
+          marker
+            .setLngLat({
+              lng: geolocaltion.coords.longitude,
+              lat: geolocaltion.coords.latitude,
+            })
+            .addTo(map);
+          const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            marker: false,
+            mapboxgl: mapboxgl as any,
+          });
+          map.addControl(geocoder);
+          // marker.on('dragend', function (e: any) {
+          //   const lngLat = e.target.getLngLat();
+          // });
+          geocoder.on('result', (e) => {
+            marker.setLngLat(e.result.center);
+          });
+        },
+      );
+    }
   }, []);
 
   return (

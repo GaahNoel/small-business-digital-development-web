@@ -296,7 +296,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
                       description: product.description,
                       listPrice: product.listPrice,
                       salePrice: product.salePrice,
-                      type: product.type,
+                      type: product?.type as string,
                       categoryName: product.category?.name as string,
                       imageUrl: product.imageUrl,
                     })}

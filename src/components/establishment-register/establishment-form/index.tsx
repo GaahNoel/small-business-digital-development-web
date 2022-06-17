@@ -32,6 +32,7 @@ import { imgbbApi } from '../../../service/imgbb-api';
 import { api } from '../../../service/api';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { positionstackApi } from '../../../service/positionstack-api';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -53,6 +54,11 @@ type EstablishmentFormData = {
   nome: string;
   descricao: string;
 };
+
+type LocationProps = {
+  lat: string;
+  lng: string;
+}
 
 type PositionProps = {
   getLngLat: () => { lng: number; lat: number };
@@ -112,6 +118,20 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     }
   };
 
+  const getAddressInfo = async ({lat, lng}: LocationProps) =>{
+    try {
+      const response = await positionstackApi.get(`reverse?access_key=${process.env.POSITION_STACK_KEY}&query=${lat},${lng}`, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
+      const {country, region, county, street, name } = response.data.data[0];
+      return {country, region, county, street, name};
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const registerEstablishment = async({nome, descricao}: EstablishmentFormData) =>{
     const { sub: userId } = jwt_decode(props.session) as {
       sub: string;
@@ -123,7 +143,12 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     else{
       imageUrlReturned = 'https://i.ibb.co/RQ6vLP1/Group-1.png';
     }
+
     const { lat, lng } = position!.getLngLat();
+
+    const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
+
+    const addressInfo = await getAddressInfo(location);
 
     try {
       const response = await api.post(
@@ -133,13 +158,13 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           description: descricao,
           imageUrl: imageUrlReturned,
           accountId: userId,
-          city: 'string',
-          country: 'string',
+          city: addressInfo?.county as string,
+          country: addressInfo?.county as string,
           latitude: lat.toString(),
           longitude: lng.toString(),
-          state: 'string',
-          street: 'string',
-          zip: 'string',
+          state: addressInfo?.region,
+          street: addressInfo?.street ? addressInfo.street : `Próximo ao/à ${addressInfo?.name}`,
+          zip: '',
         },
         {
           headers: {
@@ -168,6 +193,9 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     }
     const { lat, lng } = position!.getLngLat();
 
+    const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
+
+    const addressInfo = await getAddressInfo(location);
     try {
       const response = await api.put(
         `business/edit/${props.id}`,
@@ -176,13 +204,13 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           description: descricao,
           imageUrl: imageUrlReturned,
           accountId: userId,
-          city: 'string',
-          country: 'string',
+          city: addressInfo?.county as string,
+          country: addressInfo?.county as string,
           latitude: lat.toString(),
           longitude: lng.toString(),
-          state: 'string',
-          street: 'string',
-          zip: 'string',
+          state: addressInfo?.region,
+          street: addressInfo?.street ? addressInfo.street : `Próximo ao/à ${addressInfo?.name}`,
+          zip: '',
         },
         {
           headers: {
@@ -257,7 +285,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 Localização
               </FormLabel>
 
-              <DefaultMapInput setPosition={setPosition} />
+              <DefaultMapInput setPosition={setPosition} editLng={Number(props.lng)} editLat={Number(props.lat)} />
             </Flex>
           </Stack>
           <Box
