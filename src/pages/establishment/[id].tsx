@@ -67,7 +67,7 @@ type ProductModalProps = {
 
 const Establishment = ({ token, products }: ProductsProps) => {
   const router = useRouter();
-  const { id, name, imageUrl } = useEstablishmentForm();
+  const { id, name, imageUrl, state, city, reference } = useEstablishmentForm();
   const { form, setStage } = useProductForm();
   const { setEstablishmentId, setEstablishmentName, setToken } = form;
   const { isOpen: viewProductIsOpen, onOpen: viewProductOnOpen, onClose: viewProductOnClose } = useDisclosure();
@@ -212,6 +212,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
             borderRadius="full"
           />
           <Heading as="h3">{name}</Heading>
+          <Text>Estado: {state}</Text>
+          <Text>Cidade: {city}</Text>
+          <Text>Localização: {reference}</Text>
         </Stack>
         <Flex
           bg="secondary"

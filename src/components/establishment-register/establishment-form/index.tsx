@@ -228,6 +228,10 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             latitude: lat.toString(),
             longitude: lng.toString(),
             imageUrl: imageUrlReturned,
+            city:  addressInfo?.county as string,  
+            country: addressInfo?.county as string,
+            state: addressInfo?.region,
+            street: addressInfo?.street ? addressInfo.street : `Próximo ao/à ${addressInfo?.name}`,
             description: descricao,
           }
         );

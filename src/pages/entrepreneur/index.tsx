@@ -51,7 +51,7 @@ type EstablishmentModalProps = {
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
-  const { setId, setName, setImageUrl } = useEstablishmentForm();
+  const { setId, setName, setImageUrl, setState, setCity, setReference } = useEstablishmentForm();
   const { isOpen: editEstablishmentIsOpen, onOpen: editEstablishmentOnOpen, onClose: editEstablishmentOnClose } = useDisclosure();
   const [establishmentModal, setEstablishmentModal] = useState<EstablishmentModalProps>();
   const [establishmentsState, setEstablishmentsState] = useState<EstablishmentsProps>([
@@ -75,10 +75,13 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     setEstablishmentsState(businesses);
   }, []);
 
-  const clickCard = (id: string, name: string, imageUrl: string) => {
+  const clickCard = (id: string, name: string, imageUrl: string, state: string, city: string, reference: string) => {
     setId(id);
     setName(name);
     setImageUrl(imageUrl);
+    setState(state);
+    setCity(city);
+    setReference(reference);
     router.push(`/establishment/${id}`);
   };
 
@@ -213,6 +216,9 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                         establishment.id,
                         establishment.name,
                         establishment.imageUrl,
+                        establishment?.state as string,
+                        establishment?.city as string,
+                        establishment?.street as string
                       );
                     }}
                     editItem={()=> editEstablishment({
