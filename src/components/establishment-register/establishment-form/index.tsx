@@ -149,7 +149,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
 
     const addressInfo = await getAddressInfo(location);
-
+    console.log(userId)
     try {
       const response = await api.post(
         'business/create',
@@ -159,7 +159,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           imageUrl: imageUrlReturned,
           accountId: userId,
           city: addressInfo?.county as string,
-          country: addressInfo?.county as string,
+          country: addressInfo?.country as string,
           latitude: lat.toString(),
           longitude: lng.toString(),
           state: addressInfo?.region,

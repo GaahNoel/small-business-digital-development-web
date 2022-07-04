@@ -1,5 +1,7 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { ItemCard } from '../item-card';
+import { MdOutlineLocalOffer } from 'react-icons/md'
+import { BsStar } from 'react-icons/bs'
 import { default_orange, default_yellow } from '../../../styles/theme';
 
 export const EntrepreneurItems = () => {
@@ -14,16 +16,10 @@ export const EntrepreneurItems = () => {
         gap={2}
       >
         <GridItem>
-          <ItemCard iconColor={default_orange} price="10" text="10" />
+          <ItemCard iconColor={default_yellow} price="50" icon={MdOutlineLocalOffer} />
         </GridItem>
         <GridItem>
-          <ItemCard iconColor={default_orange} price="100" text="10%" />
-        </GridItem>
-        <GridItem>
-          <ItemCard iconColor={default_yellow} price="100" text="Teste" />
-        </GridItem>
-        <GridItem>
-          <ItemCard iconColor={default_orange} price="100" text="Teste" />
+          <ItemCard iconColor={default_orange} price="75" icon={BsStar} />
         </GridItem>
       </Grid>
     </>
