@@ -1,9 +1,12 @@
-import { Button, IconButton, Stack } from '@chakra-ui/react';
+import { Button, Flex, Icon, IconButton, Stack } from '@chakra-ui/react';
 import { IconMenu } from '../icon-menu';
 import { FiHome, FiSearch, FiUser, FiLayers } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
 import { MdArrowBack } from 'react-icons/md'
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { Fab, Action } from 'react-tiny-fab';
+import 'react-tiny-fab/dist/styles.css';
 
 export const FooterMenu = () => {
   const router = useRouter();
@@ -13,20 +16,25 @@ export const FooterMenu = () => {
   const routerBack = () => {
     router.back();
   };
+  const [isLoaded, setIsLoaded] = useState(false)
   
+  useEffect(()=>{
+    setIsLoaded(true);
+  },[])
+
   return (
     <>
-      <Stack
+      <Flex
         direction="row"
         align="center"
-        justify="center"
-        spacing={10}
+        justify="space-around"
         bg="default_white"
         width="100%"
         padding="10px"
         borderTopRadius="2xl"
         position="fixed"
         bottom="0"
+        display={{base: "flex", md: "none"}}
       >
         <IconMenu
           icon={MdArrowBack}
@@ -60,7 +68,38 @@ export const FooterMenu = () => {
             console.log('oi');
           }}
         />
-      </Stack>
+      </Flex>
+      {isLoaded&&
+      <Flex display={{base: "none", md: "flex"}}>
+        <Fab
+          icon={<FaPlus />}
+          alwaysShowTitle={true}
+          mainButtonStyles={{backgroundColor: '#5647B2'}}
+          onClick={(()=>console.log("A"))}
+        >
+          <Action text="Voltar" style={{backgroundColor: "#7166B6"}}>
+            <Icon
+              as={MdArrowBack}
+              aria-label="30px"
+              fontSize="24px"
+              cursor="pointer"
+              bg="#7166B6"
+              onClick={()=>routerBack()}
+            />
+          </Action>
+          <Action text="Home" style={{backgroundColor: "#7166B6"}}>
+            <Icon
+              as={FiHome}
+              aria-label="30px"
+              fontSize="24px"
+              cursor="pointer"
+              bg="#7166B6"
+              onClick={()=>routerNavigate('/')}
+            />
+          </Action>
+        </Fab>
+      </Flex>
+      }
     </>
   );
 };

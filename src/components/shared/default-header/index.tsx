@@ -17,12 +17,11 @@ export const DefaultHeader = () => {
 
   return (
     <>
-      <Stack
+      <Flex
         direction="row"
-        justify="space-around"
+        justify="space-between"
         align="center"
-        margin="15px 0px 10px 0px"
-        spacing={40}
+        margin="15px 0px"
       >
         <Img
           src="/Logo.svg"
@@ -56,7 +55,7 @@ export const DefaultHeader = () => {
             </Button>
           )}
         </Flex>
-      </Stack>
+      </Flex>
     </>
   );
 };
