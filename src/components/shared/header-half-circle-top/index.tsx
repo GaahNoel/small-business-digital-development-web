@@ -11,10 +11,10 @@ export const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
         direction="column"
         bg="primary"
         padding="20px 60px"
-        borderBottomRadius="200px"
+        borderBottomRadius="full"
+        height={{base: "35vh", lg: "100vh"}}
         align="center"
         justify="center"
-        height="35vh"
       >
         {children}
       </Flex>

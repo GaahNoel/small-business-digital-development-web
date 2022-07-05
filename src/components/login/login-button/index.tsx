@@ -37,7 +37,7 @@ export const LoginButton = ({
         variant="solid"
         width="100%"
         height="50px"
-        boxShadow="xl"
+        boxShadow="0px 15px 15px -8px rgba(0,0,0,0.35);"
         onClick={() => handleClick(provider)}
       >
         <Stack direction="row" align="center" spacing={3}>
