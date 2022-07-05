@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, IconButton, Stack } from '@chakra-ui/react';
+import { background, Button, Flex, Icon, IconButton, Stack } from '@chakra-ui/react';
 import { IconMenu } from '../icon-menu';
 import { FiHome, FiSearch, FiUser, FiLayers } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Fab, Action } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
+import FooterMenuAction from './footer-menu-action';
 
 export const FooterMenu = () => {
   const router = useRouter();
@@ -74,29 +75,11 @@ export const FooterMenu = () => {
         <Fab
           icon={<FaPlus />}
           alwaysShowTitle={true}
+          event={'hover'}
           mainButtonStyles={{backgroundColor: '#5647B2'}}
-          onClick={(()=>console.log("A"))}
         >
-          <Action text="Voltar" style={{backgroundColor: "#7166B6"}}>
-            <Icon
-              as={MdArrowBack}
-              aria-label="30px"
-              fontSize="24px"
-              cursor="pointer"
-              bg="#7166B6"
-              onClick={()=>routerBack()}
-            />
-          </Action>
-          <Action text="Home" style={{backgroundColor: "#7166B6"}}>
-            <Icon
-              as={FiHome}
-              aria-label="30px"
-              fontSize="24px"
-              cursor="pointer"
-              bg="#7166B6"
-              onClick={()=>routerNavigate('/')}
-            />
-          </Action>
+          <FooterMenuAction icon={MdArrowBack} clickFunction={routerBack} />
+          <FooterMenuAction icon={FiHome} clickFunction={()=>routerNavigate('/')} />
         </Fab>
       </Flex>
       }
