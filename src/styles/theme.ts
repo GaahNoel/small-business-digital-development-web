@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { darken, lighten } from 'polished';
+import { darken, lighten, opacify } from 'polished';
 
 export const primary = '#5647B2';
 export const secondary = 'rgba(245, 242, 255, 0.9)';
@@ -16,6 +16,7 @@ export const service_blue = '#4FAAFF';
 export const default_yellow = '#F2B705';
 export const default_gray = '#808080';
 export const error_red = '#FA0D0D';
+export const primary_opacity = 'rgba(86, 71, 178, 0.7)';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -24,6 +25,8 @@ export const Theme = extendTheme({
       success: 'green.500',
       primary: primary,
       primary_hover: darken(0.2, primary),
+      primary_opacity: primary_opacity ,
+      primary_opacity_hover: darken(0.2, primary_opacity),
       secondary,
       secondary_hover: darken(0.2, secondary),
       default_white,

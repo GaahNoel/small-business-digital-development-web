@@ -13,7 +13,7 @@ export const EntrepreneurButton = () => {
           padding="50px"
           h="100px"
           minW="100px"
-          margin="45px auto"
+          margin={{base: "15px auto", md: "15px auto 0px auto"}}
           boxShadow="dark-lg"
           onClick={() => router.push('entrepreneur')}
         >

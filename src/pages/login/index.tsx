@@ -14,10 +14,10 @@ const Login = () => {
       <Flex bg="secondary" direction={{base: "column", lg: "row"}} height="100vh" align={{base: "initial", lg: "center"}}>
         <Box width="100%" display={{base: "block", lg: "none"}}>
           <HeaderHalfCircleTop>
-            <Image boxSize={{base: "150px", sm: "225px", md: "300px", lg: "400px", xl: "500px", "2xl": "600px"}} maxWidth="80%" src="Shop.svg" alt="Shop" />
+            <Image boxSize={{base: "200px", sm: "225px", md: "300px", lg: "400px", xl: "500px", "2xl": "600px"}} maxWidth="80%" src="Shop.svg" alt="Shop" />
           </HeaderHalfCircleTop>
         </Box>
-        <Flex width={{md: "40%", lg: "60%"}} display={{base: "none", lg: "flex"}}>
+        <Flex width="60%" display={{base: "none", lg: "flex"}}>
           <LeftImage />
         </Flex>
         <Stack
@@ -30,7 +30,6 @@ const Login = () => {
           left={{base: "0", xl: "-10%"}}
           border="2px #000"
           borderRadius="3xl"
-          shadow="lg"
           bg="default_white"
           boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
           padding={{base: "25px",md:"50px"}}

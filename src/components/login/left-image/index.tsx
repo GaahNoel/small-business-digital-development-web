@@ -6,17 +6,15 @@ export const LeftImage = () => {
     <>
       <Flex
         direction="column"
-        bg="primary"
+        bg="primary_opacity"
         padding="20px 60px"
-        borderTopRightRadius={{base: "none", lg: "full"}}
-        borderBottomLeftRadius={{base: "full", lg: "none"}}
-        borderBottomRightRadius="full"
+        borderBottomRightRadius="500px"
         align="end"
         justify="center"
         height={{base: "35vh", lg: "100vh"}}
         width="100%"
       >
-        <Image width="400px" marginRight={{base: "0px", xl: "20%"}} src="Shop.svg" alt="Shop" />
+        <Image width="550px" marginRight={{base: "0px", xl: "20%"}} src="Shop.svg" alt="Shop" />
       </Flex>
     </>
   );

@@ -12,8 +12,8 @@ import {
 import type { NextPage } from 'next';
 import { PrincipalButton } from '../components/home/principal-button';
 import { FooterMenu } from '../components/shared/footer-menu';
-import { BsBoxSeam, BsShop, BsArrowUpRight } from 'react-icons/bs';
-import { FiTool } from 'react-icons/fi';
+import { BsShop, BsArrowUpRight } from 'react-icons/bs';
+import { FiTool, FiShoppingBag, FiPackage } from 'react-icons/fi';
 import { FiSearch } from 'react-icons/fi';
 import { DefaultHeader } from '../components/shared/default-header';
 import { useRouter } from 'next/router';
@@ -26,10 +26,29 @@ const Home: NextPage = () => (
       <Flex width={{base: "90%", lg:"80%"}} maxW={{base: "100%", md: "1280"}} alignSelf="center" direction="column" margin="0px auto">
         <DefaultHeader />
         <Flex align="center" direction="column">
-          <Text display={{base: "none", md:"flex"}} color="default_white" fontSize={{md: "20px", lg: "24px"}}>Digite aqui seu endereço para buscar o que tem por perto</Text>
+          <Flex display={{base: "none", md:"flex"}} color="default_white" fontSize={{md: "20px", lg: "24px"}} direction="column" align="center">
+            <Flex>
+              <Text>
+                Digite aqui seu&nbsp;
+              </Text>
+              <Text fontWeight="bold">
+                endereço&nbsp; 
+              </Text>
+              <Text>
+                para&nbsp;
+              </Text>
+              <Text fontWeight="bold">
+                buscar&nbsp;
+              </Text>
+              <Text>o que tem por&nbsp;</Text>
+              <Text fontWeight="bold">
+                perto
+              </Text>
+            </Flex>
+          </Flex>
           <Stack
             bg="default_white"
-            margin="30px auto 100px auto"
+            margin={{base: "30px auto 100px auto", md: "30px auto 50px auto"}}
             minW="200px"
             width={{base: "90%", md: "72%"}}
             padding="5px 10px"
@@ -63,6 +82,8 @@ const Home: NextPage = () => (
           flex="1"
           direction="column"
           borderTopLeftRadius="105px"
+          borderTopRightRadius={{base: "0px", md: "105px"}}
+          
           height="100%"
           width="100%"
         >
@@ -71,7 +92,7 @@ const Home: NextPage = () => (
               <PrincipalButton
                 colorButton="default_orange"
                 colorText="default_white"
-                icon={BsBoxSeam}
+                icon={FiPackage}
                 text="Produtos"
                 page="/"
               />
@@ -85,17 +106,20 @@ const Home: NextPage = () => (
               <PrincipalButton
                 colorButton="default_yellow"
                 colorText="default_white"
-                icon={BsShop}
+                icon={FiShoppingBag}
                 text="Loja"
                 page="/shop"
               />
             </Flex>
             <Flex direction={{base: "column", md: "row"}} justify="space-between" width="100%" flex="1" marginTop={{base: "0px", md: "60px"}} paddingBottom={{base: "0px", md: "35px"}}>
-              <Flex direction="column" align={{base: "center", md: "start"}} justify="center" marginBottom="40px" width="100%" flex="1">
+              <Flex direction="column" align={{base: "center", md: "start"}} justify="center" marginBottom={{base:"40px", md: "0px"}} width="100%" flex="1">
                 <Flex direction="column" alignItems={{base: "center", md: "normal"}}>
-                  <Heading as="h3" color="primary" fontSize={["1.25rem","1.7rem","1.45rem","1.6rem", "1.8rem", "2.2rem"]}>
-                    Tudo o que precisa em um só lugar
-                  </Heading>
+                  <Flex color="primary" direction="column" fontSize={["1.25rem","1.7rem","1.6rem","2rem", "2.3rem", "2.4rem"]}>
+                    <Heading as="h3" fontWeight="semibold" textAlign={{base: "center", md: "initial"}}>
+                      Tudo o que precisa&nbsp;
+                      <strong>em um só lugar</strong> 
+                    </Heading>
+                  </Flex>
                   <Text color="default_black" fontSize={["1rem","1.4rem","1.15rem","1.35rem", "1.5rem", "1.7rem"]}>
                     Busque produtos e serviços que deseja
                   </Text>
