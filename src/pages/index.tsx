@@ -19,6 +19,8 @@ import { DefaultHeader } from '../components/shared/default-header';
 import { useRouter } from 'next/router';
 import { EntrepreneurButton } from '../components/home/entrepreneur-button';
 import { Footer } from '../components/home/footer';
+import Lottie from 'react-lottie';
+import * as animationData from '../../public/business-idea-animation.json'
 
 const Home: NextPage = () => (
   <>
@@ -127,7 +129,19 @@ const Home: NextPage = () => (
                 <EntrepreneurButton />
               </Flex>
               <Flex display={{base: 'none', md: 'flex'}} align="center" justify="flex-end" minW="50%">
-                <Img src="Shop.svg" w={{base:'350px', lg:"450px"}} />
+                <Lottie 
+                  options={{
+                    loop: true,
+                    autoplay: true, 
+                    animationData: animationData,
+                    rendererSettings: {
+                      preserveAspectRatio: 'xMidYMid slice'
+                  }}}
+                  height={450}
+                  width={450}
+                  isStopped={false}
+                  isPaused={false}
+                />
               </Flex>
             </Flex>
           </Flex>

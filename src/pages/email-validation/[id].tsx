@@ -40,7 +40,7 @@ const EmailValidation = () => {
                         spacing={2}
                         align="center"
                         justify="center"
-                        fontSize="1.6rem"
+                        fontSize={{base: "1.6rem", md: "2rem", xl: "2.4rem"}}
                         fontWeight="bold"
                         color="default_white"
                     >
@@ -58,15 +58,15 @@ const EmailValidation = () => {
                     spacing={16}
                 >
                     <Stack align="center" color="primary" spacing={4}>
-                        <Icon as={AiOutlineCheckCircle} fontSize="120px" />
-                        <Text fontSize="1.45rem" fontWeight="bold">
+                        <Icon as={AiOutlineCheckCircle} fontSize={{base: "7.5rem", md: "10rem", xl: "12.5rem"}} />
+                        <Text fontSize={{base: "1.45rem", md: "1.85rem", xl: "2.25rem"}} fontWeight="bold">
                             E-mail confirmado com sucesso
                         </Text>
                     </Stack>
                     <Stack w="90%" align="center" textAlign="center" spacing={8}>
                         <Stack spacing={1}>
-                            <Text fontSize="1.2rem">Obrigado por se cadastrar!</Text>
-                            <Text fontSize="1rem" color="default_gray">
+                            <Text fontSize={{base: "1.2rem", md: "1.5rem", xl: "1.8rem"}}>Obrigado por se cadastrar!</Text>
+                            <Text fontSize={{base: "1rem", md: "1.3rem", xl: "1.5rem"}} color="default_gray">
                                 Clique no botão abaixo para ser redirecionado.
                             </Text>
                         </Stack>

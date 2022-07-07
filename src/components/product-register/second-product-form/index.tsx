@@ -248,8 +248,13 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           <Stack
             direction="column"
             spacing={3}
-            maxWidth={{base: "70vw", md: "50vw", lg: "40vw", xl: "25vw"}}
+            maxWidth={{base: "90vw", md: "50vw", lg: "40vw", xl: "25vw"}}
             margin="0px auto"
+            border="2px #000"
+            borderRadius="3xl"
+            bg="default_white"
+            boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
+            padding={{base: "25px", md:"25px 50px"}}
           >
             <FormInput
               id="name"
@@ -271,10 +276,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               placeholder="Digite a descrição do produto"
               register={register}
             />
-          </Stack>
-          <Box
+            <Box
             width="100%"
-            maxWidth={{base: "70vw", md: "50vw", lg: "40vw", xl: "25vw"}}
+            maxWidth={{base: "90vw", md: "50vw", lg: "40vw", xl: "25vw"}}
             margin="10px auto"
             sx={{ '.filepond--credits': { display: 'none' } }}
           >
@@ -315,6 +319,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               type="submit"
             />
           </Stack>
+          </Stack>
+          
         </FormControl>
       </FormProvider>
     </>

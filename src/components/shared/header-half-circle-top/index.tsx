@@ -15,6 +15,7 @@ export const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
         height={{base: "35vh", lg: "100vh"}}
         align="center"
         justify="center"
+        width="100%"
       >
         {children}
       </Flex>

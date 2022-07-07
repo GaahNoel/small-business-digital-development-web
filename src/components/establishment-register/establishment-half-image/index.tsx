@@ -1,8 +1,8 @@
-import { Flex, Image } from '@chakra-ui/react';
+import { Button, Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
 import Lottie from 'react-lottie';
-import * as animationData from '../../../../public/business-idea-animation.json'
+import * as animationData from '../../../../public/business-analytics.json'
 
-export const RightImage = () => {
+export const EstablishmentHalfImage = () => {
 
   return (
     <>
@@ -10,15 +10,14 @@ export const RightImage = () => {
         direction="column"
         bg="primary_opacity"
         padding="20px 60px"
-        borderTopLeftRadius="500px"
-        align="start"
+        borderBottomRightRadius="500px"
+        align="end"
         justify="center"
-        minHeight={{base: "35vh", lg: "100vh"}}
         height="100%"
+        minHeight={{base: "35vh", lg: "100vh"}}
         width="100%"
       >
-        <Flex align="start" justify="center" width="95%" marginLeft={{lg: "80px", xl: "60px", "2xl": "0px"}}>
-          <Lottie 
+         <Lottie 
             options={{
               loop: true,
               autoplay: true, 
@@ -26,13 +25,12 @@ export const RightImage = () => {
               rendererSettings: {
                 preserveAspectRatio: 'xMidYMid slice'
             }}}
-            height={600}
-            width={600}
+            height={400}
+            width={400}
             isStopped={false}
             isPaused={false}
           />
-        </Flex>
-      </Flex> 
+      </Flex>
     </>
   );
 };
