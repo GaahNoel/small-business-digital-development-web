@@ -71,7 +71,9 @@ const UserRegister = () => {
                     bg={formOption === 'Entrar' ? 'default_orange' : 'default_white'}
                     color={formOption === 'Entrar' ? 'default_white' : 'primary'}
                     borderRadius="14px"
-                    width="100px"
+                    height={{base: "40px", md: "50px"}}
+                    width={{base: "100px", md: "130px"}}
+                    fontSize={{base: "16px", md: "20px"}}
                     onClick={() => {
                       changeOption('Entrar');
                     }}
@@ -82,7 +84,9 @@ const UserRegister = () => {
                     bg={formOption === 'Registrar' ? 'default_orange' : 'default_white'}
                     color={formOption === 'Registrar' ? 'default_white' : 'primary'}
                     borderRadius="14px"
-                    width="100px"
+                    height={{base: "40px", md: "50px"}}
+                    width={{base: "100px", md: "130px"}}
+                    fontSize={{base: "16px", md: "20px"}}
                     onClick={() => {
                       changeOption('Registrar');
                     }}

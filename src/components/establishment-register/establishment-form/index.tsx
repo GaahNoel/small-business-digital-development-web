@@ -263,7 +263,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           <Stack
             direction="column"
             spacing={3}
-            maxWidth="70vw"
+            maxWidth={{base: "70vw", md: "50vw", lg: "40vw", xl: "25vw"}}
             margin="0px auto"
           >
             <FormInput
@@ -284,7 +284,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 htmlFor={`map_label`}
                 color="primary"
                 fontWeight="bold"
-                fontSize="1rem"
+                fontSize={{base: "1rem", md: "1.4rem"}}
               >
                 Localização
               </FormLabel>
@@ -294,10 +294,18 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           </Stack>
           <Box
             width="100%"
-            maxWidth="70vw"
-            margin="30px auto"
+            maxWidth={{base: "70vw", md: "50vw", lg: "40vw", xl: "25vw"}}
+            margin="10px auto"
             sx={{ '.filepond--credits': { display: 'none' } }}
           >
+            <FormLabel
+                htmlFor={`image_label`}
+                color="primary"
+                fontWeight="bold"
+                fontSize={{base: "1rem", md: "1.4rem"}}
+              >
+                Imagem
+            </FormLabel>
             <FilePond
               files={files}
               onupdatefiles={setFiles}

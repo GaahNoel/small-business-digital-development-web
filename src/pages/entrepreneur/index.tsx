@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Icon, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Grid, GridItem, Heading, Icon, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { FaPlus } from 'react-icons/fa';
@@ -156,92 +156,142 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
       <EstablishmentEditModal session={establishmentModal?.session as string} id={establishmentModal?.id as string} name={establishmentModal?.name as string}  description={establishmentModal?.description as string} lat={establishmentModal?.lat as string} lng={establishmentModal?.lng as string} imageUrl={establishmentModal?.imageUrl as string} isOpen={editEstablishmentIsOpen}
             onClose={editEstablishmentOnClose} updateState={updateEstablishmentState}/>
       <Flex width="100%" bg="primary" direction="column" minH="100vh">
-        <DefaultHeader />
-        <Stack
-          margin="30px auto 90px auto"
-          maxW="400px"
-          align="center"
-          justify="center"
-          color="default_white"
-          spacing={2}
-        >
-          <Heading as="h3">Área do empreendedor</Heading>
-          <Text>Gerencie seus estabelecimentos e produtos</Text>
-        </Stack>
-        <Flex bg="secondary" direction="column" borderTopRadius="56px" flex="1">
-          <Flex maxW="250px" margin="0px auto">
-            <Button
-              bg="default_orange"
-              _hover={{ bg: 'default_orange_hover' }}
-              color="default_white"
-              width="100%"
-              height="50px"
-              boxShadow="xl"
-              borderRadius="2xl"
-              position="relative"
-              top="-23px"
-              onClick={() => {
-                router.push('/establishment-register');
-              }}
-            >
-              <Stack
-                direction="row"
-                align="center"
-                justify="center"
-                spacing={4}
-              >
-                <Icon as={FaPlus} />
-                <Text>Cadastrar novos itens</Text>
-              </Stack>
-            </Button>
-          </Flex>
-          <Flex
-            direction="column"
-            margin="0px auto"
+        <Flex direction="column" width={{base: "90%", md:"80%", lg:"60%"}} margin="0px auto">
+          <DefaultHeader />
+          <Stack
+            margin="30px auto 90px auto"
             align="center"
-            marginBottom="100px"
+            justify="center"
+            color="default_white"
+            spacing={2}
           >
-            <Text fontSize="18px" fontWeight="bold" marginBottom="20px">
-              Seus estabelecimentos cadastrados
-            </Text>
-            <Stack spacing={4}>
-              {establishmentsState.length > 0 ? (
-                establishmentsState.map((establishment, key) => (
-                  <DefaultCard
-                    key={key}
-                    name={establishment.name}
-                    img={establishment.imageUrl}
-                    detailClick={() => {
-                      clickCard(
-                        establishment.id,
-                        establishment.name,
-                        establishment.imageUrl,
-                        establishment?.state as string,
-                        establishment?.city as string,
-                        establishment?.street as string
-                      );
-                    }}
-                    editItem={()=> editEstablishment({
-                      session: token,
-                      id: establishment.id,
-                      name: establishment.name,
-                      description: establishment.description,
-                      lat: establishment.latitude,
-                      lng: establishment.longitude,
-                      imageUrl: establishment.imageUrl,
-                    })}
-                    removeItem={() =>
-                      removeEstablishment(establishment.id, token)
-                    }
+            <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>Área do empreendedor</Heading>
+            <Text fontSize={{base: "15px", md: "20px", lg: "25px", "2xl": "30px"}}>Gerencie seus estabelecimentos e produtos</Text>
+          </Stack>
+        </Flex>
+        <Flex bg="secondary" borderTopRadius="56px" height="100%" flex="1">
+          <Flex direction="column" width={{base: "100%", lg: "100%"}} margin="0px auto">
+            <Flex maxW={{base: "300px", sm: "320px", md: "400px"}} width="100%" margin="0px auto">
+              <Button
+                bg="default_orange"
+                _hover={{ bg: 'default_orange_hover' }}
+                color="default_white"
+                width="100%"
+                height={{base: "50px", sm: "70px", md: "90px"}}
+                boxShadow="xl"
+                borderRadius="2xl"
+                position="relative"
+                top={{base: "-23px", sm: "-35", md: "-45"}}
+                onClick={() => {
+                  router.push('/establishment-register');
+                }}
+              >
+                <Stack
+                  direction="row"
+                  align="center"
+                  justify="center"
+                  fontSize={{base: "16px", md:"20px"}}
+                  spacing={4}
+                >
+                  <Icon as={FaPlus} />
+                  <Text>Cadastrar novos estabelecimentos</Text>
+                </Stack>
+              </Button>
+            </Flex>
+            <Flex
+              direction="column"
+              align="center"
+              marginBottom="100px"
+            >
+              <Text fontSize={{base: "18px", sm: "22px", md: "24px", lg: "28px"}} fontWeight="bold" marginBottom="20px">
+                Seus estabelecimentos cadastrados
+              </Text>
+              <Stack spacing={4} width="100%" align="center" display={{base: "flex", md: "none"}}>
+                {establishmentsState.length > 0 ? (
+                  establishmentsState.map((establishment, key) => (
+                    <DefaultCard
+                      key={key}
+                      name={establishment.name}
+                      img={establishment.imageUrl}
+                      detailClick={() => {
+                        clickCard(
+                          establishment.id,
+                          establishment.name,
+                          establishment.imageUrl,
+                          establishment?.state as string,
+                          establishment?.city as string,
+                          establishment?.street as string
+                        );
+                      }}
+                      editItem={()=> editEstablishment({
+                        session: token,
+                        id: establishment.id,
+                        name: establishment.name,
+                        description: establishment.description,
+                        lat: establishment.latitude,
+                        lng: establishment.longitude,
+                        imageUrl: establishment.imageUrl,
+                      })}
+                      removeItem={() =>
+                        removeEstablishment(establishment.id, token)
+                      }
+                    />
+                  ))
+                ) : (
+                  <NoItemsText
+                    color="primary"
+                    text="Nenhum estabelecimento cadastrado para o usuário."
                   />
-                ))
-              ) : (
-                <NoItemsText
-                  color="primary"
-                  text="Nenhum estabelecimento cadastrado para o usuário."
-                />
-              )}
-            </Stack>
+                )}
+              </Stack>
+              <Flex align="center">
+                <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
+                {establishmentsState.length > 0 ? (
+                    establishmentsState.map((establishment, key) => (
+                      <GridItem colSpan={1} key={key}>
+                        <DefaultCard
+                          key={key}
+                          name={establishment.name}
+                          img={establishment.imageUrl}
+                          detailClick={() => {
+                            clickCard(
+                              establishment.id,
+                              establishment.name,
+                              establishment.imageUrl,
+                              establishment?.state as string,
+                              establishment?.city as string,
+                              establishment?.street as string
+                            );
+                          }}
+                          editItem={()=> editEstablishment({
+                            session: token,
+                            id: establishment.id,
+                            name: establishment.name,
+                            description: establishment.description,
+                            lat: establishment.latitude,
+                            lng: establishment.longitude,
+                            imageUrl: establishment.imageUrl,
+                          })}
+                          removeItem={() =>
+                            removeEstablishment(establishment.id, token)
+                          }
+                        />
+                      </GridItem>
+                      
+                    ))
+                  ) : (
+                    <GridItem colSpan={{base: 1, lg: 2}} key="0 establishments">
+                        <NoItemsText
+                        color="primary"
+                        text="Nenhum estabelecimento cadastrado para o usuário."
+                      />
+                    </GridItem>
+                  )}
+                </Grid>
+              </Flex>
+              
+            </Flex>
+            
           </Flex>
           <FooterMenu />
         </Flex>

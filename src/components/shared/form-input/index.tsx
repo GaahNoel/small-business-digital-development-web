@@ -38,15 +38,16 @@ export const FormInput = ({
           htmlFor={`${id}_label`}
           color="primary"
           fontWeight="bold"
-          fontSize="1rem"
+          fontSize={{base: "1rem", md: "1.4rem"}}
         >
           {field}
         </FormLabel>
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
+            marginTop={{base: "0px", md: "10px"}}
           >
-            <Icon as={icon} color="gray.500" fontSize="1rem" />
+            <Icon as={icon} color="gray.500" fontSize={{base: "1rem", md: "1.3rem"}}/>
           </InputLeftElement>
           <Input
             {...register(id, { required, maxLength })}
@@ -56,7 +57,8 @@ export const FormInput = ({
             border="2px"
             borderColor={errors[id]?"error_red":"primary"}
             bg="default_white"
-            fontSize="1rem"
+            fontSize={{base: "1rem", md: "1.3rem"}}
+            height={{base: "40px", md: "60px"}}
           />
           
         </InputGroup>

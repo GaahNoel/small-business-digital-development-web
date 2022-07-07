@@ -7,6 +7,7 @@ import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { UserInput } from '../user-input';
 
 type LoginFormData = {
   email: string;
@@ -56,14 +57,14 @@ export const UserLoginForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack justify="center" spacing={2}>
-            <FormInput
+            <UserInput
               id="email"
               field="Email"
               type="email"
               placeholder="Digite o email desejado"
               icon={MdOutlineMail}
             />
-            <FormInput
+            <UserInput
               id="password"
               field="Senha"
               type="password"

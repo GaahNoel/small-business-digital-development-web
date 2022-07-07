@@ -7,6 +7,7 @@ import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import Router, { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { UserInput } from '../user-input';
 
 type RegisterFormData = {
   name: string;
@@ -58,28 +59,28 @@ export const UserRegisterForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack justify="center" spacing={1}>
-            <FormInput
+            <UserInput
               id="name"
               field="Nome"
               type="text"
               placeholder="Digite o nome desejado"
               icon={FiUser}
             />
-            <FormInput
+            <UserInput
               id="email"
               field="Email"
               type="email"
               placeholder="Digite o email desejado"
               icon={MdOutlineMail}
             />
-            <FormInput
+            <UserInput
               id="password"
               field="Senha"
               type="password"
               placeholder="Digite sua senha"
               icon={MdOutlineLock}
             />
-            <FormInput
+            <UserInput
               id="confirm_password"
               field="Confirmar Senha"
               type="password"

@@ -18,7 +18,7 @@ export const NoItemsText = ({ text, color }: NoItemsTextProps) => {
         textAlign="center"
         color={color}
       >
-        <Text fontSize="24px">{text}</Text>
+        <Text fontSize={{base: "24px", md: "30px", lg: "36px"}}>{text}</Text>
       </Flex>
     </>
   );

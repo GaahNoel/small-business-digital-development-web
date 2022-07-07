@@ -27,7 +27,7 @@ export const DefaultTextArea = ({
           htmlFor={`descricao_label`}
           color="primary"
           fontWeight="bold"
-          fontSize="1rem"
+          fontSize={{base: "1rem", md: "1.4rem"}}
         >
           {text}
         </FormLabel>
@@ -38,7 +38,8 @@ export const DefaultTextArea = ({
           bg="default_white"
           borderColor={errors[id]?"error_red":"primary"}
           border="2px"
-          fontSize="1rem"
+          fontSize={{base: "1rem", md: "1.3rem"}}
+          height={{base: "80px", md: "160px"}}
           {...register(id, { required, maxLength })}
         />
       </Flex>
