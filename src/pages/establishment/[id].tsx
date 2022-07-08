@@ -215,7 +215,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
               height={{base:"120px", md: "200px", lg: "240px"}}
               borderRadius="full"
             />
-            <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>{name}</Heading>
+            <Flex maxWidth="300px" wordBreak="break-all">
+              <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>{name}</Heading>
+            </Flex>
             <Flex direction="column" textAlign="center" fontSize={{base: "15px", md: "18px", lg: "20px", "2xl": "22px"}}>
               <Text>Estado: {state}</Text>
               <Text>Cidade: {city}</Text>
@@ -301,7 +303,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
                         imageUrl: product.imageUrl,
                       });
                     }}
-                    editItem={()=> editProduct({
+                    editItem={(event)=> {
+                      event.stopPropagation();   
+                      editProduct({
                       id: product.id,
                       name: product.name,
                       description: product.description,
@@ -310,8 +314,12 @@ const Establishment = ({ token, products }: ProductsProps) => {
                       type: product?.type as string,
                       categoryName: product.category?.name as string,
                       imageUrl: product.imageUrl,
-                    })}
-                    removeItem={() => removeProduct(product.id, token)}
+                    })}}
+                    removeItem={(event) => {
+                        event.stopPropagation(); 
+                        removeProduct(product.id, token)
+                      }
+                    }
                     key={key}
                   />
                 ))
@@ -342,7 +350,9 @@ const Establishment = ({ token, products }: ProductsProps) => {
                             imageUrl: product.imageUrl,
                           });
                         }}
-                        editItem={()=> editProduct({
+                        editItem={(event)=> {
+                          event.stopPropagation(); 
+                          editProduct({
                           id: product.id,
                           name: product.name,
                           description: product.description,
@@ -351,8 +361,12 @@ const Establishment = ({ token, products }: ProductsProps) => {
                           type: product?.type as string,
                           categoryName: product.category?.name as string,
                           imageUrl: product.imageUrl,
-                        })}
-                        removeItem={() => removeProduct(product.id, token)}
+                        })}}
+                        removeItem={(event) => {
+                            event.stopPropagation(); 
+                            removeProduct(product.id, token)
+                          }
+                        }
                         key={key}
                       />
                     </GridItem>

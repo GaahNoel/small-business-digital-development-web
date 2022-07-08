@@ -1,10 +1,11 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 
 type DefaultButtonProps = {
   bg: string;
   color: string;
   text: string;
   type?: 'button' | 'submit';
+  isLoading?: boolean;
   onClick?: () => void;
 };
 
@@ -13,6 +14,7 @@ export const DefaultButton = ({
   color,
   text,
   type = 'button',
+  isLoading = false,
   onClick,
 }: DefaultButtonProps) => {
   return (
@@ -28,7 +30,17 @@ export const DefaultButton = ({
         fontSize={{base: "16px", md: "20px"}}
         onClick={onClick}
       >
-        {text}
+        {
+          !isLoading? 
+          text: 
+          <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='default_white'
+            size='md' 
+          />      
+        }
       </Button>
     </>
   );

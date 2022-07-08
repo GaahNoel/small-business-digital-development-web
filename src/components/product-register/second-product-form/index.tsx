@@ -77,6 +77,7 @@ type ProductProps = {
 }
 
 export const SecondProductForm = (props: ProductSecondFormProps) => {
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
   const {
     establishmentId,
@@ -131,18 +132,18 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     price,
     description,
   }: ProductSecondFormData) =>{
-    let imageUrlReturned;
-    if(files[0]){
-      imageUrlReturned = await postImageBB();
-      setImageUrl(imageUrlReturned);
-    } else {
-      imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
-    }
-    setName(name);
-    setPrice(price);
-    setDescription(description);
-    setImageUrl(imageUrlReturned);
     try {
+      let imageUrlReturned;
+      if(files[0]){
+        imageUrlReturned = await postImageBB();
+        setImageUrl(imageUrlReturned);
+      } else {
+        imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
+      }
+      setName(name);
+      setPrice(price);
+      setDescription(description);
+      setImageUrl(imageUrlReturned);
       const response = await api.post(
         'product/create',
         {
@@ -174,21 +175,20 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     price,
     description,
   }: ProductSecondFormData) =>{
-    let imageUrlReturned;
-    if(files[0]){
-      console.log("Encontrou arquivo")
-      imageUrlReturned = await postImageBB();
-      setImageUrl(imageUrlReturned);
-    } else{
-      console.log("Não encontrou arquivo")
-      imageUrlReturned = props.imageUrl;
-    }
-
-    setName(name);
-    setPrice(price);
-    setDescription(description);
-    
     try {
+      let imageUrlReturned;
+      if(files[0]){
+        console.log("Encontrou arquivo")
+        imageUrlReturned = await postImageBB();
+        setImageUrl(imageUrlReturned);
+      } else{
+        console.log("Não encontrou arquivo")
+        imageUrlReturned = props.imageUrl;
+      }
+
+      setName(name);
+      setPrice(price);
+      setDescription(description);
       const response = await api.put(
         `product/edit/${props.id}`,
         {
@@ -231,10 +231,17 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     price,
     description,
   }) => {
-    if(props.registerForm){
-      registerProduct({name, price, description});
-    }else{
-      editProduct({name, price, description});
+    setSubmitLoading(true);
+    try{
+      if(props.registerForm){
+        await registerProduct({name, price, description});
+      }else{
+        await editProduct({name, price, description});
+      }
+    } catch(e) {
+      console.log(e);
+    } finally{
+      setSubmitLoading(false);
     }
   };
 
@@ -253,7 +260,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
             border="2px #000"
             borderRadius="3xl"
             bg="default_white"
-            boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
+            boxShadow={props.registerForm?"-14px 15px 15px -8px rgba(0,0,0,0.35);" :""}  
             padding={{base: "25px", md:"25px 50px"}}
           >
             <FormInput
@@ -277,11 +284,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               register={register}
             />
             <Box
-            width="100%"
-            maxWidth={{base: "90vw", md: "50vw", lg: "40vw", xl: "25vw"}}
-            margin="10px auto"
-            sx={{ '.filepond--credits': { display: 'none' } }}
-          >
+              width="100%"
+              margin="10px auto"
+              sx={{ '.filepond--credits': { display: 'none' } }}
+            >
             <FormLabel
                 htmlFor={`image_label`}
                 color="primary"
@@ -297,10 +303,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               allowMultiple={false}
               name="files"
               allowImageValidateSize={true}
-              imageValidateSizeMinWidth={600}
+              imageValidateSizeMinWidth={400}
               imageValidateSizeMinHeight={400}
-              imageValidateSizeMaxWidth={1024}
-              imageValidateSizeMaxHeight={800}
+              imageValidateSizeMaxWidth={1080}
+              imageValidateSizeMaxHeight={1080}
               labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
             />
           </Box>
@@ -316,6 +322,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               bg="primary"
               color="default_white"
               text="Enviar"
+              isLoading={submitLoading}
               type="submit"
             />
           </Stack>

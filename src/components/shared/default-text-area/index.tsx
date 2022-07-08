@@ -17,7 +17,7 @@ export const DefaultTextArea = ({
   placeholder,
   register,
   required=true,
-  maxLength=40,
+  maxLength=225,
 }: DefaultTextAreaProps) => {
   const { formState: { errors } } = useFormContext();
   return (
@@ -34,6 +34,7 @@ export const DefaultTextArea = ({
         <Textarea
           id={id}
           placeholder={placeholder}
+          maxLength={maxLength}
           resize="none"
           bg="default_white"
           borderColor={errors[id]?"error_red":"primary"}

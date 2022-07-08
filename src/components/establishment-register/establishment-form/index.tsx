@@ -80,6 +80,7 @@ type EstablishmentProps = {
 }
 
 export const EstablishmentForm = (props: EstablishmentFormProps) => {
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [position, setPosition] = useState<PositionProps>();
   const router = useRouter();
   const methods = useForm<EstablishmentFormData>();
@@ -133,24 +134,25 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
   };
 
   const registerEstablishment = async({nome, descricao}: EstablishmentFormData) =>{
-    const { sub: userId } = jwt_decode(props.session) as {
-      sub: string;
-    };
-    let imageUrlReturned;
-    if(files[0]){
-      imageUrlReturned = await postImageBB();
-    }
-    else{
-      imageUrlReturned = 'https://i.ibb.co/RQ6vLP1/Group-1.png';
-    }
-
-    const { lat, lng } = position!.getLngLat();
-
-    const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
-
-    const addressInfo = await getAddressInfo(location);
-    console.log(userId)
     try {
+      const { sub: userId } = jwt_decode(props.session) as {
+        sub: string;
+      };
+      let imageUrlReturned;
+      if(files[0]){
+        imageUrlReturned = await postImageBB();
+      }
+      else{
+        imageUrlReturned = 'https://i.ibb.co/RQ6vLP1/Group-1.png';
+      }
+
+      const { lat, lng } = position!.getLngLat();
+
+      const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
+
+      const addressInfo = await getAddressInfo(location);
+      console.log(userId)
+    
       const response = await api.post(
         'business/create',
         {
@@ -181,22 +183,24 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
   }
 
   const editEstablishment = async({nome, descricao}: EstablishmentFormData) =>{
-    const { sub: userId } = jwt_decode(props.session) as {
-      sub: string;
-    };
-    let imageUrlReturned;
-    if(files[0]){
-      imageUrlReturned = await postImageBB();
-    }
-    else{
-      imageUrlReturned = props.imageUrl;
-    }
-    const { lat, lng } = position!.getLngLat();
-
-    const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
-
-    const addressInfo = await getAddressInfo(location);
+    
     try {
+      const { sub: userId } = jwt_decode(props.session) as {
+        sub: string;
+      };
+      let imageUrlReturned;
+      if(files[0]){
+        imageUrlReturned = await postImageBB();
+      }
+      else{
+        imageUrlReturned = props.imageUrl;
+      }
+      const { lat, lng } = position!.getLngLat();
+
+      const location = {lat: lat.toString(), lng: lng.toString()} as LocationProps;
+
+      const addressInfo = await getAddressInfo(location);
+    
       const response = await api.put(
         `business/edit/${props.id}`,
         {
@@ -246,11 +250,19 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     nome,
     descricao,
   }) => {
-    if(props.registerForm){
-      registerEstablishment({nome, descricao});
-    }else{
-      editEstablishment({nome, descricao});
+    setSubmitLoading(true);
+    try{
+      if(props.registerForm){
+        await registerEstablishment({nome, descricao});
+      }else{
+        await editEstablishment({nome, descricao});
+      }
+    } catch(e){
+      console.log(e);
+    } finally{
+      setSubmitLoading(false);
     }
+    
   };
 
   return (
@@ -268,7 +280,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             border="2px #000"
             borderRadius="3xl"
             bg="default_white"
-            boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
+            boxShadow={props.registerForm?"-14px 15px 15px -8px rgba(0,0,0,0.35);" :""}  
             padding={{base: "25px", md:"25px 50px"}}
           >
             <FormInput
@@ -297,45 +309,48 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
               <DefaultMapInput setPosition={setPosition} editLng={Number(props.lng)} editLat={Number(props.lat)} />
             </Flex>
             <Box
-            width="100%"
-            maxWidth={{base: "70vw", md: "50vw", lg: "40vw", xl: "25vw"}}
-            margin="10px auto"
-            sx={{ '.filepond--credits': { display: 'none' } }}
-          >
-            <FormLabel
-                htmlFor={`image_label`}
-                color="primary"
-                fontWeight="bold"
-                fontSize={{base: "1rem", md: "1.4rem"}}
-              >
-                Imagem
-            </FormLabel>
-            <FilePond
-              files={files}
-              onupdatefiles={setFiles}
-              instantUpload={false}
-              allowMultiple={false}
-              name="files"
-              labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
-            />
-          </Box>
-
-          <Stack direction="row" justify="center" spacing={25} marginTop="30px">
-            <DefaultButton
-              bg="default_black"
-              color="default_white"
-              text="Cancelar"
-              onClick={() => {
-                props.clickBackButton();
-              }}
-            />
-            <DefaultButton
-              bg="primary"
-              color="default_white"
-              text="Enviar"
-              type="submit"
-            />
-          </Stack>
+              width="100%"
+              margin="10px auto"
+              sx={{ '.filepond--credits': { display: 'none' } }}
+            >
+              <FormLabel
+                  htmlFor={`image_label`}
+                  color="primary"
+                  fontWeight="bold"
+                  fontSize={{base: "1rem", md: "1.4rem"}}
+                >
+                  Imagem
+              </FormLabel>
+              <FilePond
+                files={files}
+                onupdatefiles={setFiles}
+                instantUpload={false}
+                allowMultiple={false}
+                imageValidateSizeMinWidth={400}
+                imageValidateSizeMinHeight={400}
+                imageValidateSizeMaxWidth={1080}
+                imageValidateSizeMaxHeight={1080}
+                name="files"
+                labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
+              />
+            </Box>
+            <Stack direction="row" justify="center" spacing={25} marginTop="30px">
+              <DefaultButton
+                bg="default_black"
+                color="default_white"
+                text="Cancelar"
+                onClick={() => {
+                  props.clickBackButton();
+                }}
+              />
+              <DefaultButton
+                bg="primary"
+                color="default_white"
+                text="Enviar"
+                isLoading={submitLoading}
+                type="submit"
+              />
+            </Stack>
           </Stack>
           
         </FormControl>

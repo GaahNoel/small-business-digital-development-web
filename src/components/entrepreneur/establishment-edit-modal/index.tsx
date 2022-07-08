@@ -68,6 +68,8 @@ import {
               color="primary"
               fontSize="30px"
               fontWeight="bold"
+              maxWidth="300px" 
+              wordBreak="break-all"
             >
               {name}
             </ModalHeader>

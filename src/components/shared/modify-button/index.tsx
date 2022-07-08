@@ -5,7 +5,7 @@ type ModifyButtonProps = {
   icon: IconType;
   text: string;
   color: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export const ModifyButton = ({
@@ -16,7 +16,7 @@ export const ModifyButton = ({
 }: ModifyButtonProps) => {
   return (
     <>
-      <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} w="80px">
+      <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} width={{base: "80px", md: "100px", xl: "120px"}}>
         <Stack
           direction="row"
           align="center"
@@ -24,10 +24,10 @@ export const ModifyButton = ({
           fontWeight="semibold"
           color={color}
           spacing={1}
-          onClick={() => onClick()}
+          onClick={onClick}
         >
-          <Icon as={icon} fontSize="18px" />
-          <Text fontSize="14px">{text}</Text>
+          <Icon as={icon} fontSize={{base: "18px", md: "22px", xl: "26px"}} />
+          <Text fontSize={{base: "14px", md: "16px", xl: "18px"}}>{text}</Text>
         </Stack>
       </Button>
     </>

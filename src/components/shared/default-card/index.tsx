@@ -1,4 +1,5 @@
 import { Flex, IconButton, Img, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { ModifyButton } from '../modify-button';
@@ -7,8 +8,8 @@ type DefaultCardProps = {
   name: string;
   img: string;
   detailClick: () => void;
-  editItem: () => void;
-  removeItem: () => void;
+  editItem: (e: React.MouseEvent<HTMLDivElement>) => void;
+  removeItem: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export const DefaultCard = ({
@@ -28,33 +29,39 @@ export const DefaultCard = ({
         borderRadius="2xl"
         boxShadow="dark-lg"
         width={{base: "330px", sm: "355px", md: "405px", lg: "430px", xl: "530px"}}
-        height={{base: "120px", sm: "140px", md: "160px", lg: "180px", xl: "200px"}} 
+        height={{base: "120px", sm: "140px", md: "160px", lg: "180px", xl: "200px"}}
+        cursor="pointer"
+        overflow="hidden"
+        transition="0.2s border ease-in-out"
+        border="1px solid transparent"
+        _hover={{border: "1px solid #000"}}
+        onClick={detailClick}
         spacing={1}
       >
         <Flex width="100%" height="100%" align="center" justify={{base: "center", md: "start"}}>
           <Img src={img} width={{base: "80px", sm: "100px", md: "160px", lg: "180px", xl: "200px"}} height={{base: "80px", sm: "100px", md: "100%"}} borderBottomRightRadius={{base: "full", md: "100px"}} borderTopRightRadius={{base: "full", md: "0px"}} borderLeftRadius={{base: "full", md: "0px"}} />
         </Flex>
-        <Flex align="center" justify="center" width="100%">
-          <Stack spacing={1} textAlign="center">
+        <Flex direction="column" justify="space-around" textAlign="center" width="100%" height="100%">
+          <Flex maxWidth="300px" wordBreak="break-all">
             <Text fontSize={{base: "14px", sm: "18px", md: "22px", lg: "24px", xl: "26px"}} fontWeight="bold">
               {name}
             </Text>
-            <Flex justify="center">
-              <ModifyButton
-                icon={FiTool}
-                text="Editar"
-                color="primary"
-                onClick={() => editItem()}
-              />
-              <ModifyButton
-                icon={RiDeleteBinLine}
-                text="Remover"
-                color="default_orange"
-                onClick={() => removeItem()}
-              />
-            </Flex>
+          </Flex>
+          <Stack direction="row" justify="center" spacing={2}>
+            <ModifyButton
+              icon={FiTool}
+              text="Editar"
+              color="primary"
+              onClick={editItem}
+            />
+            <ModifyButton
+              icon={RiDeleteBinLine}
+              text="Remover"
+              color="default_orange"
+              onClick={removeItem}
+            />
           </Stack>
-        </Flex>       
+        </Flex>
         <Flex width="auto" justify="end">
             <IconButton
               as={FiChevronRight}

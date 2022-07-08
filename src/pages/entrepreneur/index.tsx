@@ -214,26 +214,33 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                       name={establishment.name}
                       img={establishment.imageUrl}
                       detailClick={() => {
-                        clickCard(
-                          establishment.id,
-                          establishment.name,
-                          establishment.imageUrl,
-                          establishment?.state as string,
-                          establishment?.city as string,
-                          establishment?.street as string
-                        );
-                      }}
-                      editItem={()=> editEstablishment({
-                        session: token,
-                        id: establishment.id,
-                        name: establishment.name,
-                        description: establishment.description,
-                        lat: establishment.latitude,
-                        lng: establishment.longitude,
-                        imageUrl: establishment.imageUrl,
-                      })}
-                      removeItem={() =>
-                        removeEstablishment(establishment.id, token)
+                          clickCard(
+                            establishment.id,
+                            establishment.name,
+                            establishment.imageUrl,
+                            establishment?.state as string,
+                            establishment?.city as string,
+                            establishment?.street as string
+                          );
+                        }
+                      }
+                      editItem={(event)=> {
+                        event.stopPropagation();  
+                        editEstablishment({
+                            session: token,
+                            id: establishment.id,
+                            name: establishment.name,
+                            description: establishment.description,
+                            lat: establishment.latitude,
+                            lng: establishment.longitude,
+                            imageUrl: establishment.imageUrl,
+                          })
+                        }
+                      }
+                      removeItem={(event) =>{
+                          event.stopPropagation(); 
+                          removeEstablishment(establishment.id, token)
+                        } 
                       }
                     />
                   ))
@@ -263,7 +270,9 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                               establishment?.street as string
                             );
                           }}
-                          editItem={()=> editEstablishment({
+                          editItem={(event)=> {
+                            event.stopPropagation();  
+                            editEstablishment({
                             session: token,
                             id: establishment.id,
                             name: establishment.name,
@@ -271,9 +280,11 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                             lat: establishment.latitude,
                             lng: establishment.longitude,
                             imageUrl: establishment.imageUrl,
-                          })}
-                          removeItem={() =>
-                            removeEstablishment(establishment.id, token)
+                          })}}
+                          removeItem={(event) =>{
+                              event.stopPropagation();  
+                              removeEstablishment(establishment.id, token);
+                            }
                           }
                         />
                       </GridItem>
