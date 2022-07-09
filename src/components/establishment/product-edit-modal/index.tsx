@@ -17,6 +17,7 @@ import { SecondProductForm } from '../../product-register/second-product-form';
     price: number;
     imageUrl: string;
     isOpen: boolean;
+    establishmentBase: EstablishmentBaseProps;
     onClose: () => void;
     updateState: (id: string, productFound: ProductProps) => void;
   };
@@ -36,6 +37,11 @@ import { SecondProductForm } from '../../product-register/second-product-form';
       name: string;
     }
   }
+
+  type EstablishmentBaseProps = {
+    id: string,
+    name: string,
+  };
   
   export const ProductEditModal = ({
     id,
@@ -44,6 +50,7 @@ import { SecondProductForm } from '../../product-register/second-product-form';
     price,
     imageUrl,
     isOpen,
+    establishmentBase,
     onClose,
     updateState,
   }: ProductEditModalProps) => {
@@ -79,7 +86,7 @@ import { SecondProductForm } from '../../product-register/second-product-form';
               width="90vw"
               maxWidth="500px"
             >
-              <SecondProductForm id={id} name={name} description={description} price={String(price)} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose} updateState={updateState}/>
+              <SecondProductForm establishmentBase={establishmentBase} id={id} name={name} description={description} price={String(price)} imageUrl={imageUrl} registerForm={false} clickBackButton={onClose} updateState={updateState}/>
             </ModalBody>
             <ModalFooter>
             </ModalFooter>

@@ -20,7 +20,6 @@ import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { api } from '../../service/api';
-import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { useProductForm } from '../../hooks/product-form';
 import { ProductModal } from '../../components/establishment/product-modal';
@@ -31,6 +30,21 @@ import { ProductEditModal } from '../../components/establishment/product-edit-mo
 type ParamsProps = {
   id: string;
 };
+
+type EstablishmentProps = {
+  id: string,
+  name: string,
+  description: string,
+  accountId: string,
+  imageUrl: string,
+  latitude: string,
+  longitude: string,
+  street: string,
+  city: string,
+  state: string,
+  zip: string,
+  country: string
+}
 
 type ProductProps = {
   id: string;
@@ -51,6 +65,7 @@ type ProductProps = {
 type ProductsProps = {
   token: string;
   products: ProductProps[];
+  establishmentInfo: EstablishmentProps;
 };
 
 type ProductsStateProps = ProductProps[];
@@ -67,11 +82,19 @@ type ProductModalProps = {
   categoryName: string;
 };
 
-const Establishment = ({ token, products }: ProductsProps) => {
+type EstablishmentBaseProps = {
+  id: string,
+  name: string,
+};
+
+const Establishment = ({ token, products, establishmentInfo }: ProductsProps) => {
   const router = useRouter();
-  const { id, name, imageUrl, state, city, reference } = useEstablishmentForm();
+  const [establishmentBase, setEstablishmentBase] = useState<EstablishmentBaseProps>({
+    id: '',
+    name: ''
+  });
   const { form, setStage } = useProductForm();
-  const { setEstablishmentId, setEstablishmentName, setToken } = form;
+  const { setToken } = form;
   const { isOpen: viewProductIsOpen, onOpen: viewProductOnOpen, onClose: viewProductOnClose } = useDisclosure();
   const { isOpen: editProductIsOpen, onOpen: editProductOnOpen, onClose: editProductOnClose } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
@@ -96,13 +119,15 @@ const Establishment = ({ token, products }: ProductsProps) => {
   useEffect(() => {
     setProductsState(products);
     setToken(token);
+    setEstablishmentBase({
+      id: establishmentInfo.id,
+      name: establishmentInfo.name,
+    })
   }, []);
 
-  const clickNewProduct = (id: string, name: string) => {
-    setEstablishmentId(id);
-    setEstablishmentName(name);
+  const clickNewProduct = (id: string) => {
     setStage('first');
-    router.push('/product-register');
+    router.push(`/product-register/${id}`);
   };
 
   const openModal = ({
@@ -210,18 +235,18 @@ const Establishment = ({ token, products }: ProductsProps) => {
             spacing={1}
           >
             <Img
-              src={imageUrl}
+              src={establishmentInfo.imageUrl}
               width={{base:"120px", md: "200px", lg: "240px"}}
               height={{base:"120px", md: "200px", lg: "240px"}}
               borderRadius="full"
             />
             <Flex maxWidth="300px" wordBreak="break-all">
-              <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>{name}</Heading>
+              <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>{establishmentInfo.name}</Heading>
             </Flex>
             <Flex direction="column" textAlign="center" fontSize={{base: "15px", md: "18px", lg: "20px", "2xl": "22px"}}>
-              <Text>Estado: {state}</Text>
-              <Text>Cidade: {city}</Text>
-              <Text>Localização: {reference}</Text>
+              <Text>Estado: {establishmentInfo.state}</Text>
+              <Text>Cidade: {establishmentInfo.city}</Text>
+              <Text>Localização: {establishmentInfo.street}</Text>
             </Flex>  
           </Stack>
         </Flex>
@@ -244,7 +269,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
               position="relative"
               top={{base: "-23px", sm: "-35", md: "-45"}}
               onClick={() => {
-                clickNewProduct(id, name);
+                clickNewProduct(establishmentInfo.id);
               }}
             >
               <Stack
@@ -259,7 +284,7 @@ const Establishment = ({ token, products }: ProductsProps) => {
               </Stack>
             </Button>
           </Flex>
-          <ProductEditModal id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
+          <ProductEditModal establishmentBase={establishmentBase} id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
             onClose={editProductOnClose} updateState={updateProductState}/>
           <ProductModal
             name={productModal?.name as string}
@@ -391,7 +416,12 @@ const Establishment = ({ token, products }: ProductsProps) => {
 
 const getProductList = async (id: string) => {
   const response = await api.get(`product/list/${id}`);
-  console.log(response);
+  return response.data;
+};
+
+const getEstablishmentInfo = async(id: string) => {
+  const response = await api.get(`business/${id}`);
+  console.log(response.data);
   return response.data;
 };
 
@@ -407,6 +437,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { id } = params as ParamsProps;
 
   const products = await getProductList(id);
+  const establishmentInfo = await getEstablishmentInfo(id);
 
   if (!token) {
     return {
@@ -418,7 +449,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    props: { products, token },
+    props: { products, establishmentInfo, token },
   };
 };
 

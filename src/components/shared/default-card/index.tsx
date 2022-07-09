@@ -42,7 +42,7 @@ export const DefaultCard = ({
           <Img src={img} width={{base: "80px", sm: "100px", md: "160px", lg: "180px", xl: "200px"}} height={{base: "80px", sm: "100px", md: "100%"}} borderBottomRightRadius={{base: "full", md: "100px"}} borderTopRightRadius={{base: "full", md: "0px"}} borderLeftRadius={{base: "full", md: "0px"}} />
         </Flex>
         <Flex direction="column" justify="space-around" textAlign="center" width="100%" height="100%">
-          <Flex maxWidth="300px" wordBreak="break-all">
+          <Flex maxWidth="300px" wordBreak="break-all" textAlign="center" justify="center">
             <Text fontSize={{base: "14px", sm: "18px", md: "22px", lg: "24px", xl: "26px"}} fontWeight="bold">
               {name}
             </Text>

@@ -7,7 +7,16 @@ import { SecondProductForm } from '../second-product-form';
 import { useProductForm } from '../../../hooks/product-form';
 import { ProductSecondHalfImage } from './product-second-half-image';
 
-export const ProductRegisterSecondStep = () => {
+type EstablishmentBaseProps = {
+  id: string,
+  name: string,
+};
+
+type ProductRegisterSecondStepProps = {
+  establishmentBase: EstablishmentBaseProps;
+};
+
+export const ProductRegisterSecondStep = ({establishmentBase}: ProductRegisterSecondStepProps) => {
   const {setStage} = useProductForm();
   return (
     <>
@@ -26,7 +35,7 @@ export const ProductRegisterSecondStep = () => {
           padding="30px 0px"
           margin="auto"
           borderTopLeftRadius={{base: "65px", lg: "0px"}}> 
-            <SecondProductForm name='' description='' price='' registerForm={true} clickBackButton={()=>setStage('first')} />
+            <SecondProductForm establishmentBase={establishmentBase} name='' description='' price='' registerForm={true} clickBackButton={()=>setStage('first')} />
           </Flex>
         <Flex width="45%" display={{base: "none", lg: "flex"}}>
           <ProductSecondHalfImage />

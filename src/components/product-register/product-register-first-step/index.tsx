@@ -3,11 +3,18 @@ import { ItemRegisterForm } from '../../item-register/item-register-form';
 import { HeaderHalfCircleTop } from '../../shared/header-half-circle-top';
 import { HalfImage } from './half-image';
 
+type EstablishmentBaseProps = {
+  id: string,
+  name: string,
+};
+
 type ProductRegisterFirstStepProps = {
+  establishmentBase: EstablishmentBaseProps;
   categories: { id: string; name: string }[];
 };
 
 export const ProductRegisterFirstStep = ({
+  establishmentBase,
   categories,
 }: ProductRegisterFirstStepProps) => {
   return (
@@ -23,7 +30,7 @@ export const ProductRegisterFirstStep = ({
         <Flex width="45%" display={{base: "none", lg: "flex"}}>
           <HalfImage />
         </Flex>
-        <ItemRegisterForm categories={categories} />
+        <ItemRegisterForm establishmentBase={establishmentBase} categories={categories} />
       </Flex>
     </>
   );

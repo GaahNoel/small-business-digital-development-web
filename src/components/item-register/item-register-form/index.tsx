@@ -5,7 +5,13 @@ import { useProductForm } from '../../../hooks/product-form';
 import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
+type EstablishmentBaseProps = {
+  id: string,
+  name: string,
+};
+
 type ItemRegisterFormProps = {
+  establishmentBase: EstablishmentBaseProps;
   categories: { id: string; name: string }[];
 };
 
@@ -14,7 +20,7 @@ type RegisterItemFormData = {
   category: string;
 };
 
-export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
+export const ItemRegisterForm = ({establishmentBase, categories }: ItemRegisterFormProps) => {
   const methods = useForm<RegisterItemFormData>();
   const {
     register,
@@ -24,15 +30,11 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
   } = methods;
   const { setStage, form } = useProductForm();
   const {
-    establishmentId,
-    establishmentName,
-    type,
     setType,
-    category,
     setCategory,
   } = form;
   const establishmentOptions = [
-    { id: establishmentId, name: establishmentName },
+    { id: establishmentBase.id, name: establishmentBase.name },
   ];
   const typeOptions = [
     { id: '1', name: 'Produto' },
@@ -96,7 +98,7 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
-              onClick={() => router.push('/')}
+              onClick={() => router.push(`/establishment/${establishmentBase.id}`)}
             />
             <DefaultButton
               bg="primary"

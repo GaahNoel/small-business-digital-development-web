@@ -9,7 +9,6 @@ import { api } from '../../service/api';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { Router, useRouter } from 'next/router';
-import { useEstablishmentForm } from '../../hooks/establishment-form';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -51,7 +50,6 @@ type EstablishmentModalProps = {
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
-  const { setId, setName, setImageUrl, setState, setCity, setReference } = useEstablishmentForm();
   const { isOpen: editEstablishmentIsOpen, onOpen: editEstablishmentOnOpen, onClose: editEstablishmentOnClose } = useDisclosure();
   const [establishmentModal, setEstablishmentModal] = useState<EstablishmentModalProps>();
   const [establishmentsState, setEstablishmentsState] = useState<EstablishmentsProps>([
@@ -76,12 +74,6 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   }, []);
 
   const clickCard = (id: string, name: string, imageUrl: string, state: string, city: string, reference: string) => {
-    setId(id);
-    setName(name);
-    setImageUrl(imageUrl);
-    setState(state);
-    setCity(city);
-    setReference(reference);
     router.push(`/establishment/${id}`);
   };
 

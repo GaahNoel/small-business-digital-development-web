@@ -52,6 +52,7 @@ type ProductSecondFormProps = {
   registerForm: boolean;
   clickBackButton: () => void;
   updateState?: (id: string, productFound: ProductProps) => void;
+  establishmentBase: EstablishmentBaseProps;
 };
 
 type ProductSecondFormData = {
@@ -76,18 +77,19 @@ type ProductProps = {
   }
 }
 
+type EstablishmentBaseProps = {
+  id: string,
+  name: string,
+};
+
+
 export const SecondProductForm = (props: ProductSecondFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
   const {
-    establishmentId,
     token,
     type,
     category,
-    setName,
-    setPrice,
-    setDescription,
-    setImageUrl,
   } = form;
   const methods = useForm<ProductSecondFormData>();
   const {
@@ -136,14 +138,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       let imageUrlReturned;
       if(files[0]){
         imageUrlReturned = await postImageBB();
-        setImageUrl(imageUrlReturned);
       } else {
         imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
       }
-      setName(name);
-      setPrice(price);
-      setDescription(description);
-      setImageUrl(imageUrlReturned);
+      console.log(token)
       const response = await api.post(
         'product/create',
         {
@@ -153,7 +151,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           listPrice: parseFloat(price),
           salePrice: parseFloat(price),
           imageUrl: imageUrlReturned,
-          businessId: establishmentId,
+          businessId: props.establishmentBase.id,
           categoryId: category,
         },
         {
@@ -164,7 +162,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
         },
       );
       toast.success('Produto cadastrado com sucesso!');
-      router.push('/entrepreneur');
+      router.push(`/establishment/${props.establishmentBase.id}`);
     } catch (e: any) {
       console.log(e);
     }
@@ -180,15 +178,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       if(files[0]){
         console.log("Encontrou arquivo")
         imageUrlReturned = await postImageBB();
-        setImageUrl(imageUrlReturned);
       } else{
         console.log("Não encontrou arquivo")
         imageUrlReturned = props.imageUrl;
       }
-
-      setName(name);
-      setPrice(price);
-      setDescription(description);
       const response = await api.put(
         `product/edit/${props.id}`,
         {
