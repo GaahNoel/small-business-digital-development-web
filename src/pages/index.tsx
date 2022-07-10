@@ -96,7 +96,7 @@ const Home: NextPage = () => (
                 colorText="default_white"
                 icon={FiPackage}
                 text="Produtos"
-                page="/"
+                page="/product-list"
               />
               <PrincipalButton
                 colorButton="service_blue"
