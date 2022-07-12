@@ -46,9 +46,8 @@ export const FormProductServiceSearch = ({type, name, items, setItems, searchBar
     formState: { errors },
   } = methods;
 
-  const onChange: SubmitHandler<FormProductServiceSearchData> = async ({
-    name
-    }) => {
+  const onChange: SubmitHandler<FormProductServiceSearchData> = async () => {
+        const name = searchBar.current.value;
         const itemsFiltered = items.filter((item) => {
           if(item.name.toUpperCase().includes(name.toUpperCase()))
             return item
@@ -64,7 +63,7 @@ export const FormProductServiceSearch = ({type, name, items, setItems, searchBar
                     {`Busque os ${name}s que deseja`}
                 </Text>
                 <Stack width={{base: "100%", sm: "355px", md: "405px", lg: "430px", xl: "530px"}} margin="0px auto" direction="row"> 
-                    <Input {...register('name')} placeholder={`Digite o nome do ${name} desejado`} required={true} bg="default_white" borderRadius="15px" ref={searchBar}/>
+                    <Input placeholder={`Digite o nome do ${name} desejado`} required={true} bg="default_white" borderRadius="15px" ref={searchBar}/>
                 </Stack>
             </Stack>
         </FormControl>

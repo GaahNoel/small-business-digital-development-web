@@ -21,6 +21,7 @@ import { EntrepreneurButton } from '../components/home/entrepreneur-button';
 import { Footer } from '../components/home/footer';
 import Lottie from 'react-lottie';
 import * as animationData from '../../public/business-idea-animation.json'
+import { InputMap } from '../components/home/input-map';
 
 const Home: NextPage = () => (
   <>
@@ -48,35 +49,7 @@ const Home: NextPage = () => (
               </Text>
             </Flex>
           </Flex>
-          <Stack
-            bg="default_white"
-            margin={{base: "30px auto 100px auto", md: "30px auto 50px auto"}}
-            minW="200px"
-            width={{base: "90%", md: "72%"}}
-            padding="5px 10px"
-            borderRadius="20px"
-            align="center"
-            direction="row"
-            spacing={2}
-          >
-            <IconButton
-              as={FiSearch}
-              aria-label="16px"
-              color="primary"
-              size="sm"
-              bg="default_white"
-              cursor="pointer"
-            />
-            <Input
-              id={'search'}
-              type={'text'}
-              placeholder={'Digite aqui seu endereço'}
-              whiteSpace="nowrap"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              border="none"
-            />
-          </Stack>
+          <InputMap />
         </Flex>    
       </Flex>
       <Flex
@@ -103,7 +76,7 @@ const Home: NextPage = () => (
                 colorText="default_white"
                 icon={FiTool}
                 text="Serviços"
-                page="/"
+                page="/service-list"
               />
               <PrincipalButton
                 colorButton="default_yellow"

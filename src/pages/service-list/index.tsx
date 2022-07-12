@@ -18,7 +18,7 @@ import { DefaultHeader } from '../../components/shared/default-header';
 import { ProductServiceListModal } from '../../components/shared/product-service-list-modal';
 import { InputType } from 'zlib';
 
-type ProductListProps = {
+type ServiceListProps = {
     cities: CityOptions;
 };
 
@@ -27,7 +27,7 @@ type Location = {
     lng: number;
 }
 
-type Products = {
+type Services = {
     business: {
         distance: number,
         id: string,
@@ -65,14 +65,14 @@ type ItemModalProps = {
     categoryName: string;
   };
 
-const ProductList = ({cities}: ProductListProps) => {
-  const type = "produto"
+const ServiceList = ({cities}: ServiceListProps) => {
+  const type = "serviço"
   const router = useRouter();
   const [location, setLocation] = useState<Location>();
   const [searchMode, setSearchMode] = useState('Loading');
   const [isLoadingCitySearch, setIsLoadingCitySearch] = useState(false);
-  const [products, setProducts] = useState<Products>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Products>([]);
+  const [services, setServices] = useState<Services>([]);
+  const [filteredServices, setFilteredServices] = useState<Services>([]);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
   const [itemModal, setItemModal] = useState<ItemModalProps>();
   const { isOpen: viewItemIsOpen, onOpen: viewItemOnOpen, onClose: viewItemOnClose } = useDisclosure();
@@ -90,55 +90,54 @@ const ProductList = ({cities}: ProductListProps) => {
    },[]);
 
    useEffect(()=>{
-    getProductsByLatLng();
+    getServicesByLatLng();
    }, [location]);
 
-   const getProductsByLatLng = async () =>{
+   const getServicesByLatLng = async () =>{
     if(location){
-        await productsNearbyLatLng(location);
+        await servicesNearbyLatLng(location);
         setSearchMode('LatLng')
     }
    }
 
-   const productsNearbyLatLng = async(locationInfo: Location) =>{
+   const servicesNearbyLatLng = async(locationInfo: Location) =>{
     try{
         const response = await api.get(
             'product/list/nearby',
              {
                 params: {
-                    type: 'product',
+                    type: 'service',
                     latitude: locationInfo.lat,
                     longitude: locationInfo.lng,
                     radius: 10
                 }
             },
         );
-        console.log(response.data);
-        setProducts(response.data);
-        setFilteredProducts(response.data);
+        setServices(response.data);
+        setFilteredServices(response.data);
     } catch(e){
         console.log(e);
     }
    }
    
-   const searchProductsByCity = async(city: string, state: string) => {
+   const searchServicesByCity = async(city: string, state: string) => {
     setIsLoadingCitySearch(true);
     try{
         const response = await api.get(
             'product/list/nearby',
             {
                 params: {
-                    type: 'product',
+                    type: 'service',
                     city,
                     state,
                 }   
             },
         );
-        setProducts(response.data);
-        setFilteredProducts(response.data);
+        setServices(response.data);
+        setFilteredServices(response.data);
     } catch(e){
-        setProducts([]);
-        setFilteredProducts([]);
+        setServices([]);
+        setFilteredServices([]);
     } finally {
         setIsLoadingCitySearch(false);
         setIsFirstSearch(false);
@@ -179,13 +178,13 @@ const ProductList = ({cities}: ProductListProps) => {
             <Flex id="Headers" >
                 <Flex display={{base: "flex", md: "none"}} width="100%" bg="secondary">
                     <HeaderHalfCircleTop>
-                        <FormProductServiceSearch type="product" name="produto" items={products} setItems={setFilteredProducts} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
+                        <FormProductServiceSearch type="service" name="serviço" items={services} setItems={setFilteredServices} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
                     </HeaderHalfCircleTop>
                 </Flex>
                 <Flex display={{base: "none", md: "flex"}} width={{base: "90%", lg:"80%"}} maxW={{base: "100%", md: "1280"}} alignSelf="center" direction="column" margin="0px auto">
                     <DefaultHeader />
                     <Flex align="center" direction="column" paddingBottom="40px">
-                        <FormProductServiceSearch type="product" name="produto" items={products} setItems={setFilteredProducts} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
+                        <FormProductServiceSearch type="service" name="serviço" items={services} setItems={setFilteredServices} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
                     </Flex>    
                 </Flex>
             </Flex>
@@ -199,33 +198,33 @@ const ProductList = ({cities}: ProductListProps) => {
                         size='xl' 
                     />  
                 </Flex>
-                <Flex display={searchMode==="LatLng"?"flex":"none"} align="center" direction="column" width="100%" marginTop="40px">
+                <Flex id="LatLng"  display={searchMode==="LatLng"?"flex":"none"} align="center" direction="column" width="100%" marginTop="40px">
                     <Text fontSize={{base: "16px", md: "20px"}} fontWeight="medium" marginBottom="20px">
                         {capitalize(type)}s encontrados próximos a você:
                     </Text>
                     <Flex align="center" justify="center" margin="0px auto" direction="column" display={{base: "flex", md: "none"}}>    
                         {
-                            filteredProducts.length > 0 ? (
-                                filteredProducts.map((product, key) => (
+                            filteredServices.length > 0 ? (
+                                filteredServices.map((service, key) => (
                                     <ListProductServiceCard 
                                         key={key} 
-                                        name={product.name} 
-                                        img={product.imageUrl} 
-                                        description={product.description} 
-                                        listPrice={product.listPrice} 
-                                        salePrice={product.salePrice} 
-                                        businessId={product.business.id} 
-                                        businessName={product.business.name}
+                                        name={service.name} 
+                                        img={service.imageUrl} 
+                                        description={service.description} 
+                                        listPrice={service.listPrice} 
+                                        salePrice={service.salePrice} 
+                                        businessId={service.business.id} 
+                                        businessName={service.business.name}
                                         detailClick={() => {
                                             openModal({
-                                              id: product.id,
-                                              name: product.name,
-                                              description: product.description,
-                                              listPrice: product.listPrice,
-                                              salePrice: product.salePrice,
-                                              type: product?.type as string,
-                                              categoryName: product.category?.name  as string,
-                                              imageUrl: product.imageUrl,
+                                              id: service.id,
+                                              name: service.name,
+                                              description: service.description,
+                                              listPrice: service.listPrice,
+                                              salePrice: service.salePrice,
+                                              type: service?.type as string,
+                                              categoryName: service.category?.name  as string,
+                                              imageUrl: service.imageUrl,
                                             });
                                         }}
                                     />
@@ -240,73 +239,73 @@ const ProductList = ({cities}: ProductListProps) => {
                     <Flex align="center">
                         <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
                             {
-                                filteredProducts.length > 0 ? (
-                                    filteredProducts.map((product, key) => (
+                                filteredServices.length > 0 ? (
+                                    filteredServices.map((service, key) => (
                                 <GridItem colSpan={1} key={key}>
                                     <ListProductServiceCard 
                                         key={key} 
-                                        name={product.name} 
-                                        img={product.imageUrl} 
-                                        description={product.description} 
-                                        listPrice={product.listPrice} 
-                                        salePrice={product.salePrice} 
-                                        businessId={product.business.id} 
-                                        businessName={product.business.name}
+                                        name={service.name} 
+                                        img={service.imageUrl} 
+                                        description={service.description} 
+                                        listPrice={service.listPrice} 
+                                        salePrice={service.salePrice} 
+                                        businessId={service.business.id} 
+                                        businessName={service.business.name}
                                         detailClick={() => {
                                             openModal({
-                                              id: product.id,
-                                              name: product.name,
-                                              description: product.description,
-                                              listPrice: product.listPrice,
-                                              salePrice: product.salePrice,
-                                              type: product?.type as string,
-                                              categoryName: product.category?.name  as string,
-                                              imageUrl: product.imageUrl,
+                                              id: service.id,
+                                              name: service.name,
+                                              description: service.description,
+                                              listPrice: service.listPrice,
+                                              salePrice: service.salePrice,
+                                              type: service?.type as string,
+                                              categoryName: service.category?.name  as string,
+                                              imageUrl: service.imageUrl,
                                             });
                                         }}
                                     />
                                 </GridItem>
                                 ))
                                 ) : (
-                                <GridItem colSpan={{base: 1, lg: 2}} key="0 products">
+                                <GridItem colSpan={{base: 1, lg: 2}} key="0 services">
                                     <NoItemsText
                                     color="primary"
-                                    text="Nenhum produto encontrado"
+                                    text={`Nenhum ${type} encontrado`}
                                     />
                                 </GridItem>
                             )}
                         </Grid>
-                    </Flex>             
+                    </Flex>           
                 </Flex>
                 <Flex display={searchMode==="City"?"flex":"none"} align="center" direction="column" width="100%" marginTop="40px">
-                    <FormCitySelect cityOptions={cities} search={searchProductsByCity} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
+                    <FormCitySelect cityOptions={cities} search={searchServicesByCity} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
                     <Flex direction="column">
                         {
                             !isLoadingCitySearch ? (
                                 <>
                                     <Flex direction="column" display={{base: "flex", md: "none"}}>
                                         {
-                                            filteredProducts.length > 0 ? (
-                                                filteredProducts.map((product, key) => (
+                                            filteredServices.length > 0 ? (
+                                                filteredServices.map((service, key) => (
                                                     <ListProductServiceCard 
                                                         key={key} 
-                                                        name={product.name} 
-                                                        img={product.imageUrl} 
-                                                        description={product.description} 
-                                                        listPrice={product.listPrice} 
-                                                        salePrice={product.salePrice} 
-                                                        businessId={product.business.id} 
-                                                        businessName={product.business.name}
+                                                        name={service.name} 
+                                                        img={service.imageUrl} 
+                                                        description={service.description} 
+                                                        listPrice={service.listPrice} 
+                                                        salePrice={service.salePrice} 
+                                                        businessId={service.business.id} 
+                                                        businessName={service.business.name}
                                                         detailClick={() => {
                                                             openModal({
-                                                            id: product.id,
-                                                            name: product.name,
-                                                            description: product.description,
-                                                            listPrice: product.listPrice,
-                                                            salePrice: product.salePrice,
-                                                            type: product?.type as string,
-                                                            categoryName: product.category?.name  as string,
-                                                            imageUrl: product.imageUrl,
+                                                            id: service.id,
+                                                            name: service.name,
+                                                            description: service.description,
+                                                            listPrice: service.listPrice,
+                                                            salePrice: service.salePrice,
+                                                            type: service?.type as string,
+                                                            categoryName: service.category?.name  as string,
+                                                            imageUrl: service.imageUrl,
                                                             });
                                                         }}
                                                     />
@@ -326,35 +325,35 @@ const ProductList = ({cities}: ProductListProps) => {
                                     </Flex>
                                     <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
                                         {
-                                            filteredProducts.length > 0 ? (
-                                            filteredProducts.map((product, key) => (
+                                            filteredServices.length > 0 ? (
+                                            filteredServices.map((service, key) => (
                                             <GridItem colSpan={1} key={key}>
                                                 <ListProductServiceCard 
                                                     key={key} 
-                                                    name={product.name} 
-                                                    img={product.imageUrl} 
-                                                    description={product.description} 
-                                                    listPrice={product.listPrice} 
-                                                    salePrice={product.salePrice} 
-                                                    businessId={product.business.id} 
-                                                    businessName={product.business.name}
+                                                    name={service.name} 
+                                                    img={service.imageUrl} 
+                                                    description={service.description} 
+                                                    listPrice={service.listPrice} 
+                                                    salePrice={service.salePrice} 
+                                                    businessId={service.business.id} 
+                                                    businessName={service.business.name}
                                                     detailClick={() => {
                                                         openModal({
-                                                        id: product.id,
-                                                        name: product.name,
-                                                        description: product.description,
-                                                        listPrice: product.listPrice,
-                                                        salePrice: product.salePrice,
-                                                        type: product?.type as string,
-                                                        categoryName: product.category?.name  as string,
-                                                        imageUrl: product.imageUrl,
+                                                        id: service.id,
+                                                        name: service.name,
+                                                        description: service.description,
+                                                        listPrice: service.listPrice,
+                                                        salePrice: service.salePrice,
+                                                        type: service?.type as string,
+                                                        categoryName: service.category?.name  as string,
+                                                        imageUrl: service.imageUrl,
                                                         });
                                                     }}
                                                 />
                                             </GridItem>
                                             ))
                                             ) : (
-                                            <GridItem colSpan={{base: 1, lg: 2}} key="0 products">
+                                            <GridItem colSpan={{base: 1, lg: 2}} key="0 services">
                                                 <Text textAlign="center" margin="0px auto" width={{base: "80%", sm: "100%"}} fontSize={{base: "16px", md: "20px"}} fontWeight="medium">
                                                     {
                                                         isFirstSearch?(
@@ -403,7 +402,7 @@ const ProductList = ({cities}: ProductListProps) => {
   );
 };
 
-const getAllCitiesWithProducts = async() => {
+const getAllCitiesWithServices = async() => {
     try{
         const response = await api.get('business/cities',{});
         return response.data;
@@ -419,7 +418,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const cities = await getAllCitiesWithProducts();
+  const cities = await getAllCitiesWithServices();
 
   if (!session) {
     return {
@@ -435,4 +434,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default ProductList;
+export default ServiceList;
