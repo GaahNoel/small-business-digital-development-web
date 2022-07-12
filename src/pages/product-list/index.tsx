@@ -2,7 +2,7 @@ import { Button, Flex, FormControl, Grid, GridItem, IconButton, Input, Select, S
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormCitySelect } from '../../components/shared/form-city-select';
 import { FormInput } from '../../components/shared/form-input';
@@ -16,6 +16,7 @@ import { FormProductServiceSearch } from '../../components/shared/form-product-s
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { ProductServiceListModal } from '../../components/shared/product-service-list-modal';
+import { InputType } from 'zlib';
 
 type ProductListProps = {
     cities: CityOptions;
@@ -70,10 +71,12 @@ const ProductList = ({cities}: ProductListProps) => {
   const [location, setLocation] = useState<Location>();
   const [searchMode, setSearchMode] = useState('Loading');
   const [isLoadingCitySearch, setIsLoadingCitySearch] = useState(false);
-  const [products, setProducts] = useState<Products>();
+  const [products, setProducts] = useState<Products>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Products>([]);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
   const [itemModal, setItemModal] = useState<ItemModalProps>();
   const { isOpen: viewItemIsOpen, onOpen: viewItemOnOpen, onClose: viewItemOnClose } = useDisclosure();
+  const searchBar = useRef<HTMLInputElement>();
 
   useEffect(()=>{ 
     navigator.geolocation.getCurrentPosition((position)=>{
@@ -84,7 +87,7 @@ const ProductList = ({cities}: ProductListProps) => {
     }, ()=>{
         setSearchMode('City');
     });
-   },[])
+   },[]);
 
    useEffect(()=>{
     getProductsByLatLng();
@@ -112,6 +115,7 @@ const ProductList = ({cities}: ProductListProps) => {
         );
         console.log(response.data);
         setProducts(response.data);
+        setFilteredProducts(response.data);
     } catch(e){
         console.log(e);
     }
@@ -131,8 +135,9 @@ const ProductList = ({cities}: ProductListProps) => {
             },
         );
         setProducts(response.data);
+        setFilteredProducts(response.data);
     } catch(e){
-        setProducts(undefined);
+        setProducts([]);
     } finally {
         setIsLoadingCitySearch(false);
         setIsFirstSearch(false);
@@ -173,13 +178,13 @@ const ProductList = ({cities}: ProductListProps) => {
             <Flex id="Headers" >
                 <Flex display={{base: "flex", md: "none"}} width="100%" bg="secondary">
                     <HeaderHalfCircleTop>
-                        <FormProductServiceSearch type="product" name="produto" />
+                        <FormProductServiceSearch type="product" name="produto" items={products} setItems={setFilteredProducts} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
                     </HeaderHalfCircleTop>
                 </Flex>
                 <Flex display={{base: "none", md: "flex"}} width={{base: "90%", lg:"80%"}} maxW={{base: "100%", md: "1280"}} alignSelf="center" direction="column" margin="0px auto">
                     <DefaultHeader />
                     <Flex align="center" direction="column" paddingBottom="40px">
-                        <FormProductServiceSearch type="product" name="produto" />
+                        <FormProductServiceSearch type="product" name="produto" items={products} setItems={setFilteredProducts} searchBar={searchBar as MutableRefObject<HTMLInputElement>} />
                     </Flex>    
                 </Flex>
             </Flex>
@@ -199,8 +204,8 @@ const ProductList = ({cities}: ProductListProps) => {
                     </Text>
                     <Flex align="center" justify="center" margin="0px auto" direction="column" display={{base: "flex", md: "none"}}>    
                         {
-                            products ? (
-                                products.map((product, key) => (
+                            filteredProducts.length > 0 ? (
+                                filteredProducts.map((product, key) => (
                                     <ListProductServiceCard 
                                         key={key} 
                                         name={product.name} 
@@ -234,8 +239,8 @@ const ProductList = ({cities}: ProductListProps) => {
                     <Flex align="center">
                         <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
                             {
-                                products ? (
-                                products.map((product, key) => (
+                                filteredProducts.length > 0 ? (
+                                    filteredProducts.map((product, key) => (
                                 <GridItem colSpan={1} key={key}>
                                     <ListProductServiceCard 
                                         key={key} 
@@ -274,15 +279,15 @@ const ProductList = ({cities}: ProductListProps) => {
                     
                 </Flex>
                 <Flex display={searchMode==="City"?"flex":"none"} align="center" direction="column" width="100%" marginTop="40px">
-                    <FormCitySelect cityOptions={cities} search={searchProductsByCity} />
+                    <FormCitySelect cityOptions={cities} search={searchProductsByCity} searchBar={searchBar} />
                     <Flex direction="column">
                         {
                             !isLoadingCitySearch ? (
                                 <>
                                     <Flex direction="column" display={{base: "flex", md: "none"}}>
                                         {
-                                            products ? (
-                                                products.map((product, key) => (
+                                            filteredProducts.length > 0 ? (
+                                                filteredProducts.map((product, key) => (
                                                     <ListProductServiceCard 
                                                         key={key} 
                                                         name={product.name} 
@@ -321,8 +326,8 @@ const ProductList = ({cities}: ProductListProps) => {
                                     </Flex>
                                     <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
                                         {
-                                            products ? (
-                                            products.map((product, key) => (
+                                            filteredProducts.length > 0 ? (
+                                            filteredProducts.map((product, key) => (
                                             <GridItem colSpan={1} key={key}>
                                                 <ListProductServiceCard 
                                                     key={key} 
@@ -415,7 +420,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   });
 
   const cities = await getAllCitiesWithProducts();
-  console.log(cities);
 
   if (!session) {
     return {

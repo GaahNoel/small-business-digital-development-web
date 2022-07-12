@@ -1,6 +1,7 @@
 import { Button, Flex, FormControl, Select, Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { InputType } from "zlib";
 
 type FormCitySelectProps = {
     cityOptions: {
@@ -8,13 +9,14 @@ type FormCitySelectProps = {
         state: string;
     }[]
     search: (city: string, state: string)=>void;
+    searchBar: MutableRefObject<HTMLInputElement>;
 }
 
 type CityFormData = {
     city: string;
 }
 
-export const FormCitySelect = ({cityOptions, search}: FormCitySelectProps) => {
+export const FormCitySelect = ({cityOptions, search, searchBar}: FormCitySelectProps) => {
   const [citySelected, setCitySelected] = useState(false);
   const methods = useForm<CityFormData>();
   const {
@@ -27,7 +29,8 @@ export const FormCitySelect = ({cityOptions, search}: FormCitySelectProps) => {
     city,
     }) => {
         setCitySelected(true);
-        search(city.split("-")[0], city.split("-")[1])
+        search(city.split("-")[0], city.split("-")[1]);
+        searchBar.current.value = "";
     };
 
   return (
