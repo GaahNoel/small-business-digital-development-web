@@ -1,14 +1,23 @@
-import { Button, Flex, FormControl, Select, Spinner, Text } from '@chakra-ui/react';
+import { Button, Flex, FormControl, Grid, GridItem, IconButton, Input, Select, Spinner, Stack, Text } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormCitySelect } from '../../components/shared/form-city-select';
+import { FormInput } from '../../components/shared/form-input';
+import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
+import { HeaderTitle } from '../../components/shared/header-title';
+import { ListProductServiceCard } from '../../components/shared/list-product-service-card';
+import { NoItemsText } from '../../components/shared/no-items-text';
 import { api } from '../../service/api';
+import {FiSearch} from 'react-icons/fi';
+import { FormProductServiceSearch } from '../../components/shared/form-product-service-search';
+import { FooterMenu } from '../../components/shared/footer-menu';
+import { DefaultHeader } from '../../components/shared/default-header';
 
 type ProductListProps = {
-    session: string;
+    cities: CityOptions;
 };
 
 type Location = {
@@ -39,17 +48,18 @@ type Products = {
 }[]
 
 type CityOptions = {
-    city: string;
+    cities: string[];
     state: string;
 }[]
 
-const ProductList = ({session}: ProductListProps) => {
+const ProductList = ({cities}: ProductListProps) => {
+  const type = "produto"
   const router = useRouter();
   const [location, setLocation] = useState<Location>();
   const [searchMode, setSearchMode] = useState('Loading');
   const [isLoadingCitySearch, setIsLoadingCitySearch] = useState(false);
-  const [products, setProducts] = useState<Products>()
-  const [cityOptions, setCityOptions] = useState<CityOptions>()
+  const [products, setProducts] = useState<Products>();
+  const [isFirstSearch, setIsFirstSearch] = useState(true);
 
   useEffect(()=>{ 
     navigator.geolocation.getCurrentPosition((position)=>{
@@ -58,7 +68,7 @@ const ProductList = ({session}: ProductListProps) => {
             lng: position.coords.longitude
         })
     }, ()=>{
-        getProductsByCity();
+        setSearchMode('City');
     });
    },[])
 
@@ -73,28 +83,17 @@ const ProductList = ({session}: ProductListProps) => {
     }
    }
 
-   const getProductsByCity = async () =>{
-    await productsNearbyCity();
-    setSearchMode('City')
-   }
-
    const productsNearbyLatLng = async(locationInfo: Location) =>{
     try{
-        const response = await api.post(
+        const response = await api.get(
             'product/list/nearby',
-            {
-                type: 'product',
-                location: {
+             {
+                params: {
+                    type: 'product',
                     latitude: locationInfo.lat,
                     longitude: locationInfo.lng,
-                    radius: 500
+                    radius: 10
                 }
-            },
-            {
-                headers: {
-                  'content-type': 'application/json',
-                  session,
-                },
             },
         );
         console.log(response.data);
@@ -103,113 +102,174 @@ const ProductList = ({session}: ProductListProps) => {
         console.log(e);
     }
    }
-
-   const productsNearbyCity = async() =>{
-    const options = [
-        {
-            city: "Tatui",
-            state: "Sao Paulo"
-        },
-        {
-            city: "Capela do Alto",
-            state: "Sao Paulo"
-        },
-        {
-            city: "Sioux County",
-            state: "Nebraska"
-        }
-    ]
-    options.sort((a, b)=>a.city.localeCompare(b.city))
-    setCityOptions(options)
-   }
    
    const searchProductsByCity = async(city: string, state: string) => {
     setIsLoadingCitySearch(true);
-    if(!city && !state){
-        city = cityOptions![0].city;
-        state = cityOptions![0].state;
-    }
     try{
-        const response = await api.post(
+        const response = await api.get(
             'product/list/nearby',
             {
-                type: 'product',
-                city: {
-                    name: city,
+                params: {
+                    type: 'product',
+                    city,
                     state,
-                }
-            },
-            {
-                headers: {
-                  'content-type': 'application/json',
-                  session,
-                },
+                }   
             },
         );
         setProducts(response.data);
-        
     } catch(e){
-        console.log(e);
+        setProducts(undefined);
     } finally {
         setIsLoadingCitySearch(false);
+        setIsFirstSearch(false);
     }
    }
+
+  const capitalize = (word: string) => {
+    const lower = word.toLowerCase();
+    return word.charAt(0).toUpperCase() + lower.slice(1);
+  }
   
   return (
     <>
-        <Flex minHeight="100vh">
-            <Flex display={searchMode==="Loading"?"flex":"none"} align="center" justify="center" width="100%">
-                <Spinner
-                    thickness='4px'
-                    speed='0.65s'
-                    emptyColor='gray.200'
-                    color='default_white'
-                    size='xl' 
-                />  
+        <Flex minHeight="100vh" direction="column" bg="primary">
+            <Flex id="Headers" >
+                <Flex display={{base: "flex", md: "none"}} width="100%" bg="secondary">
+                    <HeaderHalfCircleTop>
+                        <FormProductServiceSearch type="product" name="produto" />
+                    </HeaderHalfCircleTop>
+                </Flex>
+                <Flex display={{base: "none", md: "flex"}} width={{base: "90%", lg:"80%"}} maxW={{base: "100%", md: "1280"}} alignSelf="center" direction="column" margin="0px auto">
+                    <DefaultHeader />
+                    <Flex align="center" direction="column" paddingBottom="40px">
+                        <FormProductServiceSearch type="product" name="produto" />
+                    </Flex>    
+                </Flex>
             </Flex>
-            <Flex display={searchMode==="LatLng"?"flex":"none"} align="center" justify="center" direction="column" width="100%">
-                {
-                    products ? (
-                        products.map((product, key) => (
-                            <Text key={key}>{product.name}</Text>
-                        ))
-                    ):(
-                        <Text>Sem produtos por perto</Text>
-                    )
-                }
-            </Flex>
-            <Flex display={searchMode==="City"?"flex":"none"} align="center" justify="center" direction="column" width="100%">
-                <FormCitySelect cityOptions={cityOptions!} search={searchProductsByCity} />
-                <Flex direction="column">
-                    {
-                        !isLoadingCitySearch ? (
-                            <Flex direction="column">
-                                {
-                                    products ? (
-                                        products.map((product, key) => (
-                                            <Text key={key}>{product.name}</Text>
-                                        ))
-                                    ):(
-                                        <Text>Pesquise os produtos próximos, selecionando sua cidade</Text>
-                                    )
-                                }
-                            </Flex>
-                        ) : (
-                            <Spinner
-                                thickness='4px'
-                                speed='0.65s'
-                                emptyColor='gray.200'
-                                color='default_white'
-                                size='xl' 
-                            />  
-                        )
-                    }
-                </Flex>  
+            <Flex bg="secondary" height="100%" flex="1" borderTopRadius={{base: "0px", md: "105px"}} paddingBottom="80px">
+                <Flex display={searchMode==="Loading"?"flex":"none"} align="center" justify="center" width="100%">
+                    <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='default_white'
+                        size='xl' 
+                    />  
+                </Flex>
+                <Flex display={searchMode==="LatLng"?"flex":"none"} align="center" justify="center" direction="column" width="100%" marginTop="40px">
+                    <Text fontSize={{base: "16px", md: "20px"}} fontWeight="medium" marginBottom="20px">
+                        {capitalize(type)}s encontrados próximos a você
+                    </Text>
+                    <Flex align="center" justify="center" margin="0px auto" direction="column" display={{base: "flex", md: "none"}}>    
+                        {
+                            products ? (
+                                products.map((product, key) => (
+                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                ))
+                            ):(
+                                <Text fontSize={{base: "16px", md: "20px"}} fontWeight="medium" marginBottom="20px">
+                                    Sem {capitalize(type)}s encontrados próximos a você
+                                </Text>
+                            )
+                        }
+                    </Flex>
+                    <Flex align="center">
+                        <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
+                            {
+                                products ? (
+                                products.map((product, key) => (
+                                <GridItem colSpan={1} key={key}>
+                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                </GridItem>
+                                ))
+                                ) : (
+                                <GridItem colSpan={{base: 1, lg: 2}} key="0 products">
+                                    <NoItemsText
+                                    color="primary"
+                                    text="Nenhum produto encontrado"
+                                    />
+                                </GridItem>
+                            )}
+                        </Grid>
+                    </Flex>
+                    
+                </Flex>
+                <Flex display={searchMode==="City"?"flex":"none"} align="center" direction="column" width="100%" marginTop="40px">
+                    <FormCitySelect cityOptions={cities} search={searchProductsByCity} />
+                    <Flex direction="column">
+                        {
+                            !isLoadingCitySearch ? (
+                                <>
+                                    <Flex direction="column" display={{base: "flex", md: "none"}}>
+                                        {
+                                            products ? (
+                                                products.map((product, key) => (
+                                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                                ))
+                                            ):(
+                                                <Text textAlign="center" margin="0px auto" width={{base: "80%", sm: "100%"}} fontSize={{base: "16px", md: "20px"}} fontWeight="medium">
+                                                    {
+                                                        isFirstSearch?(
+                                                            `Pesquise os ${type}s próximos, selecionando sua cidade`
+                                                        ):(
+                                                            `Nenhum ${type} encontrado na cidade`
+                                                        )
+                                                    }
+                                                </Text>
+                                            )
+                                        }
+                                    </Flex>
+                                    <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
+                                        {
+                                            products ? (
+                                            products.map((product, key) => (
+                                            <GridItem colSpan={1} key={key}>
+                                                <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                            </GridItem>
+                                            ))
+                                            ) : (
+                                            <GridItem colSpan={{base: 1, lg: 2}} key="0 products">
+                                                <Text textAlign="center" margin="0px auto" width={{base: "80%", sm: "100%"}} fontSize={{base: "16px", md: "20px"}} fontWeight="medium">
+                                                    {
+                                                        isFirstSearch?(
+                                                            `Pesquise os ${type}s próximos, selecionando sua cidade`
+                                                        ):(
+                                                            `Nenhum ${type} encontrado na cidade`
+                                                        )
+                                                    }
+                                                </Text>
+                                            </GridItem>
+                                        )}
+                                    </Grid>
+                                </>
+                                
+                            ) : (
+                                <Spinner
+                                    thickness='4px'
+                                    speed='0.65s'
+                                    emptyColor='gray.200'
+                                    color='default_white'
+                                    size='xl' 
+                                />  
+                            )
+                        }
+                    </Flex>  
+                </Flex>
             </Flex>
         </Flex>
+        <FooterMenu />
     </>
   );
 };
+
+const getAllCitiesWithProducts = async() => {
+    try{
+        const response = await api.get('business/cities',{});
+        return response.data;
+    } catch(e){
+        console.log(e);
+    }
+}
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getToken({
@@ -217,6 +277,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     raw: true,
     secret: process.env.NEXTAUTH_SECRET,
   });
+
+  const cities = await getAllCitiesWithProducts();
+  console.log(cities);
 
   if (!session) {
     return {
@@ -228,7 +291,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    props: { session },
+    props: { session, cities },
   };
 };
 

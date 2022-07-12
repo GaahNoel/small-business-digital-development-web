@@ -33,7 +33,6 @@ export const DefaultCard = ({
         cursor="pointer"
         overflow="hidden"
         transition="0.2s border ease-in-out"
-        border="1px solid transparent"
         _hover={{border: "1px solid #000"}}
         onClick={detailClick}
         spacing={1}

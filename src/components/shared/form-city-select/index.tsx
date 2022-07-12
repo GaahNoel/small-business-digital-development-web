@@ -1,11 +1,12 @@
-import { Button, Flex, FormControl, Select } from "@chakra-ui/react";
+import { Button, Flex, FormControl, Select, Stack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type FormCitySelectProps = {
     cityOptions: {
-        city: string;
-        state: string
-    }[];
+        cities: string[];
+        state: string;
+    }[]
     search: (city: string, state: string)=>void;
 }
 
@@ -14,6 +15,7 @@ type CityFormData = {
 }
 
 export const FormCitySelect = ({cityOptions, search}: FormCitySelectProps) => {
+  const [citySelected, setCitySelected] = useState(false);
   const methods = useForm<CityFormData>();
   const {
     register,
@@ -21,31 +23,37 @@ export const FormCitySelect = ({cityOptions, search}: FormCitySelectProps) => {
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<CityFormData> = async ({
-    city
+  const onChange: SubmitHandler<CityFormData> = async ({
+    city,
     }) => {
+        setCitySelected(true);
         search(city.split("-")[0], city.split("-")[1])
     };
 
   return (
     <>
-        <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
-            <Flex> 
+        <FormControl as="form" onChange={handleSubmit(onChange)}>
+            <Stack width={{base: "330px", sm: "355px", md: "405px", lg: "430px", xl: "530px"}} margin="0px auto 40px auto" direction="row"> 
                 <Select
+                    bg="default_white"
                     {...register('city')}
                 >
+                    <option value="Selecione uma cidade" disabled={citySelected}>Selecione uma cidade</option>
                     {
                         cityOptions && (
-                            cityOptions.map((location, key) => {
-                                return <option key={key} value={location.city+"-"+location.state}>{location.city+" - "+location.state}</option>
-                            })
+                            cityOptions.map((location, keyState) => (
+                                <optgroup key={keyState} label={location.state}>
+                                    {
+                                        location.cities.map((city, key) =>(
+                                            <option key={key} value={`${city}-${location.state}`}>{city}</option>
+                                        ))
+                                    }
+                                </optgroup>
+                            ))
                         )
                     }
                 </Select>
-                <Button type="submit">
-                    Buscar
-                </Button>
-            </Flex>
+            </Stack>
         </FormControl>
     </>
   );
