@@ -1,4 +1,4 @@
-import { Button, Flex, FormControl, Grid, GridItem, IconButton, Input, Select, Spinner, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, FormControl, Grid, GridItem, IconButton, Input, Select, Spinner, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
@@ -15,6 +15,7 @@ import {FiSearch} from 'react-icons/fi';
 import { FormProductServiceSearch } from '../../components/shared/form-product-service-search';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { DefaultHeader } from '../../components/shared/default-header';
+import { ProductServiceListModal } from '../../components/shared/product-service-list-modal';
 
 type ProductListProps = {
     cities: CityOptions;
@@ -45,12 +46,23 @@ type Products = {
     name: string;
     salePrice: number;
     type: string;
-}[]
+}[];
 
 type CityOptions = {
     cities: string[];
     state: string;
-}[]
+}[];
+
+type ItemModalProps = {
+    id: string;
+    name: string;
+    description: string;
+    listPrice: number;
+    salePrice: number;
+    type: string;
+    imageUrl: string;
+    categoryName: string;
+  };
 
 const ProductList = ({cities}: ProductListProps) => {
   const type = "produto"
@@ -60,6 +72,8 @@ const ProductList = ({cities}: ProductListProps) => {
   const [isLoadingCitySearch, setIsLoadingCitySearch] = useState(false);
   const [products, setProducts] = useState<Products>();
   const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const [itemModal, setItemModal] = useState<ItemModalProps>();
+  const { isOpen: viewItemIsOpen, onOpen: viewItemOnOpen, onClose: viewItemOnClose } = useDisclosure();
 
   useEffect(()=>{ 
     navigator.geolocation.getCurrentPosition((position)=>{
@@ -130,6 +144,29 @@ const ProductList = ({cities}: ProductListProps) => {
     return word.charAt(0).toUpperCase() + lower.slice(1);
   }
   
+  const openModal = ({
+    id,
+    name,
+    description,
+    listPrice,
+    salePrice,
+    type,
+    imageUrl,
+    categoryName,
+  }: ItemModalProps) => {
+    setItemModal({
+      id,
+      name,
+      description,
+      listPrice,
+      salePrice,
+      type,
+      imageUrl,
+      categoryName,
+    });
+    viewItemOnOpen();
+  };
+
   return (
     <>
         <Flex minHeight="100vh" direction="column" bg="primary">
@@ -146,7 +183,7 @@ const ProductList = ({cities}: ProductListProps) => {
                     </Flex>    
                 </Flex>
             </Flex>
-            <Flex bg="secondary" height="100%" flex="1" borderTopRadius={{base: "0px", md: "105px"}} paddingBottom="80px">
+            <Flex bg="secondary" height="100%" flex="1" borderTopRadius={{base: "0px", md: "105px"}} paddingBottom={{base: "80px", md: "0px"}}>
                 <Flex display={searchMode==="Loading"?"flex":"none"} align="center" justify="center" width="100%">
                     <Spinner
                         thickness='4px'
@@ -164,7 +201,28 @@ const ProductList = ({cities}: ProductListProps) => {
                         {
                             products ? (
                                 products.map((product, key) => (
-                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                    <ListProductServiceCard 
+                                        key={key} 
+                                        name={product.name} 
+                                        img={product.imageUrl} 
+                                        description={product.description} 
+                                        listPrice={product.listPrice} 
+                                        salePrice={product.salePrice} 
+                                        businessId={product.business.id} 
+                                        businessName={product.business.name}
+                                        detailClick={() => {
+                                            openModal({
+                                              id: product.id,
+                                              name: product.name,
+                                              description: product.description,
+                                              listPrice: product.listPrice,
+                                              salePrice: product.salePrice,
+                                              type: product?.type as string,
+                                              categoryName: product.category?.name  as string,
+                                              imageUrl: product.imageUrl,
+                                            });
+                                        }}
+                                    />
                                 ))
                             ):(
                                 <Text fontSize={{base: "16px", md: "20px"}} fontWeight="medium" marginBottom="20px">
@@ -179,7 +237,28 @@ const ProductList = ({cities}: ProductListProps) => {
                                 products ? (
                                 products.map((product, key) => (
                                 <GridItem colSpan={1} key={key}>
-                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                    <ListProductServiceCard 
+                                        key={key} 
+                                        name={product.name} 
+                                        img={product.imageUrl} 
+                                        description={product.description} 
+                                        listPrice={product.listPrice} 
+                                        salePrice={product.salePrice} 
+                                        businessId={product.business.id} 
+                                        businessName={product.business.name}
+                                        detailClick={() => {
+                                            openModal({
+                                              id: product.id,
+                                              name: product.name,
+                                              description: product.description,
+                                              listPrice: product.listPrice,
+                                              salePrice: product.salePrice,
+                                              type: product?.type as string,
+                                              categoryName: product.category?.name  as string,
+                                              imageUrl: product.imageUrl,
+                                            });
+                                        }}
+                                    />
                                 </GridItem>
                                 ))
                                 ) : (
@@ -204,7 +283,28 @@ const ProductList = ({cities}: ProductListProps) => {
                                         {
                                             products ? (
                                                 products.map((product, key) => (
-                                                    <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                                    <ListProductServiceCard 
+                                                        key={key} 
+                                                        name={product.name} 
+                                                        img={product.imageUrl} 
+                                                        description={product.description} 
+                                                        listPrice={product.listPrice} 
+                                                        salePrice={product.salePrice} 
+                                                        businessId={product.business.id} 
+                                                        businessName={product.business.name}
+                                                        detailClick={() => {
+                                                            openModal({
+                                                            id: product.id,
+                                                            name: product.name,
+                                                            description: product.description,
+                                                            listPrice: product.listPrice,
+                                                            salePrice: product.salePrice,
+                                                            type: product?.type as string,
+                                                            categoryName: product.category?.name  as string,
+                                                            imageUrl: product.imageUrl,
+                                                            });
+                                                        }}
+                                                    />
                                                 ))
                                             ):(
                                                 <Text textAlign="center" margin="0px auto" width={{base: "80%", sm: "100%"}} fontSize={{base: "16px", md: "20px"}} fontWeight="medium">
@@ -224,7 +324,28 @@ const ProductList = ({cities}: ProductListProps) => {
                                             products ? (
                                             products.map((product, key) => (
                                             <GridItem colSpan={1} key={key}>
-                                                <ListProductServiceCard key={key} name={product.name} img={product.imageUrl} description={product.description} listPrice={product.listPrice} salePrice={product.salePrice} businessId={product.business.id} businessName={product.business.name} />
+                                                <ListProductServiceCard 
+                                                    key={key} 
+                                                    name={product.name} 
+                                                    img={product.imageUrl} 
+                                                    description={product.description} 
+                                                    listPrice={product.listPrice} 
+                                                    salePrice={product.salePrice} 
+                                                    businessId={product.business.id} 
+                                                    businessName={product.business.name}
+                                                    detailClick={() => {
+                                                        openModal({
+                                                        id: product.id,
+                                                        name: product.name,
+                                                        description: product.description,
+                                                        listPrice: product.listPrice,
+                                                        salePrice: product.salePrice,
+                                                        type: product?.type as string,
+                                                        categoryName: product.category?.name  as string,
+                                                        imageUrl: product.imageUrl,
+                                                        });
+                                                    }}
+                                                />
                                             </GridItem>
                                             ))
                                             ) : (
@@ -257,6 +378,21 @@ const ProductList = ({cities}: ProductListProps) => {
                 </Flex>
             </Flex>
         </Flex>
+        <ProductServiceListModal
+            name={itemModal?.name as string}
+            description={itemModal?.description as string}
+            type={
+                itemModal?.type === 'product'
+                ? 'Produto'
+                : ('Serviço' as string)
+            }
+            grossPrice={itemModal?.listPrice as number}
+            netPrice={itemModal?.salePrice as number}
+            imageUrl={itemModal?.imageUrl as string}
+            categoryName={itemModal?.categoryName as string}
+            isOpen={viewItemIsOpen}
+            onClose={viewItemOnClose}
+          />
         <FooterMenu />
     </>
   );

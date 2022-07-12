@@ -12,6 +12,7 @@ type DefaultCardProps = {
   salePrice: number;
   businessId: string;
   businessName: string;
+  detailClick: () => void;
 };
 
 export const ListProductServiceCard = ({
@@ -22,6 +23,7 @@ export const ListProductServiceCard = ({
   salePrice,
   businessId,
   businessName,
+  detailClick,
 }: DefaultCardProps) => {
 
   const format = {
@@ -47,6 +49,7 @@ export const ListProductServiceCard = ({
         _hover={{border: "1px solid #000"}}
         marginBottom="30px"
         spacing={1}
+        onClick={detailClick}
       >
         <Flex height="100%" marginLeft={{base: "25px", md: "0px"}} width={{base: "80px", sm: "100px", md: "160px", lg: "180px", xl: "200px"}} align="center" justify={{base: "center", md: "start"}}>
           <Img src={img} width="100%" height={{base: "80px", sm: "100px", md: "100%"}} borderBottomRightRadius={{base: "full", md: "100px"}} borderTopRightRadius={{base: "full", md: "0px"}} borderLeftRadius={{base: "full", md: "0px"}} />

@@ -43,7 +43,7 @@ export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: Def
         // });
         geocoder.on('result', (e) => {
           marker.setLngLat(e.result.center);
-        });
+        },);
     }else{
       const location = navigator.geolocation.getCurrentPosition(
         (geolocaltion) => {
@@ -77,7 +77,38 @@ export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: Def
           geocoder.on('result', (e) => {
             marker.setLngLat(e.result.center);
           });
-        },
+        }, ()=>{
+          mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
+          const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [-46.637934, -23.568130], // starting position [lng, lat]
+            zoom: 15, // starting zoom
+          });
+          const marker = new mapboxgl.Marker({
+            draggable: true,
+          });
+          setMarkerState(marker as any);
+          setPosition(marker as any);
+          marker
+            .setLngLat({
+              lng: -46.637934,
+              lat: -23.568130,
+            })
+            .addTo(map);
+          const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            marker: false,
+            mapboxgl: mapboxgl as any,
+          });
+          map.addControl(geocoder);
+          // marker.on('dragend', function (e: any) {
+          //   const lngLat = e.target.getLngLat();
+          // });
+          geocoder.on('result', (e) => {
+            marker.setLngLat(e.result.center);
+          });
+        }
       );
     }
   }, []);

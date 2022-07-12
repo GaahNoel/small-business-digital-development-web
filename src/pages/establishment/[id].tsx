@@ -70,7 +70,6 @@ type ProductsProps = {
 
 type ProductsStateProps = ProductProps[];
 
-
 type ProductModalProps = {
   id: string;
   name: string;

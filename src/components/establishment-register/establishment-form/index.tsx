@@ -251,6 +251,9 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     descricao,
   }) => {
     setSubmitLoading(true);
+    if(!position){
+      console.log("ERRO")
+    }
     try{
       if(props.registerForm){
         await registerEstablishment({nome, descricao});

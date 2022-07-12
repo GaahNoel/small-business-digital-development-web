@@ -1,58 +1,54 @@
 import {
-  Flex,
-  Icon,
-  Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
-import { DefaultButton } from '../../shared/default-button';
-import {
-  MdOutlineAttachMoney,
-  MdOutlineMoneyOffCsred,
-  MdOutlineDescription,
-  MdOutlineCategory,
-} from 'react-icons/md';
+    Button,
+    Flex,
+    Icon,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Text,
+  } from '@chakra-ui/react';
+import { MdOutlineAttachMoney, MdOutlineCategory, MdOutlineDescription, MdOutlineMoneyOffCsred } from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
-import { ModalInfo } from '../modal-info';
-
-type ProductModalProps = {
-  name: string;
-  type: string;
-  description: string;
-  grossPrice: number;
-  netPrice: number;
-  imageUrl: string;
-  categoryName: string;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export const ProductModal = ({
-  name,
-  type,
-  description,
-  grossPrice,
-  netPrice,
-  imageUrl,
-  isOpen,
-  categoryName,
-  onClose,
-}: ProductModalProps) => {
-  const format = {
-    minimumFractionDigits: 2,
-    style: 'currency',
-    currency: 'BRL',
+import { ModalInfo } from '../../establishment/modal-info';
+  import { DefaultButton } from '../../shared/default-button';
+  
+  type ProductModalProps = {
+    name: string;
+    type: string;
+    description: string;
+    grossPrice: number;
+    netPrice: number;
+    imageUrl: string;
+    categoryName: string;
+    isOpen: boolean;
+    onClose: () => void;
   };
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+  
+  export const ProductServiceListModal = ({
+    name,
+    type,
+    description,
+    grossPrice,
+    netPrice,
+    imageUrl,
+    isOpen,
+    categoryName,
+    onClose,
+  }: ProductModalProps) => {
+    const format = {
+      minimumFractionDigits: 2,
+      style: 'currency',
+      currency: 'BRL',
+    };
+    return (
+      <>
+       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
           width="90vw"
@@ -68,7 +64,7 @@ export const ProductModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px" 
+            maxWidth="500px" 
             wordBreak="break-all"
           >
             {name}
@@ -81,7 +77,7 @@ export const ProductModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="300px"
+            maxWidth="400px"
           >
             <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
             <Stack
@@ -122,15 +118,21 @@ export const ProductModal = ({
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <DefaultButton
-              bg="primary"
-              color="default_white"
-              text="Fechar"
-              onClick={onClose}
-            />
+            <Stack direction="column" spacing={2} marginTop="30px" color="white">
+                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
+                    Fechar
+                </Button>
+                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
+                    Visitar página da loja
+                </Button>
+                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
+                    Colocar no carrinho
+                </Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
-  );
-};
+      </>
+    );
+  };
+  
