@@ -7,6 +7,8 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type BusinessesNearbyProps = {
   lat: string;
@@ -31,20 +33,19 @@ type Businesses = {
 
 const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
   useEffect(() => {
-    if (businesses.length > 0) {
-      mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
-      const map = new mapboxgl.Map({
-        container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: [Number(lng), Number(lat)], // starting position [lng, lat]
-        zoom: 10, // starting zoom
-        minZoom: 15,
-      });
+    mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
+    const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      center: [Number(lng), Number(lat)], // starting position [lng, lat]
+      zoom: 10, // starting zoom
+      minZoom: 15,
+    });
 
-      businesses.map((business) => {
-        const element = document.createElement('div');
+    businesses.map((business) => {
+      const element = document.createElement('div');
 
-        element.style.cssText = `
+      element.style.cssText = `
           height: 100px;
           width: 100px;
           background-image: url(${business.imageUrl});
@@ -58,62 +59,56 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           border: 4px solid #5647B2;
         `;
 
-        element.className = 'selected-marker';
+      element.className = 'selected-marker';
 
-        element.addEventListener('click', () => {
-          window.alert('Test');
-        });
-
-        new mapboxgl.Marker(element)
-          .setLngLat({
-            lng: Number(business.longitude),
-            lat: Number(business.latitude),
-          })
-          .addTo(map);
+      element.addEventListener('click', () => {
+        window.alert('Test');
       });
 
-      document.querySelectorAll('.marker').forEach((element) => {
-        element.classList.add('marker');
-      });
+      new mapboxgl.Marker(element)
+        .setLngLat({
+          lng: Number(business.longitude),
+          lat: Number(business.latitude),
+        })
+        .addTo(map);
+    });
+
+    document.querySelectorAll('.marker').forEach((element) => {
+      element.classList.add('marker');
+    });
+
+    if (businesses.length > 0) {
+      toast.success(
+        `${businesses.length} estabelecimento(s) encontrado(s) próximo(s) a localização!`,
+      );
+    } else {
+      toast.error('Nenhum estabelecimento encontrado próximo a localização!');
     }
   }, []);
 
   return (
     <>
-      {businesses.length > 0 ? (
-        <Flex
-          id="map"
-          minHeight="100vh"
-          overflow="hidden"
-          sx={{
-            '.mapboxgl-ctrl': { margin: '0px' },
-            '.mapboxgl-ctrl-top-right': { width: '100%' },
-            '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
-            '.mapboxgl-compact': { display: 'none' },
-            '.selected-marker:before': {
-              content: '""',
-              width: ' 58px',
-              height: '60px',
-              position: 'absolute',
-              bottom: '-13%',
-              left: '19%',
-              transform: 'rotate(45deg) translateZ(-1px)',
-              backgroundColor: 'primary',
-            },
-          }}
-        />
-      ) : (
-        <Text
-          textAlign="center"
-          margin="0px auto"
-          width={{ base: '80%', sm: '100%' }}
-          fontSize={{ base: '16px', md: '20px' }}
-          fontWeight="medium"
-        >
-          Sem estabelecimentos por perto
-        </Text>
-      )}
-
+      <Flex
+        id="map"
+        minHeight="100vh"
+        overflow="hidden"
+        sx={{
+          '.mapboxgl-ctrl': { margin: '0px' },
+          '.mapboxgl-ctrl-top-right': { width: '100%' },
+          '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
+          '.mapboxgl-compact': { display: 'none' },
+          '.selected-marker:before': {
+            content: '""',
+            width: ' 58px',
+            height: '60px',
+            position: 'absolute',
+            bottom: '-13%',
+            left: '19%',
+            transform: 'rotate(45deg) translateZ(-1px)',
+            backgroundColor: 'primary',
+          },
+        }}
+      />
       <FooterMenu />
     </>
   );

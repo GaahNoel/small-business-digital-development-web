@@ -7,7 +7,7 @@ import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { UserInput } from '../user-input';
+import { UserInput } from '../../shared/user-input';
 
 type LoginFormData = {
   email: string;
@@ -42,7 +42,7 @@ export const UserLoginForm = () => {
         password: password,
       }),
         toast.success('Login realizado com sucesso!');
-        router.push('/');
+      router.push('/');
     }
   };
 
@@ -77,7 +77,7 @@ export const UserLoginForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
-              onClick={()=>router.push("/login")}
+              onClick={() => router.push('/login')}
             />
             <DefaultButton
               bg="primary"

@@ -1,8 +1,15 @@
-import { background, Button, Flex, Icon, IconButton, Stack } from '@chakra-ui/react';
+import {
+  background,
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Stack,
+} from '@chakra-ui/react';
 import { IconMenu } from '../icon-menu';
 import { FiHome, FiSearch, FiUser, FiLayers } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
-import { MdArrowBack } from 'react-icons/md'
+import { MdArrowBack } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Fab, Action } from 'react-tiny-fab';
@@ -17,11 +24,11 @@ export const FooterMenu = () => {
   const routerBack = () => {
     router.back();
   };
-  const [isLoaded, setIsLoaded] = useState(false)
-  
-  useEffect(()=>{
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
     setIsLoaded(true);
-  },[])
+  }, []);
 
   return (
     <>
@@ -35,12 +42,12 @@ export const FooterMenu = () => {
         borderTopRadius="2xl"
         position="fixed"
         bottom="0"
-        display={{base: "flex", md: "none"}}
+        display={{ base: 'flex', md: 'none' }}
       >
         <IconMenu
           icon={MdArrowBack}
           handleClick={() => {
-            routerBack()
+            routerBack();
           }}
         />
         <IconMenu icon={FiHome} handleClick={() => routerNavigate('/')} />
@@ -56,7 +63,6 @@ export const FooterMenu = () => {
           h="50px"
           padding="10px"
         />
-
         <IconMenu
           icon={FiSearch}
           handleClick={() => {
@@ -65,24 +71,29 @@ export const FooterMenu = () => {
         />
         <IconMenu
           icon={FiUser}
-          handleClick={() => {
-            console.log('oi');
-          }}
+          handleClick={() => routerNavigate('/user-edit')}
         />
       </Flex>
-      {isLoaded&&
-      <Flex display={{base: "none", md: "flex"}}>
-        <Fab
-          icon={<FaPlus />}
-          alwaysShowTitle={true}
-          event={'hover'}
-          mainButtonStyles={{backgroundColor: '#5647B2'}}
-        >
-          <FooterMenuAction icon={MdArrowBack} clickFunction={routerBack} />
-          <FooterMenuAction icon={FiHome} clickFunction={()=>routerNavigate('/')} />
-        </Fab>
-      </Flex>
-      }
+      {isLoaded && (
+        <Flex display={{ base: 'none', md: 'flex' }}>
+          <Fab
+            icon={<FaPlus />}
+            alwaysShowTitle={true}
+            event={'hover'}
+            mainButtonStyles={{ backgroundColor: '#5647B2' }}
+          >
+            <FooterMenuAction icon={MdArrowBack} clickFunction={routerBack} />
+            <FooterMenuAction
+              icon={FiHome}
+              clickFunction={() => routerNavigate('/')}
+            />
+            <FooterMenuAction
+              icon={FiUser}
+              clickFunction={() => routerNavigate('/user-edit')}
+            />
+          </Fab>
+        </Flex>
+      )}
     </>
   );
 };
