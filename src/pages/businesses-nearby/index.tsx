@@ -80,8 +80,6 @@ const BusinessesNearby = ({lat, lng, businesses}: BusinessesNearbyProps) => {
           businesses.length > 0 ? (
             <Flex
             id="map"
-            border="2px"
-            borderColor="primary"
             minHeight="100vh"
             overflow="hidden"
             sx={{
