@@ -36,10 +36,12 @@ const Shop = () => {
               borderRadius="14px"
             >
               <Button
-                bg={
-                  formOption === 'Consumidor' ? 'default_orange' : 'none'
+                bg={formOption === 'Consumidor' ? 'default_orange' : 'none'}
+                _hover={
+                  formOption === 'Consumidor'
+                    ? { bg: 'default_orange_hover' }
+                    : { bg: 'secondary_hover' }
                 }
-                _hover={formOption === 'Consumidor' ? {bg: 'default_orange_hover'} : {bg: 'secondary_hover'}}
                 color={
                   formOption === 'Consumidor' ? 'default_white' : 'primary'
                 }
@@ -51,10 +53,12 @@ const Shop = () => {
                 Consumidor
               </Button>
               <Button
-                bg={
-                  formOption === 'Empreendedor' ? 'default_orange' : 'none'
+                bg={formOption === 'Empreendedor' ? 'default_orange' : 'none'}
+                _hover={
+                  formOption === 'Empreendedor'
+                    ? { bg: 'default_orange_hover' }
+                    : { bg: 'secondary_hover' }
                 }
-                _hover={formOption === 'Empreendedor' ? {bg: 'default_orange_hover'} : {bg: 'secondary_hover'}}
                 color={
                   formOption === 'Empreendedor' ? 'default_white' : 'primary'
                 }

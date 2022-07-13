@@ -12,115 +12,133 @@ type BusinessesNearbyProps = {
   lat: string;
   lng: string;
   businesses: Businesses;
-}
+};
 
 type Businesses = {
-  id: string,
-  name: string,
-  imageUrl: string,
-  description: string,
-  latitude: string,
-  longitude: string,
-  street: string,
-  city: string,
-  state: string,
-  zip: string,
-  country: string,
-  accountId: string
-}[]
+  id: string;
+  name: string;
+  imageUrl: string;
+  description: string;
+  latitude: string;
+  longitude: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  accountId: string;
+}[];
 
-const BusinessesNearby = ({lat, lng, businesses}: BusinessesNearbyProps) => {
-
-  useEffect(()=>{
-    if(businesses.length>0){
+const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
+  useEffect(() => {
+    if (businesses.length > 0) {
       mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
       const map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v11', // style URL
         center: [Number(lng), Number(lat)], // starting position [lng, lat]
         zoom: 10, // starting zoom
-        minZoom: 15
+        minZoom: 15,
       });
 
-      businesses.map((business)=>{
+      businesses.map((business) => {
         const element = document.createElement('div');
 
         element.style.cssText = `
           height: 100px;
           width: 100px;
           background-image: url(${business.imageUrl});
-          background-size: 100%;
+          background-size: cover;
+          background-repeat: no-repeat;
           background-position: center;
           border-radius: 300px;
           padding: 10px;
-          position: relative;
-        `
+          display: inline-block;
+          transform-style: preserve-3d;
+          border: 4px solid #5647B2;
+        `;
 
-        element.className = 'marker';
+        element.className = 'selected-marker';
 
         element.addEventListener('click', () => {
-          window.alert("Test");
+          window.alert('Test');
         });
 
-        new mapboxgl.Marker(element).setLngLat({
-          lng: Number(business.longitude),
-          lat: Number(business.latitude),
-        }).addTo(map);
-      })
+        new mapboxgl.Marker(element)
+          .setLngLat({
+            lng: Number(business.longitude),
+            lat: Number(business.latitude),
+          })
+          .addTo(map);
+      });
 
-      document.querySelectorAll(".marker").forEach((element) => {
-        element.classList.add("marker")
-      })
+      document.querySelectorAll('.marker').forEach((element) => {
+        element.classList.add('marker');
+      });
     }
-  }, [])
+  }, []);
 
   return (
     <>
-        {
-          businesses.length > 0 ? (
-            <Flex
-            id="map"
-            minHeight="100vh"
-            overflow="hidden"
-            sx={{
-              '.mapboxgl-ctrl': { margin: '0px' },
-              '.mapboxgl-ctrl-top-right': { width: '100%' },
-              '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
-              '.mapboxgl-compact': { display: 'none' },
-              '.marker:after &': { content: '"2"', width: '50px', height: '50px', position: 'absolute', bottom: '-50%', left: '0px', transform: 'rotate(45deg)', backgroundColor: '#000'}
-            }}
-            />
-          ):(
-            <Text textAlign="center" margin="0px auto" width={{base: "80%", sm: "100%"}} fontSize={{base: "16px", md: "20px"}} fontWeight="medium">
-                Sem estabelecimentos por perto
-            </Text>
-          )
-        }
-        
-        <FooterMenu />
+      {businesses.length > 0 ? (
+        <Flex
+          id="map"
+          minHeight="100vh"
+          overflow="hidden"
+          sx={{
+            '.mapboxgl-ctrl': { margin: '0px' },
+            '.mapboxgl-ctrl-top-right': { width: '100%' },
+            '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
+            '.mapboxgl-compact': { display: 'none' },
+            '.selected-marker:before': {
+              content: '""',
+              width: ' 58px',
+              height: '60px',
+              position: 'absolute',
+              bottom: '-13%',
+              left: '19%',
+              transform: 'rotate(45deg) translateZ(-1px)',
+              backgroundColor: 'primary',
+            },
+          }}
+        />
+      ) : (
+        <Text
+          textAlign="center"
+          margin="0px auto"
+          width={{ base: '80%', sm: '100%' }}
+          fontSize={{ base: '16px', md: '20px' }}
+          fontWeight="medium"
+        >
+          Sem estabelecimentos por perto
+        </Text>
+      )}
+
+      <FooterMenu />
     </>
   );
 };
 
-const getBusinessesNearby = async(lat: number, lng: number) => {
-  try{
-      const response = await api.get(`business/list/`, 
-      {
-        params: {
-          "latitude": lat,
-          "longitude": lng,
-          "radius": 0.1
-        }
-      }
-    );
+const getBusinessesNearby = async (lat: number, lng: number) => {
+  try {
+    const response = await api.get(`business/list/`, {
+      params: {
+        latitude: lat,
+        longitude: lng,
+        radius: 0.1,
+      },
+    });
     console.log(response.data);
     return response.data;
-  } catch(error){
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
-export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
   const session = await getToken({
     req,
     raw: true,
@@ -136,7 +154,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
   //   };
   // }
 
-  const {lat, lng} = query;
+  const { lat, lng } = query;
   console.log(query);
 
   const businesses = await getBusinessesNearby(Number(lat), Number(lng));

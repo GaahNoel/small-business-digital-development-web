@@ -18,23 +18,23 @@ type ProductRegisterProps = {
 };
 
 type EstablishmentProps = {
-  id: string,
-  name: string,
-  description: string,
-  accountId: string,
-  imageUrl: string,
-  latitude: string,
-  longitude: string,
-  street: string,
-  city: string,
-  state: string,
-  zip: string,
-  country: string
+  id: string;
+  name: string;
+  description: string;
+  accountId: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
 };
 
 type EstablishmentBaseProps = {
-  id: string,
-  name: string,
+  id: string;
+  name: string;
 };
 
 type CategoryProps = {
@@ -42,25 +42,33 @@ type CategoryProps = {
   name: string;
 };
 
-const ProductRegister = ({ categories, establishmentInfo, session }: ProductRegisterProps) => {
-  const [establishmentBase, setEstablishmentBase] = useState<EstablishmentBaseProps>({
-    id: '',
-    name: ''
-  });
+const ProductRegister = ({
+  categories,
+  establishmentInfo,
+  session,
+}: ProductRegisterProps) => {
+  const [establishmentBase, setEstablishmentBase] =
+    useState<EstablishmentBaseProps>({
+      id: '',
+      name: '',
+    });
   const { stage, form } = useProductForm();
   const { setToken } = form;
   useEffect(() => {
     setEstablishmentBase({
       id: establishmentInfo.id,
       name: establishmentInfo.name,
-    })
+    });
     setToken(session);
   }, []);
 
   return (
     <>
       {stage === 'first' ? (
-        <ProductRegisterFirstStep establishmentBase={establishmentBase} categories={categories} />
+        <ProductRegisterFirstStep
+          establishmentBase={establishmentBase}
+          categories={categories}
+        />
       ) : (
         <ProductRegisterSecondStep establishmentBase={establishmentBase} />
       )}
@@ -77,13 +85,16 @@ const getCategories = async () => {
   return response.data;
 };
 
-const getEstablishmentInfo = async(id: string) => {
+const getEstablishmentInfo = async (id: string) => {
   const response = await api.get(`business/${id}`);
   console.log(response.data);
   return response.data;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params,
+}) => {
   const session = await getToken({
     req,
     raw: true,
@@ -93,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
   const { id } = params as ParamsProps;
 
   const categories = await getCategories();
-  const establishmentInfo = await getEstablishmentInfo(id); 
+  const establishmentInfo = await getEstablishmentInfo(id);
 
   if (!session) {
     return {
@@ -108,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
     props: {
       session,
       categories,
-      establishmentInfo
+      establishmentInfo,
     },
   };
 };

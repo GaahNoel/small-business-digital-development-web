@@ -32,19 +32,19 @@ type ParamsProps = {
 };
 
 type EstablishmentProps = {
-  id: string,
-  name: string,
-  description: string,
-  accountId: string,
-  imageUrl: string,
-  latitude: string,
-  longitude: string,
-  street: string,
-  city: string,
-  state: string,
-  zip: string,
-  country: string
-}
+  id: string;
+  name: string;
+  description: string;
+  accountId: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+};
 
 type ProductProps = {
   id: string;
@@ -59,8 +59,8 @@ type ProductProps = {
   category?: {
     id: string;
     name: string;
-  }
-}
+  };
+};
 
 type ProductsProps = {
   token: string;
@@ -82,20 +82,33 @@ type ProductModalProps = {
 };
 
 type EstablishmentBaseProps = {
-  id: string,
-  name: string,
+  id: string;
+  name: string;
 };
 
-const Establishment = ({ token, products, establishmentInfo }: ProductsProps) => {
+const Establishment = ({
+  token,
+  products,
+  establishmentInfo,
+}: ProductsProps) => {
   const router = useRouter();
-  const [establishmentBase, setEstablishmentBase] = useState<EstablishmentBaseProps>({
-    id: '',
-    name: ''
-  });
+  const [establishmentBase, setEstablishmentBase] =
+    useState<EstablishmentBaseProps>({
+      id: '',
+      name: '',
+    });
   const { form, setStage } = useProductForm();
   const { setToken } = form;
-  const { isOpen: viewProductIsOpen, onOpen: viewProductOnOpen, onClose: viewProductOnClose } = useDisclosure();
-  const { isOpen: editProductIsOpen, onOpen: editProductOnOpen, onClose: editProductOnClose } = useDisclosure();
+  const {
+    isOpen: viewProductIsOpen,
+    onOpen: viewProductOnOpen,
+    onClose: viewProductOnClose,
+  } = useDisclosure();
+  const {
+    isOpen: editProductIsOpen,
+    onOpen: editProductOnOpen,
+    onClose: editProductOnClose,
+  } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
   const [productsState, setProductsState] = useState<ProductsStateProps>([
     {
@@ -121,7 +134,7 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
     setEstablishmentBase({
       id: establishmentInfo.id,
       name: establishmentInfo.name,
-    })
+    });
   }, []);
 
   const clickNewProduct = (id: string) => {
@@ -161,7 +174,7 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
     type,
     imageUrl,
     categoryName,
-  }: ProductModalProps) =>{
+  }: ProductModalProps) => {
     setProductModal({
       id,
       name,
@@ -173,7 +186,7 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
       categoryName,
     });
     editProductOnOpen();
-  }
+  };
 
   const removeProductApi = async (productId: string, token: string) => {
     try {
@@ -208,25 +221,29 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
   };
 
   const updateProductState = (id: string, productFound: ProductProps) => {
-    const index = productsState.findIndex((product)=>{
-      if(product.id === id) 
-        return true;
-    })
+    const index = productsState.findIndex((product) => {
+      if (product.id === id) return true;
+    });
     productsState[index] = {
-      ...productsState[index], ...productFound
-    }
+      ...productsState[index],
+      ...productFound,
+    };
     const newProductState: ProductsStateProps = productsState;
     setProductsState(newProductState);
-  }
+  };
 
   return (
     <>
       <Flex width="100%" minH="100vh" bg="primary" direction="column">
-        <Flex direction="column" width={{base: "90%", md:"80%", lg:"60%"}} margin="20px auto">
+        <Flex
+          direction="column"
+          width={{ base: '90%', md: '80%', lg: '60%' }}
+          margin="20px auto"
+        >
           <DefaultHeader />
           <Stack
             margin="20px auto 50px auto"
-            maxW={{base: "400px", md: "800px"}}
+            maxW={{ base: '400px', md: '800px' }}
             align="center"
             justify="center"
             textAlign="center"
@@ -235,18 +252,32 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
           >
             <Img
               src={establishmentInfo.imageUrl}
-              width={{base:"120px", md: "200px", lg: "240px"}}
-              height={{base:"120px", md: "200px", lg: "240px"}}
+              width={{ base: '120px', md: '200px', lg: '240px' }}
+              height={{ base: '120px', md: '200px', lg: '240px' }}
               borderRadius="full"
             />
             <Flex maxWidth="300px" wordBreak="break-all">
-              <Heading as="h3" fontSize={{base: "30px", md: "40px", lg: "50px", "2xl": "60px"}}>{establishmentInfo.name}</Heading>
+              <Heading
+                as="h3"
+                fontSize={{
+                  base: '30px',
+                  md: '40px',
+                  lg: '50px',
+                  '2xl': '60px',
+                }}
+              >
+                {establishmentInfo.name}
+              </Heading>
             </Flex>
-            <Flex direction="column" textAlign="center" fontSize={{base: "15px", md: "18px", lg: "20px", "2xl": "22px"}}>
+            <Flex
+              direction="column"
+              textAlign="center"
+              fontSize={{ base: '15px', md: '18px', lg: '20px', '2xl': '22px' }}
+            >
               <Text>Estado: {establishmentInfo.state}</Text>
               <Text>Cidade: {establishmentInfo.city}</Text>
               <Text>Localização: {establishmentInfo.street}</Text>
-            </Flex>  
+            </Flex>
           </Stack>
         </Flex>
         <Flex
@@ -256,17 +287,21 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
           height="100%"
           flex="1"
         >
-          <Flex maxW={{base: "250px", sm: "320px", md: "400px"}} width="100%" margin="0px auto">
+          <Flex
+            maxW={{ base: '250px', sm: '320px', md: '400px' }}
+            width="100%"
+            margin="0px auto"
+          >
             <Button
               bg="default_orange"
               _hover={{ bg: 'default_orange_hover' }}
               color="default_white"
               width="100%"
-              height={{base: "50px", sm: "70px", md: "90px"}}
+              height={{ base: '50px', sm: '70px', md: '90px' }}
               boxShadow="xl"
               borderRadius="2xl"
               position="relative"
-              top={{base: "-23px", sm: "-35", md: "-45"}}
+              top={{ base: '-23px', sm: '-35', md: '-45' }}
               onClick={() => {
                 clickNewProduct(establishmentInfo.id);
               }}
@@ -275,7 +310,7 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
                 direction="row"
                 align="center"
                 justify="center"
-                fontSize={{base: "16px", md:"22px"}}
+                fontSize={{ base: '16px', md: '22px' }}
                 spacing={4}
               >
                 <Icon as={FaPlus} />
@@ -283,8 +318,17 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
               </Stack>
             </Button>
           </Flex>
-          <ProductEditModal establishmentBase={establishmentBase} id={productModal?.id as string} name={productModal?.name as string}  description={productModal?.description as string} price={productModal?.listPrice as number} imageUrl={productModal?.imageUrl as string} isOpen={editProductIsOpen}
-            onClose={editProductOnClose} updateState={updateProductState}/>
+          <ProductEditModal
+            establishmentBase={establishmentBase}
+            id={productModal?.id as string}
+            name={productModal?.name as string}
+            description={productModal?.description as string}
+            price={productModal?.listPrice as number}
+            imageUrl={productModal?.imageUrl as string}
+            isOpen={editProductIsOpen}
+            onClose={editProductOnClose}
+            updateState={updateProductState}
+          />
           <ProductModal
             name={productModal?.name as string}
             description={productModal?.description as string}
@@ -306,10 +350,19 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
             align="center"
             marginBottom="100px"
           >
-            <Text fontSize={{base: "18px", sm: "22px", md: "24px", lg: "28px"}} fontWeight="bold" marginBottom="20px">
+            <Text
+              fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
+              fontWeight="bold"
+              marginBottom="20px"
+            >
               Seus produtos cadastrados
             </Text>
-            <Stack spacing={4} width="100%" align="center" display={{base: "flex", md: "none"}}>
+            <Stack
+              spacing={4}
+              width="100%"
+              align="center"
+              display={{ base: 'flex', md: 'none' }}
+            >
               {productsState.length > 0 ? (
                 productsState.map((product, key) => (
                   <DefaultCard
@@ -323,27 +376,27 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
                         listPrice: product.listPrice,
                         salePrice: product.salePrice,
                         type: product?.type as string,
-                        categoryName: product.category?.name  as string,
+                        categoryName: product.category?.name as string,
                         imageUrl: product.imageUrl,
                       });
                     }}
-                    editItem={(event)=> {
-                      event.stopPropagation();   
+                    editItem={(event) => {
+                      event.stopPropagation();
                       editProduct({
-                      id: product.id,
-                      name: product.name,
-                      description: product.description,
-                      listPrice: product.listPrice,
-                      salePrice: product.salePrice,
-                      type: product?.type as string,
-                      categoryName: product.category?.name as string,
-                      imageUrl: product.imageUrl,
-                    })}}
+                        id: product.id,
+                        name: product.name,
+                        description: product.description,
+                        listPrice: product.listPrice,
+                        salePrice: product.salePrice,
+                        type: product?.type as string,
+                        categoryName: product.category?.name as string,
+                        imageUrl: product.imageUrl,
+                      });
+                    }}
                     removeItem={(event) => {
-                        event.stopPropagation(); 
-                        removeProduct(product.id, token)
-                      }
-                    }
+                      event.stopPropagation();
+                      removeProduct(product.id, token);
+                    }}
                     key={key}
                   />
                 ))
@@ -355,8 +408,13 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
               )}
             </Stack>
             <Flex align="center" justify="center">
-                <Grid width="100%" templateColumns={{md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} display={{base: "none", md: "grid"}} gap={6}>
-                  {productsState.length > 0 ? (
+              <Grid
+                width="100%"
+                templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
+                display={{ base: 'none', md: 'grid' }}
+                gap={6}
+              >
+                {productsState.length > 0 ? (
                   productsState.map((product, key) => (
                     <GridItem colSpan={1} key={key}>
                       <DefaultCard
@@ -370,40 +428,40 @@ const Establishment = ({ token, products, establishmentInfo }: ProductsProps) =>
                             listPrice: product.listPrice,
                             salePrice: product.salePrice,
                             type: product?.type as string,
-                            categoryName: product.category?.name  as string,
+                            categoryName: product.category?.name as string,
                             imageUrl: product.imageUrl,
                           });
                         }}
-                        editItem={(event)=> {
-                          event.stopPropagation(); 
+                        editItem={(event) => {
+                          event.stopPropagation();
                           editProduct({
-                          id: product.id,
-                          name: product.name,
-                          description: product.description,
-                          listPrice: product.listPrice,
-                          salePrice: product.salePrice,
-                          type: product?.type as string,
-                          categoryName: product.category?.name as string,
-                          imageUrl: product.imageUrl,
-                        })}}
+                            id: product.id,
+                            name: product.name,
+                            description: product.description,
+                            listPrice: product.listPrice,
+                            salePrice: product.salePrice,
+                            type: product?.type as string,
+                            categoryName: product.category?.name as string,
+                            imageUrl: product.imageUrl,
+                          });
+                        }}
                         removeItem={(event) => {
-                            event.stopPropagation(); 
-                            removeProduct(product.id, token)
-                          }
-                        }
+                          event.stopPropagation();
+                          removeProduct(product.id, token);
+                        }}
                         key={key}
                       />
                     </GridItem>
                   ))
-                  ) : (
-                    <GridItem colSpan={{base: 1, lg: 2}} key="0 products">
-                      <NoItemsText
-                        color="primary"
-                        text="Nenhum produto cadastrado para o estabelecimento."
-                      />
-                    </GridItem>
-                  )}
-                </Grid>
+                ) : (
+                  <GridItem colSpan={{ base: 1, lg: 2 }} key="0 products">
+                    <NoItemsText
+                      color="primary"
+                      text="Nenhum produto cadastrado para o estabelecimento."
+                    />
+                  </GridItem>
+                )}
+              </Grid>
             </Flex>
           </Flex>
           <FooterMenu />
@@ -418,7 +476,7 @@ const getProductList = async (id: string) => {
   return response.data;
 };
 
-const getEstablishmentInfo = async(id: string) => {
+const getEstablishmentInfo = async (id: string) => {
   const response = await api.get(`business/${id}`);
   console.log(response.data);
   return response.data;

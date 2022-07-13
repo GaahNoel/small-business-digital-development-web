@@ -59,7 +59,7 @@ type ProductSecondFormData = {
   name: string;
   price: string;
   description: string;
-}
+};
 
 type ProductProps = {
   id: string;
@@ -74,23 +74,18 @@ type ProductProps = {
   category?: {
     id: string;
     name: string;
-  }
-}
-
-type EstablishmentBaseProps = {
-  id: string,
-  name: string,
+  };
 };
 
+type EstablishmentBaseProps = {
+  id: string;
+  name: string;
+};
 
 export const SecondProductForm = (props: ProductSecondFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
-  const {
-    token,
-    type,
-    category,
-  } = form;
+  const { token, type, category } = form;
   const methods = useForm<ProductSecondFormData>();
   const {
     handleSubmit,
@@ -100,11 +95,11 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     setValue,
   } = methods;
 
-  useEffect(()=>{
+  useEffect(() => {
     Object.keys(props).forEach((value) => {
       setValue(value, props[value]);
-    })
-  },[]);
+    });
+  }, []);
 
   const [files, setFiles] = useState<any>([]);
   const router = useRouter();
@@ -129,19 +124,19 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     }
   };
 
-  const registerProduct = async({
+  const registerProduct = async ({
     name,
     price,
     description,
-  }: ProductSecondFormData) =>{
+  }: ProductSecondFormData) => {
     try {
       let imageUrlReturned;
-      if(files[0]){
+      if (files[0]) {
         imageUrlReturned = await postImageBB();
       } else {
         imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
       }
-      console.log(token)
+      console.log(token);
       const response = await api.post(
         'product/create',
         {
@@ -166,20 +161,20 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     } catch (e: any) {
       console.log(e);
     }
-  }
-  
-  const editProduct = async({
+  };
+
+  const editProduct = async ({
     name,
     price,
     description,
-  }: ProductSecondFormData) =>{
+  }: ProductSecondFormData) => {
     try {
       let imageUrlReturned;
-      if(files[0]){
-        console.log("Encontrou arquivo")
+      if (files[0]) {
+        console.log('Encontrou arquivo');
         imageUrlReturned = await postImageBB();
-      } else{
-        console.log("Não encontrou arquivo")
+      } else {
+        console.log('Não encontrou arquivo');
         imageUrlReturned = props.imageUrl;
       }
       const response = await api.put(
@@ -199,25 +194,22 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
-      if(props.updateState)
-        props.updateState(
-          props?.id as string, 
-          {
-            id: props?.id as string,
-            name: name,
-            description: description,
-            listPrice: parseFloat(price),
-            salePrice: parseFloat(price),
-            imageUrl: imageUrlReturned ,
-          }
-        );
+      if (props.updateState)
+        props.updateState(props?.id as string, {
+          id: props?.id as string,
+          name: name,
+          description: description,
+          listPrice: parseFloat(price),
+          salePrice: parseFloat(price),
+          imageUrl: imageUrlReturned,
+        });
       toast.success('Produto alterado com sucesso!');
       props.clickBackButton();
       //router.push('/entrepreneur');
     } catch (e: any) {
       console.log(e);
     }
-  }
+  };
 
   const onSubmit: SubmitHandler<ProductSecondFormData> = async ({
     name,
@@ -225,15 +217,15 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
     description,
   }) => {
     setSubmitLoading(true);
-    try{
-      if(props.registerForm){
-        await registerProduct({name, price, description});
-      }else{
-        await editProduct({name, price, description});
+    try {
+      if (props.registerForm) {
+        await registerProduct({ name, price, description });
+      } else {
+        await editProduct({ name, price, description });
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e);
-    } finally{
+    } finally {
       setSubmitLoading(false);
     }
   };
@@ -241,20 +233,19 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
   return (
     <>
       <FormProvider {...methods}>
-        <FormControl
-          as="form"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
           <Stack
             direction="column"
             spacing={3}
-            maxWidth={{base: "90vw", md: "50vw", lg: "40vw", xl: "25vw"}}
+            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '25vw' }}
             margin="0px auto"
             border="2px #000"
             borderRadius="3xl"
             bg="default_white"
-            boxShadow={props.registerForm?"-14px 15px 15px -8px rgba(0,0,0,0.35);" :""}  
-            padding={{base: "25px", md:"25px 50px"}}
+            boxShadow={
+              props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
+            }
+            padding={{ base: '25px', md: '25px 50px' }}
           >
             <FormInput
               id="name"
@@ -281,46 +272,50 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
               margin="10px auto"
               sx={{ '.filepond--credits': { display: 'none' } }}
             >
-            <FormLabel
+              <FormLabel
                 htmlFor={`image_label`}
                 color="primary"
                 fontWeight="bold"
-                fontSize={{base: "1rem", md: "1.4rem"}}
+                fontSize={{ base: '1rem', md: '1.4rem' }}
               >
                 Imagem
-            </FormLabel>
-            <FilePond
-              files={files}
-              onupdatefiles={setFiles}
-              instantUpload={false}
-              allowMultiple={false}
-              name="files"
-              allowImageValidateSize={true}
-              imageValidateSizeMinWidth={400}
-              imageValidateSizeMinHeight={400}
-              imageValidateSizeMaxWidth={1080}
-              imageValidateSizeMaxHeight={1080}
-              labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
-            />
-          </Box>
+              </FormLabel>
+              <FilePond
+                files={files}
+                onupdatefiles={setFiles}
+                instantUpload={false}
+                allowMultiple={false}
+                name="files"
+                allowImageValidateSize={true}
+                imageValidateSizeMinWidth={400}
+                imageValidateSizeMinHeight={400}
+                imageValidateSizeMaxWidth={1080}
+                imageValidateSizeMaxHeight={1080}
+                labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
+              />
+            </Box>
 
-          <Stack direction="row" justify="center" spacing={25} marginTop="30px">
-            <DefaultButton
-              bg="default_black"
-              color="default_white"
-              text="Cancelar"
-              onClick={() => props.clickBackButton()}
-            />
-            <DefaultButton
-              bg="primary"
-              color="default_white"
-              text="Enviar"
-              isLoading={submitLoading}
-              type="submit"
-            />
+            <Stack
+              direction="row"
+              justify="center"
+              spacing={25}
+              marginTop="30px"
+            >
+              <DefaultButton
+                bg="default_black"
+                color="default_white"
+                text="Cancelar"
+                onClick={() => props.clickBackButton()}
+              />
+              <DefaultButton
+                bg="primary"
+                color="default_white"
+                text="Enviar"
+                isLoading={submitLoading}
+                type="submit"
+              />
+            </Stack>
           </Stack>
-          </Stack>
-          
         </FormControl>
       </FormProvider>
     </>
