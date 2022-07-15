@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import {
   MdOutlineAttachMoney,
   MdOutlineCategory,
@@ -32,6 +33,7 @@ type ProductModalProps = {
   imageUrl: string;
   categoryName: string;
   inBusinessPage?: boolean;
+  businessId?: string;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -44,10 +46,12 @@ export const ProductServiceListModal = ({
   netPrice,
   imageUrl,
   inBusinessPage = false,
+  businessId,
   isOpen,
   categoryName,
   onClose,
 }: ProductModalProps) => {
+  const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -142,7 +146,7 @@ export const ProductServiceListModal = ({
                 <Button
                   bg="primary"
                   _hover={{ bg: 'primary_hover' }}
-                  onClick={onClose}
+                  onClick={() => router.push(`/business-items/${businessId}`)}
                 >
                   Visitar página da loja
                 </Button>

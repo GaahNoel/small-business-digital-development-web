@@ -57,9 +57,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           padding: 10px;
           display: inline-block;
           transform-style: preserve-3d;
-          border: 4px solid #5647B2;
           cursor: pointer;
-          
         `;
 
       element.className = 'selected-marker';
@@ -100,8 +98,13 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           '.mapboxgl-ctrl-top-right': { width: '100%' },
           '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
           '.mapboxgl-compact': { display: 'none' },
+          '.selected-marker': {
+            border: '4px solid',
+            borderColor: 'primary',
+          },
           '.selected-marker:hover': {
-            height: '100px',
+            borderColor: 'primary_hover',
+            transition: '0.2s ease-in-out',
           },
           '.selected-marker:before': {
             content: '""',
@@ -112,6 +115,9 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
             left: '19%',
             transform: 'rotate(45deg) translateZ(-1px)',
             backgroundColor: 'primary',
+          },
+          '.selected-marker:hover:before': {
+            backgroundColor: 'primary_hover',
           },
         }}
       />

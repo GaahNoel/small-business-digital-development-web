@@ -67,9 +67,13 @@ const UserEdit = ({ session, id, userInfos }: UserEditProps) => {
   );
 };
 
-const getUserInfos = async (id: string) => {
+const getUserInfos = async (id: string, token: string) => {
   try {
-    const response = await api.get(`account/${id}`, {});
+    const response = await api.get(`account/${id}`, {
+      params: {
+        token,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -96,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     sub: string;
   };
 
-  const userInfos = await getUserInfos(id);
+  const userInfos = await getUserInfos(id, session);
 
   return {
     props: { session, id, userInfos },

@@ -76,6 +76,7 @@ type ItemModalProps = {
   type: string;
   imageUrl: string;
   categoryName: string;
+  businessId: string;
 };
 
 const ServiceList = ({ cities }: ServiceListProps) => {
@@ -172,6 +173,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
     type,
     imageUrl,
     categoryName,
+    businessId,
   }: ItemModalProps) => {
     setItemModal({
       id,
@@ -182,6 +184,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
       type,
       imageUrl,
       categoryName,
+      businessId,
     });
     viewItemOnOpen();
   };
@@ -293,6 +296,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                             type: service?.type as string,
                             categoryName: service.category?.name as string,
                             imageUrl: service.imageUrl,
+                            businessId: service.business.id,
                           });
                         }}
                       />
@@ -355,6 +359,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                                 type: service?.type as string,
                                 categoryName: service.category?.name as string,
                                 imageUrl: service.imageUrl,
+                                businessId: service.business.id,
                               });
                             }}
                           />
@@ -398,6 +403,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
         netPrice={itemModal?.salePrice as number}
         imageUrl={itemModal?.imageUrl as string}
         categoryName={itemModal?.categoryName as string}
+        businessId={itemModal?.businessId}
         isOpen={viewItemIsOpen}
         onClose={viewItemOnClose}
       />

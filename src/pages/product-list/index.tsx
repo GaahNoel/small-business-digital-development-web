@@ -76,6 +76,7 @@ type ItemModalProps = {
   type: string;
   imageUrl: string;
   categoryName: string;
+  businessId: string;
 };
 
 const ProductList = ({ cities }: ProductListProps) => {
@@ -173,6 +174,7 @@ const ProductList = ({ cities }: ProductListProps) => {
     type,
     imageUrl,
     categoryName,
+    businessId,
   }: ItemModalProps) => {
     setItemModal({
       id,
@@ -183,6 +185,7 @@ const ProductList = ({ cities }: ProductListProps) => {
       type,
       imageUrl,
       categoryName,
+      businessId,
     });
     viewItemOnOpen();
   };
@@ -293,6 +296,7 @@ const ProductList = ({ cities }: ProductListProps) => {
                             type: product?.type as string,
                             categoryName: product.category?.name as string,
                             imageUrl: product.imageUrl,
+                            businessId: product.business.id,
                           });
                         }}
                       />
@@ -355,6 +359,7 @@ const ProductList = ({ cities }: ProductListProps) => {
                                 type: product?.type as string,
                                 categoryName: product.category?.name as string,
                                 imageUrl: product.imageUrl,
+                                businessId: product.business.id,
                               });
                             }}
                           />
@@ -398,6 +403,7 @@ const ProductList = ({ cities }: ProductListProps) => {
         netPrice={itemModal?.salePrice as number}
         imageUrl={itemModal?.imageUrl as string}
         categoryName={itemModal?.categoryName as string}
+        businessId={itemModal?.businessId}
         isOpen={viewItemIsOpen}
         onClose={viewItemOnClose}
       />
