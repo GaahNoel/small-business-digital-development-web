@@ -99,6 +99,8 @@ export const InputSearchItems = ({
                   lg: '24px',
                   '2xl': '28px',
                 }}
+                marginLeft="40px"
+                left="-35px"
                 height={{ base: '55px', sm: '60px', md: '70px' }}
               />
               <Input
@@ -114,6 +116,7 @@ export const InputSearchItems = ({
                   '2xl': '28px',
                 }}
                 height={{ base: '55px', sm: '60px', md: '70px' }}
+                paddingLeft="45px"
                 color="primary"
                 ref={searchBar}
               />

@@ -40,6 +40,8 @@ import { DefaultHeader } from '../../components/shared/default-header';
 import { ProductServiceListModal } from '../../components/shared/product-service-list-modal';
 import { InputType } from 'zlib';
 import { InputSearchItems } from '../../components/business-items/input-search-items';
+import { AccordionPanelItems } from '../../components/business-items/accordion-panel-items';
+import { AccordionButtonItems } from '../../components/business-items/accordion-button-items';
 
 type ParamsProps = {
   id: string;
@@ -76,33 +78,6 @@ type Business = {
   zip: string;
   country: string;
 };
-
-type Products = {
-  business: {
-    distance: number;
-    id: string;
-    latitude: string;
-    longitude: string;
-    name: string;
-  };
-  category: {
-    id: string;
-    name: string;
-  };
-  createdAt: string;
-  description: string;
-  id: string;
-  imageUrl: string;
-  listPrice: number;
-  name: string;
-  salePrice: number;
-  type: string;
-}[];
-
-type CityOptions = {
-  cities: string[];
-  state: string;
-}[];
 
 type ItemModalProps = {
   id: string;
@@ -169,7 +144,7 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
             <Stack
               margin="20px auto 50px auto"
               width="100%"
-              maxW={{ base: '500px', md: '600px' }}
+              maxW={{ base: '300px', md: '600px' }}
               align="center"
               justify="center"
               color="default_white"
@@ -233,209 +208,40 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
               />
             </Flex>
             <Flex align="center" display="flex" direction="column" width="100%">
-              {filteredItems.length > 0 ? (
-                <>
-                  <Accordion
-                    gridGap={10}
-                    allowMultiple
-                    marginBottom="60px"
-                    width={{ base: '90%', lg: '80%' }}
-                    maxW={{ base: '100%', md: '1280px' }}
-                  >
-                    <AccordionItem bg="default_orange" borderRadius="15px">
-                      <AccordionButton
-                        fontSize={{
-                          base: '14px',
-                          sm: '18px',
-                          md: '22px',
-                          lg: '26px',
-                          '2xl': '30px',
-                        }}
-                        fontWeight="medium"
-                        color="default_white"
-                        gap={2}
-                        _hover={{
-                          svg: {
-                            animation: 'drawIcons 3s ease 1',
-                            animationFillMode: 'backwards',
-                          },
-                          '@keyframes drawIcons': {
-                            '0%': { strokeWidth: 0, strokeDasharray: '1 100' },
-                            '100%': {
-                              strokeWidth: 1.5,
-                              strokeDasharray: '100 0',
-                            },
-                          },
-                        }}
-                      >
-                        <Icon
-                          as={FiPackage}
-                          fontSize={{
-                            base: '18px',
-                            sm: '22px',
-                            md: '26px',
-                            lg: '30px',
-                            '2xl': '36px',
-                          }}
-                          color="default_white"
-                          strokeWidth="1.5"
-                        />
-                        <Box flex="1" textAlign="left">
-                          Produtos
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                      <AccordionPanel bg="default_orange_light">
-                        <Flex
-                          id="products"
-                          margin="40px 0px"
-                          align="center"
-                          justify="center"
-                        >
-                          <Grid
-                            width="100%"
-                            templateColumns={{
-                              base: 'repeat(1, 1fr)',
-                              lg: 'repeat(2, 1fr)',
-                            }}
-                            gap={10}
-                          >
-                            {filteredItems.map((item, key) => {
-                              if (item.type === 'product')
-                                return (
-                                  <GridItem colSpan={1} key={key}>
-                                    <Flex align="center" justify="center">
-                                      <ListProductServiceCard
-                                        key={key}
-                                        name={item.name}
-                                        img={item.imageUrl}
-                                        description={item.description}
-                                        listPrice={item.listPrice}
-                                        salePrice={item.salePrice}
-                                        businessId={business.id}
-                                        businessName={business.name}
-                                        detailClick={() => {
-                                          openModal({
-                                            id: item.id,
-                                            name: item.name,
-                                            description: item.description,
-                                            listPrice: item.listPrice,
-                                            salePrice: item.salePrice,
-                                            type: item?.type as string,
-                                            categoryName: item.category
-                                              ?.name as string,
-                                            imageUrl: item.imageUrl,
-                                          });
-                                        }}
-                                      />
-                                    </Flex>
-                                  </GridItem>
-                                );
-                            })}
-                          </Grid>
-                        </Flex>
-                      </AccordionPanel>
-                    </AccordionItem>
-                    <AccordionItem
-                      bg="service_blue"
-                      borderRadius="15px"
-                      marginTop="20px"
-                    >
-                      <AccordionButton
-                        fontSize={{
-                          base: '14px',
-                          sm: '18px',
-                          md: '22px',
-                          lg: '26px',
-                          '2xl': '30px',
-                        }}
-                        fontWeight="medium"
-                        color="default_white"
-                        gap={2}
-                        _hover={{
-                          svg: {
-                            animation: 'drawIcons 3s ease 1',
-                            animationFillMode: 'backwards',
-                          },
-                          '@keyframes drawIcons': {
-                            '0%': { strokeWidth: 0, strokeDasharray: '1 100' },
-                            '100%': {
-                              strokeWidth: 1.5,
-                              strokeDasharray: '100 0',
-                            },
-                          },
-                        }}
-                      >
-                        <Icon
-                          as={FiTool}
-                          fontSize={{
-                            base: '18px',
-                            sm: '22px',
-                            md: '26px',
-                            lg: '30px',
-                            '2xl': '36px',
-                          }}
-                          color="default_white"
-                          strokeWidth="1.5"
-                        />
-                        <Box flex="1" textAlign="left">
-                          Serviços
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                      <AccordionPanel bg="service_blue_light">
-                        <Flex id="services" margin="40px 0px">
-                          <Grid
-                            width="100%"
-                            templateColumns={{
-                              base: 'repeat(1, 1fr)',
-                              lg: 'repeat(2, 1fr)',
-                            }}
-                            gap={10}
-                          >
-                            {filteredItems.map((item, key) => {
-                              if (item.type === 'service')
-                                return (
-                                  <GridItem colSpan={1} key={key}>
-                                    <Flex align="center" justify="center">
-                                      <ListProductServiceCard
-                                        key={key}
-                                        name={item.name}
-                                        img={item.imageUrl}
-                                        description={item.description}
-                                        listPrice={item.listPrice}
-                                        salePrice={item.salePrice}
-                                        businessId={business.id}
-                                        businessName={business.name}
-                                        detailClick={() => {
-                                          openModal({
-                                            id: item.id,
-                                            name: item.name,
-                                            description: item.description,
-                                            listPrice: item.listPrice,
-                                            salePrice: item.salePrice,
-                                            type: item?.type as string,
-                                            categoryName: item.category
-                                              ?.name as string,
-                                            imageUrl: item.imageUrl,
-                                          });
-                                        }}
-                                      />
-                                    </Flex>
-                                  </GridItem>
-                                );
-                            })}
-                          </Grid>
-                        </Flex>
-                      </AccordionPanel>
-                    </AccordionItem>
-                  </Accordion>
-                </>
-              ) : (
-                <Flex key="0 items" align="start">
-                  <NoItemsText color="primary" text="Nenhum item encontrado" />
-                </Flex>
-              )}
+              <Accordion
+                gridGap={10}
+                allowMultiple
+                marginBottom="60px"
+                width={{ base: '90%', lg: '80%' }}
+                maxW={{ base: '100%', md: '1280px' }}
+              >
+                <AccordionItem bg="default_orange" borderRadius="15px">
+                  <AccordionButtonItems icon={FiPackage} type_name="Produtos" />
+                  <AccordionPanelItems
+                    filteredItems={filteredItems}
+                    business={business}
+                    type="product"
+                    type_name="produto"
+                    bgColor="default_orange_light"
+                    openModal={openModal}
+                  />
+                </AccordionItem>
+                <AccordionItem
+                  bg="service_blue"
+                  borderRadius="15px"
+                  marginTop="20px"
+                >
+                  <AccordionButtonItems icon={FiTool} type_name="Serviços" />
+                  <AccordionPanelItems
+                    filteredItems={filteredItems}
+                    business={business}
+                    type="service"
+                    type_name="serviço"
+                    bgColor="service_blue_light"
+                    openModal={openModal}
+                  />
+                </AccordionItem>
+              </Accordion>
             </Flex>
           </Flex>
         </Flex>
