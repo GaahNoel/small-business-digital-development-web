@@ -10,48 +10,55 @@ type DefaultMapInputProps = {
   editLat?: number | null;
 };
 
-export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: DefaultMapInputProps) => {
+export const DefaultMapInput = ({
+  setPosition,
+  editLng = null,
+  editLat = null,
+}: DefaultMapInputProps) => {
   const [markerState, setMarkerState] = useState();
   useEffect(() => {
-    if(editLat || editLng){
-        mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
-        const map = new mapboxgl.Map({
-          container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/streets-v11', // style URL
-          center: [editLng as number, editLat as number], // starting position [lng, lat]
-          zoom: 15, // starting zoom
-        });
-        const marker = new mapboxgl.Marker({
-          draggable: true,
-        });
-        setMarkerState(marker as any);
-        setPosition(marker as any);
-        marker
-          .setLngLat({
-            lng: editLng as number,
-            lat: editLat as number,
-          })
-          .addTo(map);
-        const geocoder = new MapboxGeocoder({
-          accessToken: mapboxgl.accessToken,
-          marker: false,
-          mapboxgl: mapboxgl as any,
-        });
-        map.addControl(geocoder);
-        // marker.on('dragend', function (e: any) {
-        //   const lngLat = e.target.getLngLat();
-        // });
-        geocoder.on('result', (e) => {
-          marker.setLngLat(e.result.center);
-        },);
-    }else{
+    if (editLat || editLng) {
+      mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
+      const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [editLng as number, editLat as number], // starting position [lng, lat]
+        zoom: 15, // starting zoom
+      });
+      const marker = new mapboxgl.Marker({
+        draggable: true,
+      });
+      setMarkerState(marker as any);
+      setPosition(marker as any);
+      marker
+        .setLngLat({
+          lng: editLng as number,
+          lat: editLat as number,
+        })
+        .addTo(map);
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        marker: false,
+        mapboxgl: mapboxgl as any,
+      });
+      map.addControl(geocoder);
+      // marker.on('dragend', function (e: any) {
+      //   const lngLat = e.target.getLngLat();
+      // });
+      geocoder.on('result', (e) => {
+        marker.setLngLat(e.result.center);
+      });
+    } else {
       const location = navigator.geolocation.getCurrentPosition(
         (geolocaltion) => {
           mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
           const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [geolocaltion.coords.longitude, geolocaltion.coords.latitude], // starting position [lng, lat]
+            center: [
+              geolocaltion.coords.longitude,
+              geolocaltion.coords.latitude,
+            ], // starting position [lng, lat]
             zoom: 15, // starting zoom
           });
           const marker = new mapboxgl.Marker({
@@ -77,12 +84,13 @@ export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: Def
           geocoder.on('result', (e) => {
             marker.setLngLat(e.result.center);
           });
-        }, ()=>{
+        },
+        () => {
           mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
           const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [-46.637934, -23.568130], // starting position [lng, lat]
+            center: [-46.637934, -23.56813], // starting position [lng, lat]
             zoom: 15, // starting zoom
           });
           const marker = new mapboxgl.Marker({
@@ -93,7 +101,7 @@ export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: Def
           marker
             .setLngLat({
               lng: -46.637934,
-              lat: -23.568130,
+              lat: -23.56813,
             })
             .addTo(map);
           const geocoder = new MapboxGeocoder({
@@ -108,7 +116,7 @@ export const DefaultMapInput = ({ setPosition, editLng=null, editLat=null }: Def
           geocoder.on('result', (e) => {
             marker.setLngLat(e.result.center);
           });
-        }
+        },
       );
     }
   }, []);

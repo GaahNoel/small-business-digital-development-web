@@ -12,7 +12,7 @@ export const HeaderHalfCircleTop = ({ children }: HeaderHalfCircleTopProps) => {
         bg="primary"
         padding="20px 60px"
         borderBottomRadius="full"
-        height={{base: "35vh", lg: "100vh"}}
+        height={{ base: '35vh', lg: '100vh' }}
         align="center"
         justify="center"
         width="100%"

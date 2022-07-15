@@ -26,10 +26,13 @@ export const FormInput = ({
   type,
   placeholder,
   icon,
-  required=true,
-  maxLength=50
+  required = true,
+  maxLength = 50,
 }: FormInputProps) => {
-  const { register, formState: { errors } } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <>
@@ -38,16 +41,20 @@ export const FormInput = ({
           htmlFor={`${id}_label`}
           color="primary"
           fontWeight="bold"
-          fontSize={{base: "1rem", md: "1.4rem"}}
+          fontSize={{ base: '1rem', md: '1.4rem' }}
         >
           {field}
         </FormLabel>
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
-            marginTop={{base: "0px", md: "10px"}}
+            marginTop={{ base: '0px', md: '10px' }}
           >
-            <Icon as={icon} color="gray.500" fontSize={{base: "1rem", md: "1.3rem"}}/>
+            <Icon
+              as={icon}
+              color="gray.500"
+              fontSize={{ base: '1rem', md: '1.3rem' }}
+            />
           </InputLeftElement>
           <Input
             {...register(id, { required, maxLength })}
@@ -55,15 +62,18 @@ export const FormInput = ({
             type={type}
             placeholder={placeholder}
             border="2px"
-            borderColor={errors[id]?"error_red":"primary"}
+            borderColor={errors[id] ? 'error_red' : 'primary'}
             bg="default_white"
-            fontSize={{base: "1rem", md: "1.3rem"}}
-            height={{base: "40px", md: "60px"}}
+            fontSize={{ base: '1rem', md: '1.3rem' }}
+            height={{ base: '40px', md: '60px' }}
           />
-          
         </InputGroup>
-        {errors[id] && errors[id].type === "required" && <FormErrorMessage message="Campo necessário" />}
-        {errors[id] && errors[id].type === "maxLength" && <FormErrorMessage message="Máximo de caracteres ultrapassado" /> }
+        {errors[id] && errors[id].type === 'required' && (
+          <FormErrorMessage message="Campo necessário" />
+        )}
+        {errors[id] && errors[id].type === 'maxLength' && (
+          <FormErrorMessage message="Máximo de caracteres ultrapassado" />
+        )}
       </Flex>
     </>
   );

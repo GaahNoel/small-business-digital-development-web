@@ -1,9 +1,8 @@
 import { Flex, Image } from '@chakra-ui/react';
 import Lottie from 'react-lottie';
-import * as animationData from '../../../../../public/business-analytics.json'
+import * as animationData from '../../../../../public/business-analytics.json';
 
 export const ProductSecondHalfImage = () => {
-
   return (
     <>
       <Flex
@@ -12,25 +11,31 @@ export const ProductSecondHalfImage = () => {
         padding="20px 60px"
         borderTopLeftRadius="500px"
         justify="center"
-        minHeight={{base: "35vh", lg: "100vh"}}
+        minHeight={{ base: '35vh', lg: '100vh' }}
         width="100%"
       >
-        <Flex align="start" justify="center" width="90%" marginLeft={{lg: "80px", xl: "60px", "2xl": "0px"}}>
-          <Lottie 
+        <Flex
+          align="start"
+          justify="center"
+          width="90%"
+          marginLeft={{ lg: '80px', xl: '60px', '2xl': '0px' }}
+        >
+          <Lottie
             options={{
               loop: true,
-              autoplay: true, 
+              autoplay: true,
               animationData: animationData,
               rendererSettings: {
-                preserveAspectRatio: 'xMidYMid slice'
-            }}}
+                preserveAspectRatio: 'xMidYMid slice',
+              },
+            }}
             height={400}
             width={400}
             isStopped={false}
             isPaused={false}
           />
         </Flex>
-      </Flex> 
+      </Flex>
     </>
   );
 };

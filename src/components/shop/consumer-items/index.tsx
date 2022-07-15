@@ -1,7 +1,11 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { ItemCard } from '../item-card';
 import { AiFillHome } from 'react-icons/ai';
-import { default_orange, default_yellow, service_blue } from '../../../styles/theme';
+import {
+  default_orange,
+  default_yellow,
+  service_blue,
+} from '../../../styles/theme';
 
 export const ConsumerItems = () => {
   return (

@@ -90,7 +90,6 @@ export const InputSearchItems = ({
           >
             <InputGroup>
               <InputLeftElement
-                children={<Icon as={FiSearch} color="primary" />}
                 pointerEvents="none"
                 fontSize={{
                   base: '14px',
@@ -102,7 +101,9 @@ export const InputSearchItems = ({
                 marginLeft="40px"
                 left="-35px"
                 height={{ base: '55px', sm: '60px', md: '70px' }}
-              />
+              >
+                <Icon as={FiSearch} color="primary" />
+              </InputLeftElement>
               <Input
                 placeholder="Digite o nome do item"
                 required={true}

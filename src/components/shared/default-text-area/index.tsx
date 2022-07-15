@@ -16,10 +16,12 @@ export const DefaultTextArea = ({
   text,
   placeholder,
   register,
-  required=true,
-  maxLength=225,
+  required = true,
+  maxLength = 225,
 }: DefaultTextAreaProps) => {
-  const { formState: { errors } } = useFormContext();
+  const {
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <Flex direction="column" marginBottom="10px">
@@ -27,7 +29,7 @@ export const DefaultTextArea = ({
           htmlFor={`descricao_label`}
           color="primary"
           fontWeight="bold"
-          fontSize={{base: "1rem", md: "1.4rem"}}
+          fontSize={{ base: '1rem', md: '1.4rem' }}
         >
           {text}
         </FormLabel>
@@ -37,15 +39,19 @@ export const DefaultTextArea = ({
           maxLength={maxLength}
           resize="none"
           bg="default_white"
-          borderColor={errors[id]?"error_red":"primary"}
+          borderColor={errors[id] ? 'error_red' : 'primary'}
           border="2px"
-          fontSize={{base: "1rem", md: "1.3rem"}}
-          height={{base: "80px", md: "160px"}}
+          fontSize={{ base: '1rem', md: '1.3rem' }}
+          height={{ base: '80px', md: '160px' }}
           {...register(id, { required, maxLength })}
         />
       </Flex>
-      {errors[id] && errors[id].type === "required" && <FormErrorMessage message="Campo necessário" />}
-      {errors[id] && errors[id].type === "maxLength" && <FormErrorMessage message="Máximo de caracteres ultrapassado" /> }
+      {errors[id] && errors[id].type === 'required' && (
+        <FormErrorMessage message="Campo necessário" />
+      )}
+      {errors[id] && errors[id].type === 'maxLength' && (
+        <FormErrorMessage message="Máximo de caracteres ultrapassado" />
+      )}
     </>
   );
 };

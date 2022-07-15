@@ -25,22 +25,22 @@ export const DefaultButton = ({
         color={color}
         type={type}
         variant="solid"
-        height={{base: "40px", md: "50px"}}
-        width={{base: "125px", md: "180px"}}
-        fontSize={{base: "16px", md: "20px"}}
+        height={{ base: '40px', md: '50px' }}
+        width={{ base: '125px', md: '180px' }}
+        fontSize={{ base: '16px', md: '20px' }}
         onClick={onClick}
       >
-        {
-          !isLoading? 
-          text: 
+        {!isLoading ? (
+          text
+        ) : (
           <Spinner
-            thickness='4px'
-            speed='0.65s'
-            emptyColor='gray.200'
-            color='default_white'
-            size='md' 
-          />      
-        }
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="default_white"
+            size="md"
+          />
+        )}
       </Button>
     </>
   );

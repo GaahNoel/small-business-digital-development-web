@@ -1,7 +1,6 @@
 import { Button, Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
 
 export const HalfImage = () => {
-
   return (
     <>
       <Flex
@@ -11,7 +10,7 @@ export const HalfImage = () => {
         borderBottomRightRadius="500px"
         align="end"
         justify="center"
-        height={{base: "35vh", lg: "100vh"}}
+        height={{ base: '35vh', lg: '100vh' }}
         width="100%"
       >
         <Image width="400px" marginRight="10%" src="Item.svg" alt="Shop" />

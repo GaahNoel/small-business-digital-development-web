@@ -11,28 +11,45 @@ import { FooterMenu } from '../../components/shared/footer-menu';
 const Login = () => {
   return (
     <>
-      <Flex bg="secondary" direction={{base: "column", lg: "row"}} height="100vh" align={{base: "initial", lg: "center"}}>
-        <Box width="100%" display={{base: "block", lg: "none"}}>
+      <Flex
+        bg="secondary"
+        direction={{ base: 'column', lg: 'row' }}
+        height="100vh"
+        align={{ base: 'initial', lg: 'center' }}
+      >
+        <Box width="100%" display={{ base: 'block', lg: 'none' }}>
           <HeaderHalfCircleTop>
-            <Image boxSize={{base: "200px", sm: "225px", md: "300px", lg: "400px", xl: "500px", "2xl": "600px"}} maxWidth="80%" src="Shop.svg" alt="Shop" />
+            <Image
+              boxSize={{
+                base: '200px',
+                sm: '225px',
+                md: '300px',
+                lg: '400px',
+                xl: '500px',
+                '2xl': '600px',
+              }}
+              maxWidth="80%"
+              src="Shop.svg"
+              alt="Shop"
+            />
           </HeaderHalfCircleTop>
         </Box>
-        <Flex width="60%" display={{base: "none", lg: "flex"}}>
+        <Flex width="60%" display={{ base: 'none', lg: 'flex' }}>
           <LeftImage />
         </Flex>
         <Stack
           direction="column"
           align="start"
           justify="center"
-          margin={{base: "auto", xl:"20px"}}
+          margin={{ base: 'auto', xl: '20px' }}
           position="relative"
-          top={{base:"-30", lg: "0"}}
-          left={{base: "0", xl: "-10%"}}
+          top={{ base: '-30', lg: '0' }}
+          left={{ base: '0', xl: '-10%' }}
           border="2px #000"
           borderRadius="3xl"
           bg="default_white"
           boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
-          padding={{base: "25px",md:"50px"}}
+          padding={{ base: '25px', md: '50px' }}
           spacing={4}
         >
           <Flex
@@ -42,8 +59,15 @@ const Login = () => {
             direction="column"
           >
             <Heading as="h3" textAlign="center">
-              <Text color="default_black" fontSize={{base: "18px", lg: "20px"}}>Entre e venha aproveitar nossos</Text>
-              <Text color="primary" fontSize={{base: "22px", lg: "26px"}}>Produtos e Serviços</Text>
+              <Text
+                color="default_black"
+                fontSize={{ base: '18px', lg: '20px' }}
+              >
+                Entre e venha aproveitar nossos
+              </Text>
+              <Text color="primary" fontSize={{ base: '22px', lg: '26px' }}>
+                Produtos e Serviços
+              </Text>
             </Heading>
           </Flex>
           <Stack

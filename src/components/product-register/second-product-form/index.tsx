@@ -82,22 +82,34 @@ type EstablishmentBaseProps = {
   name: string;
 };
 
+type ValueProps =
+  | 'name'
+  | 'price'
+  | 'description'
+  | 'id'
+  | 'imageUrl'
+  | 'registerForm'
+  | 'clickBackButton'
+  | 'updateState'
+  | 'establishmentBase';
+
 export const SecondProductForm = (props: ProductSecondFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
   const { token, type, category } = form;
+  const methodsValue = useForm<ProductSecondFormProps>();
+  const { setValue } = methodsValue;
   const methods = useForm<ProductSecondFormData>();
   const {
     handleSubmit,
     formState: { errors },
     setError,
     register,
-    setValue,
   } = methods;
 
   useEffect(() => {
     Object.keys(props).forEach((value) => {
-      setValue(value, props[value]);
+      setValue(value as ValueProps, props[value as ValueProps]);
     });
   }, []);
 

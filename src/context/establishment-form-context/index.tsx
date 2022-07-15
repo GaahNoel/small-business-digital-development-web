@@ -46,7 +46,7 @@ export function EstablishmentFormProvider({
         city,
         setCity,
         reference,
-        setReference
+        setReference,
       }}
     >
       {children}

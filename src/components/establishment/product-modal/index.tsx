@@ -68,7 +68,7 @@ export const ProductModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px" 
+            maxWidth="300px"
             wordBreak="break-all"
           >
             {name}

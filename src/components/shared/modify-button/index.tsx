@@ -16,7 +16,11 @@ export const ModifyButton = ({
 }: ModifyButtonProps) => {
   return (
     <>
-      <Button bg="card_white" _hover={{ bg: 'card_white_hover' }} width={{base: "80px", md: "100px", xl: "120px"}}>
+      <Button
+        bg="card_white"
+        _hover={{ bg: 'card_white_hover' }}
+        width={{ base: '80px', md: '100px', xl: '120px' }}
+      >
         <Stack
           direction="row"
           align="center"
@@ -26,8 +30,10 @@ export const ModifyButton = ({
           spacing={1}
           onClick={onClick}
         >
-          <Icon as={icon} fontSize={{base: "18px", md: "22px", xl: "26px"}} />
-          <Text fontSize={{base: "14px", md: "16px", xl: "18px"}}>{text}</Text>
+          <Icon as={icon} fontSize={{ base: '18px', md: '22px', xl: '26px' }} />
+          <Text fontSize={{ base: '14px', md: '16px', xl: '18px' }}>
+            {text}
+          </Text>
         </Stack>
       </Button>
     </>
