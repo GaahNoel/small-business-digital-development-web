@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { api } from '../../service/api';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { Flex, Text } from '@chakra-ui/react';
@@ -32,6 +32,7 @@ type Businesses = {
 }[];
 
 const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
+  const router = useRouter();
   useEffect(() => {
     mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
     const map = new mapboxgl.Map({
@@ -57,12 +58,14 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           display: inline-block;
           transform-style: preserve-3d;
           border: 4px solid #5647B2;
+          cursor: pointer;
+          
         `;
 
       element.className = 'selected-marker';
 
       element.addEventListener('click', () => {
-        window.alert('Test');
+        router.push(`/business-items/${business.id}`);
       });
 
       new mapboxgl.Marker(element)
@@ -97,6 +100,9 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           '.mapboxgl-ctrl-top-right': { width: '100%' },
           '.mapboxgl-ctrl-geocoder': { width: '100%', maxW: '100%' },
           '.mapboxgl-compact': { display: 'none' },
+          '.selected-marker:hover': {
+            height: '100px',
+          },
           '.selected-marker:before': {
             content: '""',
             width: ' 58px',

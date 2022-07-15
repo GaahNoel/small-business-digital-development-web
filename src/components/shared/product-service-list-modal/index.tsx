@@ -1,54 +1,61 @@
 import {
-    Button,
-    Flex,
-    Icon,
-    Image,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Stack,
-    Text,
-  } from '@chakra-ui/react';
-import { MdOutlineAttachMoney, MdOutlineCategory, MdOutlineDescription, MdOutlineMoneyOffCsred } from 'react-icons/md';
+  Button,
+  Flex,
+  Icon,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import {
+  MdOutlineAttachMoney,
+  MdOutlineCategory,
+  MdOutlineDescription,
+  MdOutlineMoneyOffCsred,
+} from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
 import { ModalInfo } from '../../establishment/modal-info';
-  import { DefaultButton } from '../../shared/default-button';
-  
-  type ProductModalProps = {
-    name: string;
-    type: string;
-    description: string;
-    grossPrice: number;
-    netPrice: number;
-    imageUrl: string;
-    categoryName: string;
-    isOpen: boolean;
-    onClose: () => void;
+import { DefaultButton } from '../../shared/default-button';
+
+type ProductModalProps = {
+  name: string;
+  type: string;
+  description: string;
+  grossPrice: number;
+  netPrice: number;
+  imageUrl: string;
+  categoryName: string;
+  inBusinessPage?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export const ProductServiceListModal = ({
+  name,
+  type,
+  description,
+  grossPrice,
+  netPrice,
+  imageUrl,
+  inBusinessPage = false,
+  isOpen,
+  categoryName,
+  onClose,
+}: ProductModalProps) => {
+  const format = {
+    minimumFractionDigits: 2,
+    style: 'currency',
+    currency: 'BRL',
   };
-  
-  export const ProductServiceListModal = ({
-    name,
-    type,
-    description,
-    grossPrice,
-    netPrice,
-    imageUrl,
-    isOpen,
-    categoryName,
-    onClose,
-  }: ProductModalProps) => {
-    const format = {
-      minimumFractionDigits: 2,
-      style: 'currency',
-      currency: 'BRL',
-    };
-    return (
-      <>
-       <Modal isOpen={isOpen} onClose={onClose}>
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
           width="90vw"
@@ -64,7 +71,7 @@ import { ModalInfo } from '../../establishment/modal-info';
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="500px" 
+            maxWidth="500px"
             wordBreak="break-all"
           >
             {name}
@@ -118,21 +125,39 @@ import { ModalInfo } from '../../establishment/modal-info';
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Stack direction="column" spacing={2} marginTop="30px" color="white">
-                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
-                    Fechar
+            <Stack
+              direction="column"
+              spacing={2}
+              marginTop="30px"
+              color="white"
+            >
+              <Button
+                bg="primary"
+                _hover={{ bg: 'primary_hover' }}
+                onClick={onClose}
+              >
+                Fechar
+              </Button>
+              {!inBusinessPage && (
+                <Button
+                  bg="primary"
+                  _hover={{ bg: 'primary_hover' }}
+                  onClick={onClose}
+                >
+                  Visitar página da loja
                 </Button>
-                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
-                    Visitar página da loja
-                </Button>
-                <Button bg="primary" _hover={{bg: "primary_hover"}} onClick={onClose}>
-                    Colocar no carrinho
-                </Button>
+              )}
+              <Button
+                bg="primary"
+                _hover={{ bg: 'primary_hover' }}
+                onClick={onClose}
+              >
+                Colocar no carrinho
+              </Button>
             </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
-      </>
-    );
-  };
-  
+    </>
+  );
+};

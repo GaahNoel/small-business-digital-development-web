@@ -261,54 +261,15 @@ const ServiceList = ({ cities }: ServiceListProps) => {
             >
               {capitalize(type)}s encontrados próximos a você:
             </Text>
-            <Flex
-              align="center"
-              justify="center"
-              margin="0px auto"
-              direction="column"
-              display={{ base: 'flex', md: 'none' }}
-            >
-              {filteredServices.length > 0 ? (
-                filteredServices.map((service, key) => (
-                  <ListProductServiceCard
-                    key={key}
-                    name={service.name}
-                    img={service.imageUrl}
-                    description={service.description}
-                    listPrice={service.listPrice}
-                    salePrice={service.salePrice}
-                    businessId={service.business.id}
-                    businessName={service.business.name}
-                    detailClick={() => {
-                      openModal({
-                        id: service.id,
-                        name: service.name,
-                        description: service.description,
-                        listPrice: service.listPrice,
-                        salePrice: service.salePrice,
-                        type: service?.type as string,
-                        categoryName: service.category?.name as string,
-                        imageUrl: service.imageUrl,
-                      });
-                    }}
-                  />
-                ))
-              ) : (
-                <Text
-                  fontSize={{ base: '16px', md: '20px' }}
-                  fontWeight="medium"
-                  marginBottom="20px"
-                >
-                  Sem {type}s encontrados próximos a você
-                </Text>
-              )}
-            </Flex>
             <Flex align="center">
               <Grid
                 width="100%"
-                templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
-                display={{ base: 'none', md: 'grid' }}
-                gap={6}
+                templateColumns={{
+                  base: 'repeat(1, 1fr)',
+                  lg: 'repeat(2, 1fr)',
+                }}
+                marginBottom="40px"
+                gap={10}
               >
                 {filteredServices.length > 0 ? (
                   filteredServices.map((service, key) => (
@@ -363,57 +324,14 @@ const ServiceList = ({ cities }: ServiceListProps) => {
             <Flex direction="column">
               {!isLoadingCitySearch ? (
                 <>
-                  <Flex
-                    direction="column"
-                    display={{ base: 'flex', md: 'none' }}
-                  >
-                    {filteredServices.length > 0 ? (
-                      filteredServices.map((service, key) => (
-                        <ListProductServiceCard
-                          key={key}
-                          name={service.name}
-                          img={service.imageUrl}
-                          description={service.description}
-                          listPrice={service.listPrice}
-                          salePrice={service.salePrice}
-                          businessId={service.business.id}
-                          businessName={service.business.name}
-                          detailClick={() => {
-                            openModal({
-                              id: service.id,
-                              name: service.name,
-                              description: service.description,
-                              listPrice: service.listPrice,
-                              salePrice: service.salePrice,
-                              type: service?.type as string,
-                              categoryName: service.category?.name as string,
-                              imageUrl: service.imageUrl,
-                            });
-                          }}
-                        />
-                      ))
-                    ) : (
-                      <Text
-                        textAlign="center"
-                        margin="0px auto"
-                        width={{ base: '80%', sm: '100%' }}
-                        fontSize={{ base: '16px', md: '20px' }}
-                        fontWeight="medium"
-                      >
-                        {isFirstSearch
-                          ? `Pesquise os ${type}s próximos, selecionando sua cidade`
-                          : `Nenhum ${type} encontrado na cidade`}
-                      </Text>
-                    )}
-                  </Flex>
                   <Grid
                     width="100%"
                     templateColumns={{
-                      md: 'repeat(1, 1fr)',
+                      base: 'repeat(1, 1fr)',
                       lg: 'repeat(2, 1fr)',
                     }}
-                    display={{ base: 'none', md: 'grid' }}
-                    gap={6}
+                    marginBottom="40px"
+                    gap={10}
                   >
                     {filteredServices.length > 0 ? (
                       filteredServices.map((service, key) => (
@@ -488,7 +406,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
   );
 };
 
-const getAllCitiesWithServices = async () => {
+const getAllCitiesWithBusiness = async () => {
   try {
     const response = await api.get('business/cities', {});
     return response.data;
@@ -504,7 +422,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const cities = await getAllCitiesWithServices();
+  const cities = await getAllCitiesWithBusiness();
 
   if (!session) {
     return {

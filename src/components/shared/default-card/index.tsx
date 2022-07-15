@@ -24,25 +24,76 @@ export const DefaultCard = ({
       <Stack
         direction="row"
         align="center"
-        justify={{base: "center", md: "start"}}
+        justify={{ base: 'center', md: 'start' }}
         bg="card_white"
         borderRadius="2xl"
         boxShadow="dark-lg"
-        width={{base: "330px", sm: "355px", md: "405px", lg: "430px", xl: "530px"}}
-        height={{base: "120px", sm: "140px", md: "160px", lg: "180px", xl: "200px"}}
+        width={{
+          base: '330px',
+          sm: '355px',
+          md: '405px',
+          lg: '430px',
+          xl: '530px',
+        }}
+        height={{
+          base: '120px',
+          sm: '140px',
+          md: '160px',
+          lg: '180px',
+          xl: '200px',
+        }}
         cursor="pointer"
         overflow="hidden"
         transition="0.2s border ease-in-out"
-        _hover={{border: "1px solid #000"}}
+        _hover={{ border: '1px solid #000' }}
         onClick={detailClick}
         spacing={1}
       >
-        <Flex width="100%" height="100%" align="center" justify={{base: "center", md: "start"}}>
-          <Img src={img} width={{base: "80px", sm: "100px", md: "160px", lg: "180px", xl: "200px"}} height={{base: "80px", sm: "100px", md: "100%"}} borderBottomRightRadius={{base: "full", md: "100px"}} borderTopRightRadius={{base: "full", md: "0px"}} borderLeftRadius={{base: "full", md: "0px"}} />
+        <Flex
+          width="100%"
+          height="100%"
+          align="center"
+          justify={{ base: 'center', md: 'start' }}
+        >
+          <Img
+            src={img}
+            width={{
+              base: '80px',
+              sm: '100px',
+              md: '160px',
+              lg: '180px',
+              xl: '200px',
+            }}
+            height={{ base: '80px', sm: '100px', md: '100%' }}
+            borderBottomRightRadius={{ base: 'full', md: '100px' }}
+            borderTopRightRadius={{ base: 'full', md: '0px' }}
+            borderLeftRadius={{ base: 'full', md: '0px' }}
+            objectFit="cover"
+          />
         </Flex>
-        <Flex direction="column" justify="space-around" textAlign="center" width="100%" height="100%">
-          <Flex maxWidth="300px" wordBreak="break-all" textAlign="center" justify="center">
-            <Text fontSize={{base: "14px", sm: "18px", md: "22px", lg: "24px", xl: "26px"}} fontWeight="bold">
+        <Flex
+          direction="column"
+          justify="space-around"
+          textAlign="center"
+          width="100%"
+          height="100%"
+        >
+          <Flex
+            maxWidth="300px"
+            wordBreak="break-all"
+            textAlign="center"
+            justify="center"
+          >
+            <Text
+              fontSize={{
+                base: '14px',
+                sm: '18px',
+                md: '22px',
+                lg: '24px',
+                xl: '26px',
+              }}
+              fontWeight="bold"
+            >
               {name}
             </Text>
           </Flex>
@@ -62,17 +113,17 @@ export const DefaultCard = ({
           </Stack>
         </Flex>
         <Flex width="auto" justify="end">
-            <IconButton
-              as={FiChevronRight}
-              bg="card_white"
-              aria-label="16px"
-              _hover={{ bg: 'card_white_hover' }}
-              cursor="pointer"
-              onClick={() => {
-                detailClick();
-              }}
-            />  
-          </Flex>
+          <IconButton
+            as={FiChevronRight}
+            bg="card_white"
+            aria-label="16px"
+            _hover={{ bg: 'card_white_hover' }}
+            cursor="pointer"
+            onClick={() => {
+              detailClick();
+            }}
+          />
+        </Flex>
       </Stack>
     </>
   );

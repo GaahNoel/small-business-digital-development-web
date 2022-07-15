@@ -251,12 +251,13 @@ const Establishment = ({
             spacing={1}
           >
             <Img
+              objectFit="cover"
               src={establishmentInfo.imageUrl}
               width={{ base: '120px', md: '200px', lg: '240px' }}
               height={{ base: '120px', md: '200px', lg: '240px' }}
               borderRadius="full"
             />
-            <Flex maxWidth="300px" wordBreak="break-all">
+            <Flex maxWidth="1000px" wordBreak="break-all">
               <Heading
                 as="h3"
                 fontSize={{
@@ -276,7 +277,9 @@ const Establishment = ({
             >
               <Text>Estado: {establishmentInfo.state}</Text>
               <Text>Cidade: {establishmentInfo.city}</Text>
-              <Text>Localização: {establishmentInfo.street}</Text>
+              {establishmentInfo.street && (
+                <Text>Localização: {establishmentInfo.street}</Text>
+              )}
             </Flex>
           </Stack>
         </Flex>
