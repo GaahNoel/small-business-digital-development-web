@@ -14,6 +14,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
+    "@types/zxcvbn": "^4.4.1",
     "axios": "^0.26.1",
     "filepond": "^4.30.3",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
@@ -38,7 +39,8 @@
     "react-tiny-fab": "^4.0.4",
     "react-toastify": "^9.0.1",
     "sweetalert2": "^11.4.17",
-    "swiper": "^8.0.7"
+    "swiper": "^8.0.7",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",

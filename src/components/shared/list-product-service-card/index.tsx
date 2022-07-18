@@ -57,8 +57,8 @@ export const ListProductServiceCard = ({
         }}
         cursor="pointer"
         overflow="hidden"
-        transition="0.2s border ease-in-out"
-        _hover={{ border: '1px solid #000' }}
+        transition="0.2s transform ease-in-out"
+        _hover={{ transform: 'scale(1.02)' }}
         spacing={1}
         onClick={detailClick}
       >

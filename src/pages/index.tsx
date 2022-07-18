@@ -1,22 +1,9 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Img,
-  Input,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { PrincipalButton } from '../components/home/principal-button';
 import { FooterMenu } from '../components/shared/footer-menu';
-import { BsShop, BsArrowUpRight } from 'react-icons/bs';
 import { FiTool, FiShoppingBag, FiPackage } from 'react-icons/fi';
-import { FiSearch } from 'react-icons/fi';
 import { DefaultHeader } from '../components/shared/default-header';
-import { useRouter } from 'next/router';
 import { EntrepreneurButton } from '../components/home/entrepreneur-button';
 import { Footer } from '../components/home/footer';
 import Lottie from 'react-lottie';

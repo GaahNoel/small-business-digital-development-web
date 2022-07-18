@@ -132,7 +132,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       } = response.data as any;
       return url;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -148,7 +148,6 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       } else {
         imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
       }
-      console.log(token);
       const response = await api.post(
         'product/create',
         {
@@ -170,8 +169,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       );
       toast.success('Produto cadastrado com sucesso!');
       router.push(`/establishment/${props.establishmentBase.id}`);
-    } catch (e: any) {
-      console.log(e);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -218,8 +217,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
       toast.success('Produto alterado com sucesso!');
       props.clickBackButton();
       //router.push('/entrepreneur');
-    } catch (e: any) {
-      console.log(e);
+    } catch (e) {
+      console.error(e);
     }
   };
 

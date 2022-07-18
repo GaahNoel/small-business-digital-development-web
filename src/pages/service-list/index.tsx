@@ -128,9 +128,11 @@ const ServiceList = ({ cities }: ServiceListProps) => {
           type: 'service',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 10,
+          radius: 0.01,
         },
       });
+      console.log(response);
+
       setServices(response.data);
       setFilteredServices(response.data);
     } catch (e) {

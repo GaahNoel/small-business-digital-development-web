@@ -128,7 +128,7 @@ const ProductList = ({ cities }: ProductListProps) => {
           type: 'product',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 10,
+          radius: 5,
         },
       });
       console.log(response.data);

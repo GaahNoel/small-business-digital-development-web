@@ -8,6 +8,7 @@ import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import Router, { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { UserInput } from '../../shared/user-input';
+import { useRef, useState } from 'react';
 
 type RegisterFormData = {
   name: string;
@@ -16,9 +17,17 @@ type RegisterFormData = {
   confirm_password: string;
 };
 
-export const UserRegisterForm = () => {
+export const UserRegisterForm = ({
+  changeOption,
+}: {
+  changeOption: (param: 'Entrar' | 'Registrar') => void;
+}) => {
   const methods = useForm<RegisterFormData>();
   const router = useRouter();
+  const password = useRef({});
+  const [submitLoading, setSubmitLoading] = useState(false);
+  password.current = methods.watch('password', '');
+
   const {
     handleSubmit,
     formState: { errors },
@@ -32,6 +41,7 @@ export const UserRegisterForm = () => {
     confirm_password,
   }) => {
     try {
+      setSubmitLoading(true);
       if (password !== confirm_password) {
         setError('confirm_password', {
           message: 'Senhas não correspondem',
@@ -39,14 +49,17 @@ export const UserRegisterForm = () => {
         throw 'Senhas não correspondem';
       }
 
-      const response = await api.post('signup', {
+      await api.post('signup', {
         name,
         email,
         password,
         provider: 'credentials',
       });
       toast.success('E-mail de validação enviado!');
-    } catch (e: any) {
+      changeOption('Entrar');
+      setSubmitLoading(false);
+    } catch (e) {
+      setSubmitLoading(false);
       console.log(e);
     }
   };
@@ -82,6 +95,7 @@ export const UserRegisterForm = () => {
               type="password"
               placeholder="Digite sua senha"
               icon={MdOutlineLock}
+              shouldCalcPasswordStrength={true}
             />
             <UserInput
               id="confirm_password"
@@ -103,6 +117,7 @@ export const UserRegisterForm = () => {
               color="default_white"
               text="Enviar"
               type="submit"
+              isLoading={submitLoading}
             />
           </Stack>
         </FormControl>

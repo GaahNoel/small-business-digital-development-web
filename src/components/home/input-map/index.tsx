@@ -20,7 +20,6 @@ export const InputMap = () => {
     // Add geocoder result to container.
     geocoder.on('result', (e) => {
       const [lng, lat] = e.result.center;
-      console.log(lng, lat);
       router.push({
         pathname: '/businesses-nearby',
         query: {
@@ -81,6 +80,8 @@ export const InputMap = () => {
             marginTop: '0px',
           },
         }}
+        _hover={{ transform: 'scale(1.02)' }}
+        transition={'all 0.2s ease-in-out'}
       ></Flex>
     </>
   );
