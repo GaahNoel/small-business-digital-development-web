@@ -131,6 +131,8 @@ const ServiceList = ({ cities }: ServiceListProps) => {
           radius: 25,
         },
       });
+      console.log(response);
+
       setServices(response.data);
       setFilteredServices(response.data);
     } catch (e) {

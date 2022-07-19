@@ -91,6 +91,7 @@ export const FormProductServiceSearch = ({
               required={true}
               bg="default_white"
               borderRadius="15px"
+              _hover={{ transform: 'scale(1.02)' }}
               ref={searchBar}
             />
           </Stack>

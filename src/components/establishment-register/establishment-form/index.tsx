@@ -117,7 +117,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       } = response.data as any;
       return url;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -161,7 +161,6 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       } as LocationProps;
 
       const addressInfo = await getAddressInfo(location);
-      console.log(userId);
 
       const response = await api.post(
         'business/create',
@@ -190,7 +189,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       toast.success('Estabelecimento cadastrado com sucesso!');
       router.push('/entrepreneur');
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -259,7 +258,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       toast.success('Estabelecimento alterado com sucesso!');
       props.clickBackButton();
     } catch (e: any) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -278,7 +277,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
         await editEstablishment({ nome, descricao });
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     } finally {
       setSubmitLoading(false);
     }

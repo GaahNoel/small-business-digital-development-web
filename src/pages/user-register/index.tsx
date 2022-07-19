@@ -119,7 +119,11 @@ const UserRegister = () => {
                 </Button>
               </ButtonGroup>
             </Flex>
-            {formOption === 'Entrar' ? <UserLoginForm /> : <UserRegisterForm />}
+            {formOption === 'Entrar' ? (
+              <UserLoginForm />
+            ) : (
+              <UserRegisterForm changeOption={changeOption} />
+            )}
           </Flex>
           <Flex width="60%" display={{ base: 'none', lg: 'flex' }}>
             <RightImage />
