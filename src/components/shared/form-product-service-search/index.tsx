@@ -43,7 +43,7 @@ type Items = {
   listPrice: number;
   name: string;
   salePrice: number;
-  type: string;
+  type: 'product' | 'service';
 }[];
 
 export const FormProductServiceSearch = ({

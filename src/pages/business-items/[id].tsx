@@ -247,16 +247,21 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
         </Flex>
       </Flex>
       <ProductServiceListModal
+        id={itemModal?.id as string}
         name={itemModal?.name as string}
         description={itemModal?.description as string}
-        type={itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)}
+        type={itemModal?.type as 'product' | 'service'}
+        typeName={
+          itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)
+        }
         grossPrice={itemModal?.listPrice as number}
         netPrice={itemModal?.salePrice as number}
         imageUrl={itemModal?.imageUrl as string}
         categoryName={itemModal?.categoryName as string}
-        inBusinessPage={true}
+        businessId={business.id as string}
         isOpen={viewItemIsOpen}
         onClose={viewItemOnClose}
+        inBusinessPage={true}
       />
       <FooterMenu />
     </>

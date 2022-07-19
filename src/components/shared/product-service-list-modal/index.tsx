@@ -21,26 +21,42 @@ import {
   MdOutlineMoneyOffCsred,
 } from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
+import { toast } from 'react-toastify';
+import useCart from '../../../hooks/cart';
 import { ModalInfo } from '../../establishment/modal-info';
 import { DefaultButton } from '../../shared/default-button';
 
 type ProductModalProps = {
+  id: string;
   name: string;
-  type: string;
+  type: 'product' | 'service';
+  typeName: string;
   description: string;
   grossPrice: number;
   netPrice: number;
   imageUrl: string;
   categoryName: string;
   inBusinessPage?: boolean;
-  businessId?: string;
+  businessId: string;
   isOpen: boolean;
   onClose: () => void;
 };
 
+type ProductInfo = {
+  id: string;
+  businessId: string;
+  name: string;
+  type: 'product' | 'service';
+  imageUrl: string;
+  price: number;
+  quantity: number;
+};
+
 export const ProductServiceListModal = ({
+  id,
   name,
   type,
+  typeName,
   description,
   grossPrice,
   netPrice,
@@ -56,6 +72,12 @@ export const ProductServiceListModal = ({
     minimumFractionDigits: 2,
     style: 'currency',
     currency: 'BRL',
+  };
+  const cart = useCart();
+
+  const addCart = (item: ProductInfo) => {
+    cart.addItem(item);
+    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
   return (
     <>
@@ -113,7 +135,7 @@ export const ProductServiceListModal = ({
               />
               <ModalInfo
                 info="Tipo:"
-                data={type}
+                data={typeName}
                 icon={RiCheckboxMultipleBlankLine}
               />
               <ModalInfo
@@ -154,7 +176,17 @@ export const ProductServiceListModal = ({
               <Button
                 bg="primary"
                 _hover={{ bg: 'primary_hover' }}
-                onClick={onClose}
+                onClick={() =>
+                  addCart({
+                    id,
+                    businessId,
+                    name,
+                    type,
+                    imageUrl,
+                    price: netPrice,
+                    quantity: 1,
+                  })
+                }
               >
                 Colocar no carrinho
               </Button>

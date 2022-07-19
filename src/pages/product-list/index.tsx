@@ -59,7 +59,7 @@ type Products = {
   listPrice: number;
   name: string;
   salePrice: number;
-  type: string;
+  type: 'product' | 'service';
 }[];
 
 type CityOptions = {
@@ -73,7 +73,7 @@ type ItemModalProps = {
   description: string;
   listPrice: number;
   salePrice: number;
-  type: string;
+  type: 'product' | 'service';
   imageUrl: string;
   categoryName: string;
   businessId: string;
@@ -128,7 +128,7 @@ const ProductList = ({ cities }: ProductListProps) => {
           type: 'product',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 5,
+          radius: 25,
         },
       });
       console.log(response.data);
@@ -293,7 +293,7 @@ const ProductList = ({ cities }: ProductListProps) => {
                             description: product.description,
                             listPrice: product.listPrice,
                             salePrice: product.salePrice,
-                            type: product?.type as string,
+                            type: product?.type,
                             categoryName: product.category?.name as string,
                             imageUrl: product.imageUrl,
                             businessId: product.business.id,
@@ -356,7 +356,7 @@ const ProductList = ({ cities }: ProductListProps) => {
                                 description: product.description,
                                 listPrice: product.listPrice,
                                 salePrice: product.salePrice,
-                                type: product?.type as string,
+                                type: product?.type,
                                 categoryName: product.category?.name as string,
                                 imageUrl: product.imageUrl,
                                 businessId: product.business.id,
@@ -396,14 +396,18 @@ const ProductList = ({ cities }: ProductListProps) => {
         </Flex>
       </Flex>
       <ProductServiceListModal
+        id={itemModal?.id as string}
         name={itemModal?.name as string}
         description={itemModal?.description as string}
-        type={itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)}
+        type={itemModal?.type as 'product' | 'service'}
+        typeName={
+          itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)
+        }
         grossPrice={itemModal?.listPrice as number}
         netPrice={itemModal?.salePrice as number}
         imageUrl={itemModal?.imageUrl as string}
         categoryName={itemModal?.categoryName as string}
-        businessId={itemModal?.businessId}
+        businessId={itemModal?.businessId as string}
         isOpen={viewItemIsOpen}
         onClose={viewItemOnClose}
       />
