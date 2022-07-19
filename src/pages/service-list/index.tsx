@@ -59,7 +59,7 @@ type Services = {
   listPrice: number;
   name: string;
   salePrice: number;
-  type: string;
+  type: 'product' | 'service';
 }[];
 
 type CityOptions = {
@@ -73,7 +73,7 @@ type ItemModalProps = {
   description: string;
   listPrice: number;
   salePrice: number;
-  type: string;
+  type: 'product' | 'service';
   imageUrl: string;
   categoryName: string;
   businessId: string;
@@ -293,7 +293,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                             description: service.description,
                             listPrice: service.listPrice,
                             salePrice: service.salePrice,
-                            type: service?.type as string,
+                            type: service?.type,
                             categoryName: service.category?.name as string,
                             imageUrl: service.imageUrl,
                             businessId: service.business.id,
@@ -356,7 +356,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                                 description: service.description,
                                 listPrice: service.listPrice,
                                 salePrice: service.salePrice,
-                                type: service?.type as string,
+                                type: service?.type,
                                 categoryName: service.category?.name as string,
                                 imageUrl: service.imageUrl,
                                 businessId: service.business.id,
@@ -396,14 +396,18 @@ const ServiceList = ({ cities }: ServiceListProps) => {
         </Flex>
       </Flex>
       <ProductServiceListModal
+        id={itemModal?.id as string}
         name={itemModal?.name as string}
         description={itemModal?.description as string}
-        type={itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)}
+        type={itemModal?.type as 'product' | 'service'}
+        typeName={
+          itemModal?.type === 'product' ? 'Produto' : ('Serviço' as string)
+        }
         grossPrice={itemModal?.listPrice as number}
         netPrice={itemModal?.salePrice as number}
         imageUrl={itemModal?.imageUrl as string}
         categoryName={itemModal?.categoryName as string}
-        businessId={itemModal?.businessId}
+        businessId={itemModal?.businessId as string}
         isOpen={viewItemIsOpen}
         onClose={viewItemOnClose}
       />

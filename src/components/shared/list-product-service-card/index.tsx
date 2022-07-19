@@ -4,7 +4,7 @@ import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { ModifyButton } from '../modify-button';
 
-type DefaultCardProps = {
+type ListProductServiceCardProps = {
   name: string;
   img: string;
   description: string;
@@ -24,7 +24,7 @@ export const ListProductServiceCard = ({
   businessId,
   businessName,
   detailClick,
-}: DefaultCardProps) => {
+}: ListProductServiceCardProps) => {
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -68,9 +68,9 @@ export const ListProductServiceCard = ({
           width={{
             base: '80px',
             sm: '100px',
-            md: '160px',
-            lg: '180px',
-            xl: '200px',
+            md: '140px',
+            lg: '160px',
+            xl: '180px',
           }}
           align="center"
           justify={{ base: 'center', md: 'start' }}
@@ -107,7 +107,12 @@ export const ListProductServiceCard = ({
             fontWeight="medium"
           >
             <Text
-              maxWidth="200px"
+              maxWidth={{
+                base: '200px',
+                sm: '230px',
+                lg: '150px',
+                xl: '200px',
+              }}
               whiteSpace="nowrap"
               overflow="hidden"
               textOverflow="ellipsis"
