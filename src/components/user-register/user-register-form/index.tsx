@@ -5,7 +5,10 @@ import { FiUser } from 'react-icons/fi';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { UserInput } from '../../shared/user-input';
+import { useRef, useState } from 'react';
 
 type RegisterFormData = {
   name: string;
@@ -14,8 +17,17 @@ type RegisterFormData = {
   confirm_password: string;
 };
 
-export const UserRegisterForm = () => {
+export const UserRegisterForm = ({
+  changeOption,
+}: {
+  changeOption: (param: 'Entrar' | 'Registrar') => void;
+}) => {
   const methods = useForm<RegisterFormData>();
+  const router = useRouter();
+  const password = useRef({});
+  const [submitLoading, setSubmitLoading] = useState(false);
+  password.current = methods.watch('password', '');
+
   const {
     handleSubmit,
     formState: { errors },
@@ -28,18 +40,26 @@ export const UserRegisterForm = () => {
     password,
     confirm_password,
   }) => {
-    if (password !== confirm_password)
-      setError('confirm_password', {
-        message: 'Senhas não correspondem',
-      });
     try {
-      const response = await api.post('signup', {
+      setSubmitLoading(true);
+      if (password !== confirm_password) {
+        setError('confirm_password', {
+          message: 'Senhas não correspondem',
+        });
+        throw 'Senhas não correspondem';
+      }
+
+      await api.post('signup', {
         name,
         email,
         password,
         provider: 'credentials',
       });
-    } catch (e: any) {
+      toast.success('E-mail de validação enviado!');
+      changeOption('Entrar');
+      setSubmitLoading(false);
+    } catch (e) {
+      setSubmitLoading(false);
       console.log(e);
     }
   };
@@ -55,28 +75,29 @@ export const UserRegisterForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack justify="center" spacing={1}>
-            <FormInput
+            <UserInput
               id="name"
               field="Nome"
               type="text"
               placeholder="Digite o nome desejado"
               icon={FiUser}
             />
-            <FormInput
+            <UserInput
               id="email"
               field="Email"
               type="email"
               placeholder="Digite o email desejado"
               icon={MdOutlineMail}
             />
-            <FormInput
+            <UserInput
               id="password"
               field="Senha"
               type="password"
               placeholder="Digite sua senha"
               icon={MdOutlineLock}
+              shouldCalcPasswordStrength={true}
             />
-            <FormInput
+            <UserInput
               id="confirm_password"
               field="Confirmar Senha"
               type="password"
@@ -89,12 +110,14 @@ export const UserRegisterForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              onClick={() => router.push('/login')}
             />
             <DefaultButton
               bg="primary"
               color="default_white"
               text="Enviar"
               type="submit"
+              isLoading={submitLoading}
             />
           </Stack>
         </FormControl>

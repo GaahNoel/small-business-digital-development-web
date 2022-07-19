@@ -13,7 +13,7 @@ export const ItemIcon = ({ color, text, icon }: ItemIconProps) => {
     <>
       <Flex boxSize="100px" align="center" justify="center">
         <SvgIcon color={color} />
-        <Flex fontSize="36px" color="default_white" zIndex="0">
+        <Flex fontSize="30px" color="default_white" zIndex="0">
           {icon ? <Icon as={icon} /> : <Text>{text}</Text>}
         </Flex>
       </Flex>

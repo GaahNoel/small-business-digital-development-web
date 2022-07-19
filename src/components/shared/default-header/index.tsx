@@ -17,16 +17,21 @@ export const DefaultHeader = () => {
 
   return (
     <>
-      <Stack
+      <Flex
         direction="row"
-        justify="space-around"
+        justify="space-between"
         align="center"
-        margin="15px 0px 10px 0px"
-        spacing={40}
+        margin="15px 0px"
       >
         <Img
           src="/Logo.svg"
           cursor="pointer"
+          transition={'all 0.1s ease-in-out'}
+          _hover={{
+            cursor: 'pointer',
+            filter: 'contrast(150%)',
+            transform: 'scale(1.1)',
+          }}
           onClick={() => {
             router.push('/');
           }}
@@ -46,17 +51,50 @@ export const DefaultHeader = () => {
           ) : (
             <Button
               bg="default_white"
-              _hover={{ bg: 'default_white_hover' }}
+              position={'relative'}
+              _hover={{
+                color: 'secondary',
+                border: '1px solid white',
+
+                _before: {
+                  width: '100%',
+                },
+              }}
+              _before={{
+                position: 'absolute',
+                content: '""',
+                width: 0,
+                background: 'primary',
+                bottom: 0,
+                left: 0,
+                height: '100%',
+                transition: 'all 0.4s',
+                zIndex: -1,
+              }}
+              _after={{
+                position: 'absolute',
+                content: '""',
+                width: '100%',
+                background: 'secondary',
+                bottom: 0,
+                left: 0,
+                height: '100%',
+
+                zIndex: -2,
+              }}
               color="primary"
               borderRadius="10px"
               width="100%"
+              overflow={'hidden'}
+              zIndex={1}
               onClick={logout}
+              transition={'all 0.2s ease-in-out'}
             >
               Logout
             </Button>
           )}
         </Flex>
-      </Stack>
+      </Flex>
     </>
   );
 };

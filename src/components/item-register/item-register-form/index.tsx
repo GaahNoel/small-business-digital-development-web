@@ -5,7 +5,13 @@ import { useProductForm } from '../../../hooks/product-form';
 import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
+type EstablishmentBaseProps = {
+  id: string;
+  name: string;
+};
+
 type ItemRegisterFormProps = {
+  establishmentBase: EstablishmentBaseProps;
   categories: { id: string; name: string }[];
 };
 
@@ -14,7 +20,10 @@ type RegisterItemFormData = {
   category: string;
 };
 
-export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
+export const ItemRegisterForm = ({
+  establishmentBase,
+  categories,
+}: ItemRegisterFormProps) => {
   const methods = useForm<RegisterItemFormData>();
   const {
     register,
@@ -23,16 +32,9 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
     setError,
   } = methods;
   const { setStage, form } = useProductForm();
-  const {
-    establishmentId,
-    establishmentName,
-    type,
-    setType,
-    category,
-    setCategory,
-  } = form;
+  const { setType, setCategory } = form;
   const establishmentOptions = [
-    { id: establishmentId, name: establishmentName },
+    { id: establishmentBase.id, name: establishmentBase.name },
   ];
   const typeOptions = [
     { id: '1', name: 'Produto' },
@@ -52,15 +54,28 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
 
   return (
     <>
-      <Flex direction="column" align="center" margin="20px 0px">
-        <Text fontSize="1.5rem" fontWeight="bold">
+      <Flex
+        direction="column"
+        justify="center"
+        align="center"
+        margin="10px auto"
+      >
+        <Text
+          fontSize={{ base: '1.5rem', md: '2.2rem', xl: '2.5rem' }}
+          fontWeight="bold"
+        >
           Selecione a opção que deseja
         </Text>
         <FormControl
           as="form"
           width="100%"
-          maxWidth="275px"
-          margin="20px auto"
+          maxWidth={{ base: '275px', md: '350px', xl: '500px' }}
+          margin="10px auto"
+          border="2px #000"
+          borderRadius="3xl"
+          bg="default_white"
+          boxShadow="-14px 15px 15px -8px rgba(0,0,0,0.35);"
+          padding={{ base: '25px', md: '50px', xl: '70px' }}
           onSubmit={handleSubmit(onSubmit)}
         >
           <Stack spacing={4}>
@@ -91,7 +106,9 @@ export const ItemRegisterForm = ({ categories }: ItemRegisterFormProps) => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
-              onClick={() => router.push('/')}
+              onClick={() =>
+                router.push(`/establishment/${establishmentBase.id}`)
+              }
             />
             <DefaultButton
               bg="primary"

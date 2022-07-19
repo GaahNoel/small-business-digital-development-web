@@ -30,14 +30,17 @@ const Shop = () => {
           <ShopHeader />
           <Flex justify="center">
             <ButtonGroup
-              spacing={0}
+              spacing={2}
               padding="2px"
               bg="secondary"
               borderRadius="14px"
             >
               <Button
-                bg={
-                  formOption === 'Consumidor' ? 'default_orange' : 'secondary'
+                bg={formOption === 'Consumidor' ? 'default_orange' : 'none'}
+                _hover={
+                  formOption === 'Consumidor'
+                    ? { bg: 'default_orange_hover' }
+                    : { bg: 'secondary_hover' }
                 }
                 color={
                   formOption === 'Consumidor' ? 'default_white' : 'primary'
@@ -50,8 +53,11 @@ const Shop = () => {
                 Consumidor
               </Button>
               <Button
-                bg={
-                  formOption === 'Empreendedor' ? 'default_orange' : 'secondary'
+                bg={formOption === 'Empreendedor' ? 'default_orange' : 'none'}
+                _hover={
+                  formOption === 'Empreendedor'
+                    ? { bg: 'default_orange_hover' }
+                    : { bg: 'secondary_hover' }
                 }
                 color={
                   formOption === 'Empreendedor' ? 'default_white' : 'primary'

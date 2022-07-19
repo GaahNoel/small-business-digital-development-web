@@ -33,6 +33,9 @@ import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import { runIfFn } from '@chakra-ui/utils';
+import { toast } from 'react-toastify';
+import { stringify } from 'querystring';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -40,43 +43,68 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 // Register the plugin
 registerPlugin(FilePondPluginImageValidateSize);
 
+type ProductSecondFormProps = {
+  id?: string;
+  name: string;
+  price: string;
+  description: string;
+  imageUrl?: string;
+  registerForm: boolean;
+  clickBackButton: () => void;
+  updateState?: (id: string, productFound: ProductProps) => void;
+  establishmentBase: EstablishmentBaseProps;
+};
+
 type ProductSecondFormData = {
   name: string;
   price: string;
   description: string;
 };
 
-export const SecondProductForm = () => {
+type ProductProps = {
+  id: string;
+  name: string;
+  listPrice: number;
+  salePrice: number;
+  description: string;
+  createdAt?: string;
+  businessId?: string;
+  imageUrl: string;
+  type?: string;
+  category?: {
+    id: string;
+    name: string;
+  };
+};
+
+type EstablishmentBaseProps = {
+  id: string;
+  name: string;
+};
+
+type ValueProps = 'name' | 'price' | 'description';
+
+export const SecondProductForm = (props: ProductSecondFormProps) => {
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
-  const {
-    establishmentId,
-    token,
-    type,
-    category,
-    name,
-    setName,
-    price,
-    setPrice,
-    description,
-    setDescription,
-    imageUrl,
-    setImageUrl,
-  } = form;
+  const { token, type, category } = form;
   const methods = useForm<ProductSecondFormData>();
   const {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
     register,
   } = methods;
-  const [files, setFiles] = useState<any>([]);
-  const router = useRouter();
 
   useEffect(() => {
-    console.log(token);
-    console.log(type);
-    console.log(category);
+    Object.keys(props).forEach((value) => {
+      setValue(value as ValueProps, props[value as ValueProps]);
+    });
   }, []);
+
+  const [files, setFiles] = useState<any>([]);
+  const router = useRouter();
 
   const postImageBB = async () => {
     const formData = new FormData();
@@ -94,22 +122,22 @@ export const SecondProductForm = () => {
       } = response.data as any;
       return url;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const onSubmit: SubmitHandler<ProductSecondFormData> = async ({
+  const registerProduct = async ({
     name,
     price,
     description,
-  }) => {
-    const imageUrlReturned = await postImageBB();
-    setName(name);
-    setPrice(price);
-    setDescription(description);
-    setImageUrl(imageUrlReturned);
-    console.log(name);
+  }: ProductSecondFormData) => {
     try {
+      let imageUrlReturned;
+      if (files[0]) {
+        imageUrlReturned = await postImageBB();
+      } else {
+        imageUrlReturned = 'https://i.ibb.co/4VTQKDh/Product.png';
+      }
       const response = await api.post(
         'product/create',
         {
@@ -119,7 +147,7 @@ export const SecondProductForm = () => {
           listPrice: parseFloat(price),
           salePrice: parseFloat(price),
           imageUrl: imageUrlReturned,
-          businessId: establishmentId,
+          businessId: props.establishmentBase.id,
           categoryId: category,
         },
         {
@@ -129,32 +157,96 @@ export const SecondProductForm = () => {
           },
         },
       );
+      toast.success('Produto cadastrado com sucesso!');
+      router.push(`/establishment/${props.establishmentBase.id}`);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-      router.push('/entrepreneur');
-    } catch (e: any) {
+  const editProduct = async ({
+    name,
+    price,
+    description,
+  }: ProductSecondFormData) => {
+    try {
+      let imageUrlReturned;
+      if (files[0]) {
+        console.log('Encontrou arquivo');
+        imageUrlReturned = await postImageBB();
+      } else {
+        console.log('Não encontrou arquivo');
+        imageUrlReturned = props.imageUrl;
+      }
+      const response = await api.put(
+        `product/edit/${props.id}`,
+        {
+          name,
+          description,
+          listPrice: parseFloat(price),
+          salePrice: parseFloat(price),
+          imageUrl: imageUrlReturned,
+          productId: props.id,
+        },
+        {
+          headers: {
+            'content-type': 'application/json',
+            token,
+          },
+        },
+      );
+      if (props.updateState)
+        props.updateState(props?.id as string, {
+          id: props?.id as string,
+          name: name,
+          description: description,
+          listPrice: parseFloat(price),
+          salePrice: parseFloat(price),
+          imageUrl: imageUrlReturned,
+        });
+      toast.success('Produto alterado com sucesso!');
+      props.clickBackButton();
+      //router.push('/entrepreneur');
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onSubmit: SubmitHandler<ProductSecondFormData> = async ({
+    name,
+    price,
+    description,
+  }) => {
+    setSubmitLoading(true);
+    try {
+      if (props.registerForm) {
+        await registerProduct({ name, price, description });
+      } else {
+        await editProduct({ name, price, description });
+      }
+    } catch (e) {
       console.log(e);
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
   return (
     <>
       <FormProvider {...methods}>
-        <FormControl
-          as="form"
-          width="100%"
-          height="100%"
-          flex="1"
-          margin="0px auto"
-          bg="secondary"
-          padding="30px 0px"
-          borderTopLeftRadius="65px"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
           <Stack
             direction="column"
             spacing={3}
-            maxWidth="70vw"
+            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '25vw' }}
             margin="0px auto"
+            border="2px #000"
+            borderRadius="3xl"
+            bg="default_white"
+            boxShadow={
+              props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
+            }
+            padding={{ base: '25px', md: '25px 50px' }}
           >
             <FormInput
               id="name"
@@ -176,40 +268,54 @@ export const SecondProductForm = () => {
               placeholder="Digite a descrição do produto"
               register={register}
             />
-          </Stack>
-          <Box
-            width="70vw"
-            margin="30px auto"
-            sx={{ '.filepond--credits': { display: 'none' } }}
-          >
-            <FilePond
-              files={files}
-              onupdatefiles={setFiles}
-              instantUpload={false}
-              allowMultiple={false}
-              name="files"
-              allowImageValidateSize={true}
-              imageValidateSizeMinWidth={600}
-              imageValidateSizeMinHeight={400}
-              imageValidateSizeMaxWidth={1024}
-              imageValidateSizeMaxHeight={800}
-              labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
-            />
-          </Box>
+            <Box
+              width="100%"
+              margin="10px auto"
+              sx={{ '.filepond--credits': { display: 'none' } }}
+            >
+              <FormLabel
+                htmlFor={`image_label`}
+                color="primary"
+                fontWeight="bold"
+                fontSize={{ base: '1rem', md: '1.4rem' }}
+              >
+                Imagem
+              </FormLabel>
+              <FilePond
+                files={files}
+                onupdatefiles={setFiles}
+                instantUpload={false}
+                allowMultiple={false}
+                name="files"
+                allowImageValidateSize={true}
+                imageValidateSizeMinWidth={400}
+                imageValidateSizeMinHeight={400}
+                imageValidateSizeMaxWidth={1080}
+                imageValidateSizeMaxHeight={1080}
+                labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
+              />
+            </Box>
 
-          <Stack direction="row" justify="center" spacing={25} marginTop="30px">
-            <DefaultButton
-              bg="default_black"
-              color="default_white"
-              text="Cancelar"
-              onClick={() => setStage('first')}
-            />
-            <DefaultButton
-              bg="primary"
-              color="default_white"
-              text="Enviar"
-              type="submit"
-            />
+            <Stack
+              direction="row"
+              justify="center"
+              spacing={25}
+              marginTop="30px"
+            >
+              <DefaultButton
+                bg="default_black"
+                color="default_white"
+                text="Cancelar"
+                onClick={() => props.clickBackButton()}
+              />
+              <DefaultButton
+                bg="primary"
+                color="default_white"
+                text="Enviar"
+                isLoading={submitLoading}
+                type="submit"
+              />
+            </Stack>
           </Stack>
         </FormControl>
       </FormProvider>

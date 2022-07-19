@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   Icon,
   Image,
@@ -11,52 +12,80 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
-import { DefaultButton } from '../../shared/default-button';
+import { useRouter } from 'next/router';
 import {
   MdOutlineAttachMoney,
-  MdOutlineMoneyOffCsred,
-  MdOutlineDescription,
   MdOutlineCategory,
+  MdOutlineDescription,
+  MdOutlineMoneyOffCsred,
 } from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
-import { ModalInfo } from '../modal-info';
+import { toast } from 'react-toastify';
+import useCart from '../../../hooks/cart';
+import { ModalInfo } from '../../establishment/modal-info';
+import { DefaultButton } from '../../shared/default-button';
 
-type EstablishmentModalProps = {
+type ProductModalProps = {
+  id: string;
   name: string;
-  type: string;
+  type: 'product' | 'service';
+  typeName: string;
   description: string;
   grossPrice: number;
   netPrice: number;
   imageUrl: string;
   categoryName: string;
+  inBusinessPage?: boolean;
+  businessId: string;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const EstablishmentModal = ({
+type ProductInfo = {
+  id: string;
+  businessId: string;
+  name: string;
+  type: 'product' | 'service';
+  imageUrl: string;
+  price: number;
+  quantity: number;
+};
+
+export const ProductServiceListModal = ({
+  id,
   name,
   type,
+  typeName,
   description,
   grossPrice,
   netPrice,
   imageUrl,
+  inBusinessPage = false,
+  businessId,
   isOpen,
   categoryName,
   onClose,
-}: EstablishmentModalProps) => {
+}: ProductModalProps) => {
+  const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
     currency: 'BRL',
+  };
+  const cart = useCart();
+
+  const addCart = (item: ProductInfo) => {
+    cart.addItem(item);
+    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
-          maxW="90vw"
+          width="90vw"
+          maxWidth="700px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -68,6 +97,8 @@ export const EstablishmentModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
+            maxWidth="500px"
+            wordBreak="break-all"
           >
             {name}
           </ModalHeader>
@@ -79,7 +110,7 @@ export const EstablishmentModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="300px"
+            maxWidth="400px"
           >
             <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
             <Stack
@@ -104,7 +135,7 @@ export const EstablishmentModal = ({
               />
               <ModalInfo
                 info="Tipo:"
-                data={type}
+                data={typeName}
                 icon={RiCheckboxMultipleBlankLine}
               />
               <ModalInfo
@@ -120,12 +151,46 @@ export const EstablishmentModal = ({
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <DefaultButton
-              bg="primary"
-              color="default_white"
-              text="Fechar"
-              onClick={onClose}
-            />
+            <Stack
+              direction="column"
+              spacing={2}
+              marginTop="30px"
+              color="white"
+            >
+              <Button
+                bg="primary"
+                _hover={{ bg: 'primary_hover' }}
+                onClick={onClose}
+              >
+                Fechar
+              </Button>
+              {!inBusinessPage && (
+                <Button
+                  bg="primary"
+                  _hover={{ bg: 'primary_hover' }}
+                  onClick={() => router.push(`/business-items/${businessId}`)}
+                >
+                  Visitar página da loja
+                </Button>
+              )}
+              <Button
+                bg="primary"
+                _hover={{ bg: 'primary_hover' }}
+                onClick={() =>
+                  addCart({
+                    id,
+                    businessId,
+                    name,
+                    type,
+                    imageUrl,
+                    price: netPrice,
+                    quantity: 1,
+                  })
+                }
+              >
+                Colocar no carrinho
+              </Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>

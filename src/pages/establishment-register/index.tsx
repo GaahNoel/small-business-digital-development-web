@@ -4,31 +4,57 @@ import { EstablishmentForm } from '../../components/establishment-register/estab
 import { HeaderTitle } from '../../components/shared/header-title';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { getSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { EstablishmentHalfImage } from '../../components/establishment-register/establishment-half-image';
 
 type EstablishmentRegisterProps = {
   session: string;
 };
 
 const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
-  useEffect(() => {
-    console.log(session);
-  }, []);
+  const router = useRouter();
+
   return (
     <>
       <Flex
-        bg="primary"
-        align="center"
-        direction="column"
+        bg={{ base: 'primary', lg: 'secondary' }}
+        align={{ base: 'center', lg: 'stretch' }}
+        direction={{ base: 'column', lg: 'row' }}
         minHeight="100vh"
         flex="1"
       >
-        <HeaderTitle
-          text="Cadastre já seu estabelecimento!"
-          icon={FaShoppingBag}
-        />
-        <EstablishmentForm session={session} />
+        <Flex display={{ base: 'flex', lg: 'none' }}>
+          <HeaderTitle
+            text="Cadastre já seu estabelecimento!"
+            icon={FaShoppingBag}
+          />
+        </Flex>
+        <Flex width="45%" display={{ base: 'none', lg: 'flex' }} minH="100vh">
+          <EstablishmentHalfImage />
+        </Flex>
+        <Flex
+          bg="secondary"
+          align="center"
+          padding={{ base: '30px 0px', lg: '0px' }}
+          minH="100vh"
+          borderTopRightRadius={{ base: '65px', lg: '0px' }}
+          width="100%"
+          flex="1"
+          margin="0px auto"
+        >
+          <EstablishmentForm
+            session={session}
+            nome=""
+            descricao=""
+            imageUrl=""
+            lat=""
+            lng=""
+            registerForm={true}
+            clickBackButton={() => {
+              router.push('entrepreneur');
+            }}
+          />
+        </Flex>
       </Flex>
     </>
   );

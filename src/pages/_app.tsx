@@ -4,17 +4,22 @@ import { Theme } from '../styles/theme';
 import { SessionProvider } from 'next-auth/react';
 import { ProductFormProvider } from '../context/product-form-context';
 import { EstablishmentFormProvider } from '../context/establishment-form-context';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <EstablishmentFormProvider>
-      <ProductFormProvider>
-        <SessionProvider>
-          <ChakraProvider theme={Theme}>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </SessionProvider>
-      </ProductFormProvider>
-    </EstablishmentFormProvider>
+    <>
+      <ToastContainer />
+      <EstablishmentFormProvider>
+        <ProductFormProvider>
+          <SessionProvider>
+            <ChakraProvider theme={Theme}>
+              <Component {...pageProps} />
+            </ChakraProvider>
+          </SessionProvider>
+        </ProductFormProvider>
+      </EstablishmentFormProvider>
+    </>
   );
 }
 

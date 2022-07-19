@@ -1,10 +1,14 @@
 import { Flex, FormLabel, Textarea } from '@chakra-ui/react';
+import { useFormContext } from 'react-hook-form';
+import FormErrorMessage from '../form-error-message';
 
 type DefaultTextAreaProps = {
   id: string;
   text: string;
   placeholder: string;
   register?: any;
+  required?: boolean;
+  maxLength?: number;
 };
 
 export const DefaultTextArea = ({
@@ -12,7 +16,12 @@ export const DefaultTextArea = ({
   text,
   placeholder,
   register,
+  required = true,
+  maxLength = 225,
 }: DefaultTextAreaProps) => {
+  const {
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <Flex direction="column" marginBottom="10px">
@@ -20,21 +29,29 @@ export const DefaultTextArea = ({
           htmlFor={`descricao_label`}
           color="primary"
           fontWeight="bold"
-          fontSize="1rem"
+          fontSize={{ base: '1rem', md: '1.4rem' }}
         >
           {text}
         </FormLabel>
         <Textarea
           id={id}
           placeholder={placeholder}
+          maxLength={maxLength}
           resize="none"
           bg="default_white"
-          borderColor="primary"
+          borderColor={errors[id] ? 'error_red' : 'primary'}
           border="2px"
-          fontSize="1rem"
-          {...register(id)}
+          fontSize={{ base: '1rem', md: '1.3rem' }}
+          height={{ base: '80px', md: '160px' }}
+          {...register(id, { required, maxLength })}
         />
       </Flex>
+      {errors[id] && errors[id].type === 'required' && (
+        <FormErrorMessage message="Campo necessário" />
+      )}
+      {errors[id] && errors[id].type === 'maxLength' && (
+        <FormErrorMessage message="Máximo de caracteres ultrapassado" />
+      )}
     </>
   );
 };
