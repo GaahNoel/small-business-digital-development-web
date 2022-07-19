@@ -34,18 +34,17 @@ type UserEditFormData = {
   change_password: boolean;
 };
 
-type ValueProps = 'name' | 'token' | 'id';
+type ValueProps = 'name';
 
 export const UserEditForm = (props: UserEditFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [changePassword, setChangepPassword] = useState(false);
-  const methodsValue = useForm<UserEditFormProps>();
-  const { setValue } = methodsValue;
   const methods = useForm<UserEditFormData>();
   const {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
     register,
   } = methods;
 

@@ -1,5 +1,7 @@
 import axios from 'axios';
+import Router, { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import createPersistedState from 'use-persisted-state';
 import { api } from '../../service/api';
 
@@ -27,6 +29,7 @@ const useCart = () => {
   const [total, setTotal] = useTotalState(0);
   const [businessName, setBusinessName] = useBusinessNameState();
   const [businessId, setBusinessId] = useBusinessIdState();
+  const router = useRouter();
 
   useEffect(() => {
     setItemsLenght(cart.length);
@@ -79,6 +82,13 @@ const useCart = () => {
     setCart(cartDecremented);
   };
 
+  const clean = () => {
+    setBusinessId('');
+    setBusinessName('');
+    setTotal(0);
+    setCart([]);
+  };
+
   const finalize = async () => {
     const finalCart = {
       businessId,
@@ -91,9 +101,27 @@ const useCart = () => {
         };
       }),
     };
-    const res = await axios.post('/api/hello', finalCart).then((response) => {
-      console.log(response);
-    });
+    try {
+      await axios.post('/api/create-order', finalCart);
+      clean();
+      toast.success('Pedido realizado com sucesso!');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          if (error.response.data.message.toLowerCase().includes('logado')) {
+            toast.error(`Usuário não logado`);
+          }
+          if (error.response.data.message.toLowerCase().includes('total')) {
+            toast.error(
+              `Total dos itens não condiz com o valor total do pedido`,
+            );
+          }
+        }
+        if (error.response?.data.status === 'InvalidParamsError') {
+          router.push('/login');
+        }
+      }
+    }
   };
 
   const getBusinessName = async (businessId: string) => {
@@ -115,6 +143,7 @@ const useCart = () => {
     incrementItem,
     decrementItem,
     finalize,
+    clean,
   };
 };
 

@@ -132,7 +132,7 @@ const getBusinessesNearby = async (lat: number, lng: number) => {
       params: {
         latitude: lat,
         longitude: lng,
-        radius: 0.1,
+        radius: 25,
       },
     });
     console.log(response.data);

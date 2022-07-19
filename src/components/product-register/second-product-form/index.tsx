@@ -82,28 +82,18 @@ type EstablishmentBaseProps = {
   name: string;
 };
 
-type ValueProps =
-  | 'name'
-  | 'price'
-  | 'description'
-  | 'id'
-  | 'imageUrl'
-  | 'registerForm'
-  | 'clickBackButton'
-  | 'updateState'
-  | 'establishmentBase';
+type ValueProps = 'name' | 'price' | 'description';
 
 export const SecondProductForm = (props: ProductSecondFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { setStage, form } = useProductForm();
   const { token, type, category } = form;
-  const methodsValue = useForm<ProductSecondFormProps>();
-  const { setValue } = methodsValue;
   const methods = useForm<ProductSecondFormData>();
   const {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
     register,
   } = methods;
 

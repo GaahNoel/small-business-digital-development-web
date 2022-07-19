@@ -1,5 +1,16 @@
-import { Box, Button, Flex, Icon, IconButton, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 import { MdClose } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import useCart from '../../../../hooks/cart';
 import { SideCartCard } from './side-cart-card';
 
@@ -9,6 +20,7 @@ type SideCartProps = {
 };
 
 export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
+  const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -17,7 +29,36 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
   const cart = useCart();
 
   const finalizeOrder = () => {
-    cart.finalize();
+    Swal.fire({
+      title: 'Tem certeza que deseja finalizar o pedido?',
+      showDenyButton: true,
+      confirmButtonText: 'Sim',
+      denyButtonText: `Não`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmFinalizeOrder();
+      }
+    });
+  };
+
+  const confirmFinalizeOrder = async () => {
+    setFinalizeOrderLoading(true);
+    await cart.finalize();
+    setFinalizeOrderLoading(false);
+  };
+
+  const cleanOrder = () => {
+    Swal.fire({
+      title: 'Tem certeza que deseja limpar todos os itens do carrinho?',
+      showDenyButton: true,
+      confirmButtonText: 'Não',
+      denyButtonText: `Sim`,
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        cart.clean();
+        toast.success('Carrinho limpo com sucesso!');
+      }
+    });
   };
 
   return (
@@ -42,7 +83,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
           height="100%"
           width={{ base: '100%', md: '500px' }}
           right={isOpen ? '0px' : '-500px'}
-          bg="default_white"
+          bg="secondary_full"
           align="center"
           justify="space-between"
           direction="column"
@@ -52,43 +93,110 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
             e.stopPropagation();
           }}
         >
-          <Flex direction="row" margin="20px 0px">
-            <Text color="primary" fontSize="40px" fontWeight="bold">
-              Carrinho
-            </Text>
-            <Flex align="center" right="30px">
-              <IconButton
-                aria-label="Close side cart"
-                onClick={() => setIsOpen(false)}
-              >
-                <Icon as={MdClose}></Icon>
-              </IconButton>
-            </Flex>
-          </Flex>
-          <Flex direction="column" gap={5} padding="40px" overflowY="scroll">
-            {cart.items.map((item, key) => (
-              <SideCartCard
-                id={item.id}
-                name={item.name}
-                img={item.imageUrl}
-                price={item.price}
-                quantity={item.quantity}
-                businessName={cart.businessName as string}
-                key={key}
-              />
-            ))}
-          </Flex>
-          <Flex direction="column" marginTop="30px" marginBottom="100px">
-            <Flex fontSize="30px" fontWeight="medium">
-              <Text color="primary">Total a pagar:&nbsp;</Text>
-              <Text color="success_green">
-                {cart.total.toLocaleString('pt-BR', format)}
+          <Flex
+            height="100%"
+            width={{
+              base: '330px',
+              sm: '380px',
+              md: '420px',
+            }}
+            direction="column"
+          >
+            <Flex direction="row" margin="20px 0px" justify="space-between">
+              <Text color="primary" fontSize="40px" fontWeight="semibold">
+                Carrinho
               </Text>
+              <Flex align="center" right="30px">
+                <IconButton
+                  aria-label="Close side cart"
+                  color="primary"
+                  bg="secondary_full"
+                  border="1px solid #5647B2"
+                  borderRadius="full"
+                  transition="0.2s ease-in-out"
+                  _hover={{ bg: 'primary', color: 'white' }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Icon as={MdClose}></Icon>
+                </IconButton>
+              </Flex>
             </Flex>
-
-            <Button bg="primary" color="default_white" onClick={finalizeOrder}>
-              Finalizar pedido
-            </Button>
+            <Flex
+              direction="column"
+              gap={5}
+              overflowY="auto"
+              scrollPadding="none"
+              sx={{
+                '&::-webkit-scrollbar': {
+                  width: '4px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  width: '6px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: 'primary',
+                  borderRadius: '24px',
+                },
+              }}
+            >
+              {cart.items.map((item, key) => (
+                <SideCartCard
+                  id={item.id}
+                  name={item.name}
+                  img={item.imageUrl}
+                  price={item.price}
+                  quantity={item.quantity}
+                  businessName={cart.businessName as string}
+                  key={key}
+                />
+              ))}
+            </Flex>
+            <Flex direction="column" margin="30px 0px">
+              <Flex
+                fontSize="22px"
+                fontWeight="semibold"
+                justify="space-between"
+              >
+                <Text color="primary">Total a pagar:</Text>
+                <Text color="success_green">
+                  {cart.total.toLocaleString('pt-BR', format)}
+                </Text>
+              </Flex>
+              <Flex justify="space-between" marginTop="20px">
+                <Button
+                  bg="error_red"
+                  _hover={{ bg: 'error_red_hover' }}
+                  color="default_white"
+                  width={{ base: '185px', md: '205px' }}
+                  height="60px"
+                  fontSize="22px"
+                  onClick={cleanOrder}
+                >
+                  Limpar pedido
+                </Button>
+                <Button
+                  bg="primary"
+                  _hover={{ bg: 'primary_hover' }}
+                  color="default_white"
+                  width={{ base: '185px', md: '205px' }}
+                  height="60px"
+                  fontSize="22px"
+                  onClick={finalizeOrder}
+                >
+                  {!finalizeOrderLoading ? (
+                    'Finalizar pedido'
+                  ) : (
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="default_white"
+                      size="md"
+                    />
+                  )}
+                </Button>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

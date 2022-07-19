@@ -79,29 +79,18 @@ type EstablishmentProps = {
   country?: string;
 };
 
-type ValueProps =
-  | 'session'
-  | 'id'
-  | 'nome'
-  | 'descricao'
-  | 'lat'
-  | 'lng'
-  | 'imageUrl'
-  | 'registerForm'
-  | 'clickBackButton'
-  | 'updateState';
+type ValueProps = 'nome' | 'descricao';
 
 export const EstablishmentForm = (props: EstablishmentFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [position, setPosition] = useState<PositionProps>();
   const router = useRouter();
-  const methodsValue = useForm<EstablishmentFormProps>();
-  const { setValue } = methodsValue;
   const methods = useForm<EstablishmentFormData>();
   const {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
     register,
   } = methods;
   const [files, setFiles] = useState<any>([]);

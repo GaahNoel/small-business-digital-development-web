@@ -21,6 +21,7 @@ import {
   MdOutlineMoneyOffCsred,
 } from 'react-icons/md';
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 import useCart from '../../../hooks/cart';
 import { ModalInfo } from '../../establishment/modal-info';
 import { DefaultButton } from '../../shared/default-button';
@@ -76,6 +77,7 @@ export const ProductServiceListModal = ({
 
   const addCart = (item: ProductInfo) => {
     cart.addItem(item);
+    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
   return (
     <>

@@ -11,6 +11,7 @@ import jwt_decode from 'jwt-decode';
 import { api } from '../../service/api';
 import { userInfo } from 'os';
 import { UserEditForm } from '../../components/user-edit/user-edit-form';
+import axios from 'axios';
 
 type UserEditProps = {
   session: string;
@@ -70,13 +71,13 @@ const UserEdit = ({ session, id, userInfos }: UserEditProps) => {
 const getUserInfos = async (id: string, token: string) => {
   try {
     const response = await api.get(`account/${id}`, {
-      params: {
+      headers: {
         token,
       },
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) console.log('s');
   }
 };
 

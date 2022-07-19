@@ -128,7 +128,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
           type: 'service',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 10,
+          radius: 25,
         },
       });
       setServices(response.data);

@@ -57,7 +57,7 @@ export const FooterMenu = () => {
         borderTopRadius="2xl"
         position="fixed"
         bottom="0"
-        zIndex="3"
+        zIndex="1"
         display={{ base: 'flex', md: 'none' }}
       >
         <IconMenu

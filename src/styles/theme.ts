@@ -3,6 +3,7 @@ import { darken, lighten, opacify } from 'polished';
 
 export const primary = '#5647B2';
 export const secondary = 'rgba(245, 242, 255, 0.9)';
+export const secondary_full = 'rgba(245, 242, 255, 1)';
 export const default_white = '#FFFFFF';
 export const default_black = '#000000';
 export const card_white = '#F7F5FF';
@@ -30,6 +31,8 @@ export const Theme = extendTheme({
       primary_opacity_hover: darken(0.2, primary_opacity),
       secondary,
       secondary_hover: darken(0.2, secondary),
+      secondary_full,
+      secondary_full_hover: darken(0.2, secondary_full),
       default_white,
       default_white_hover: darken(0.2, default_white),
       default_black,
@@ -60,6 +63,20 @@ export const Theme = extendTheme({
       success_green_hover: darken(0.2, success_green),
       error_red,
       error_red_hover: darken(0.2, error_red),
+    },
+  },
+  styles: {
+    global: {
+      '&::-webkit-scrollbar': {
+        width: '10px',
+      },
+      '&::-webkit-scrollbar-track': {
+        width: '6px',
+        background: 'product_form_purple',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        background: '#423788',
+      },
     },
   },
 });

@@ -51,12 +51,8 @@ export const SideCartCard = ({
         justify={{ base: 'center', md: 'start' }}
         bg="card_white"
         borderRadius="2xl"
-        boxShadow="dark-lg"
-        width={{
-          base: '330px',
-          sm: '380px',
-          md: '420px',
-        }}
+        border="1px solid #5647B2"
+        width="95%"
         minHeight={{
           base: '120px',
           sm: '140px',
