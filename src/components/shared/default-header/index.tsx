@@ -68,7 +68,6 @@ export const DefaultHeader = () => {
               bottom: 0,
               left: 0,
               height: '100%',
-
               zIndex: -2,
             }}
             color="primary"

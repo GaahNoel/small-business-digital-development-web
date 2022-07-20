@@ -168,9 +168,9 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   bg="error_red"
                   _hover={{ bg: 'error_red_hover' }}
                   color="default_white"
-                  width={{ base: '185px', md: '205px' }}
+                  width={{ base: '150px', sm: '185px', md: '205px' }}
                   height="60px"
-                  fontSize="22px"
+                  fontSize={{ base: '18px', sm: '22px' }}
                   disabled={cart.itemsLength === 0}
                   onClick={cleanOrder}
                 >
@@ -180,9 +180,9 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   bg="primary"
                   _hover={{ bg: 'primary_hover' }}
                   color="default_white"
-                  width={{ base: '185px', md: '205px' }}
+                  width={{ base: '150px', sm: '185px', md: '205px' }}
                   height="60px"
-                  fontSize="22px"
+                  fontSize={{ base: '18px', sm: '22px' }}
                   disabled={cart.itemsLength === 0}
                   onClick={finalizeOrder}
                 >

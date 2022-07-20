@@ -27,7 +27,7 @@ import { HeaderTitle } from '../../components/shared/header-title';
 import { ListProductServiceCard } from '../../components/shared/list-product-service-card';
 import { NoItemsText } from '../../components/shared/no-items-text';
 import { api } from '../../service/api';
-import { FiPackage, FiSearch } from 'react-icons/fi';
+import { FiDollarSign, FiGift, FiPackage, FiSearch } from 'react-icons/fi';
 import { FormProductServiceSearch } from '../../components/shared/form-product-service-search';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { DefaultHeader } from '../../components/shared/default-header';
@@ -36,6 +36,8 @@ import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import { AccordionButtonItems } from '../../components/shared/accordion-button-items';
 import { AccordionPanelOrder } from '../../components/order-list/accordion-panel-order';
+import { BiMoney } from 'react-icons/bi';
+import { FaRegMoneyBillAlt } from 'react-icons/fa';
 
 type OrderListProps = {
   session: string;
@@ -89,7 +91,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
   return (
     <>
       <Flex minHeight="100vh" direction="column" bg="primary">
-        <Flex id="Headers">
+        <Flex id="headers">
           <Flex
             width="100%"
             maxW={{ base: '90%', md: '700px', lg: '900px' }}
@@ -137,7 +139,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
           </Flex>
         </Flex>
         <Flex
-          id="Content"
+          id="content"
           bg="secondary"
           height="100%"
           flex="1"
@@ -150,34 +152,43 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
             margin="30px auto"
           >
             <Accordion allowMultiple marginBottom="60px" width="100%">
-              {(viewMode === 'Compras' ? buyOrders : sellOrders).map(
-                (ordersForBusiness, key) => (
-                  <AccordionItem
-                    bg="primary"
-                    borderRadius="15px"
-                    marginBottom="20px"
-                    border="1px solid #5647B2"
-                    overflow="hidden"
-                    key={key}
-                  >
-                    <AccordionButtonItems
-                      icon={FiPackage}
-                      type_name={ordersForBusiness.business.name}
-                      color="secondary"
-                    />
-                    {ordersForBusiness.orders.map((order, orderKey) => (
-                      <AccordionPanelOrder
-                        key={orderKey}
-                        orderId={order.id}
-                        status={order.status}
-                        total={order.total}
-                        items={order.items}
-                        orderType={viewMode}
-                        bgColor="secondary"
+              {(viewMode === 'Compras' ? buyOrders : sellOrders).length > 0 ? (
+                (viewMode === 'Compras' ? buyOrders : sellOrders).map(
+                  (ordersForBusiness, key) => (
+                    <AccordionItem
+                      bg="primary"
+                      borderRadius="15px"
+                      marginBottom="20px"
+                      border="1px solid #5647B2"
+                      overflow="hidden"
+                      key={key}
+                    >
+                      <AccordionButtonItems
+                        icon={viewMode === 'Compras' ? FiGift : FiDollarSign}
+                        type_name={ordersForBusiness.business.name}
+                        color="secondary"
                       />
-                    ))}
-                  </AccordionItem>
-                ),
+                      {ordersForBusiness.orders.map((order, orderKey) => (
+                        <AccordionPanelOrder
+                          key={orderKey}
+                          orderId={order.id}
+                          status={order.status}
+                          total={order.total}
+                          items={order.items}
+                          orderType={viewMode}
+                          bgColor="secondary"
+                        />
+                      ))}
+                    </AccordionItem>
+                  ),
+                )
+              ) : (
+                <NoItemsText
+                  color="primary"
+                  text={`Nenhum pedido cadastrado como ${
+                    viewMode === 'Compras' ? 'compra' : 'venda'
+                  }.`}
+                />
               )}
             </Accordion>
           </Flex>

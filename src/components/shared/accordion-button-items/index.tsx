@@ -42,11 +42,10 @@ export const AccordionButtonItems = ({
     <>
       <AccordionButton
         fontSize={{
-          base: '14px',
-          sm: '18px',
-          md: '22px',
-          lg: '26px',
-          '2xl': '30px',
+          base: '16px',
+          sm: '20px',
+          md: '24px',
+          lg: '28px',
         }}
         fontWeight="medium"
         color={color}

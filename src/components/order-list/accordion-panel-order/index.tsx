@@ -11,6 +11,8 @@ import {
   InputLeftAddon,
   InputLeftElement,
   InputRightElement,
+  List,
+  ListIcon,
   ListItem,
   Select,
   Stack,
@@ -103,98 +105,120 @@ export const AccordionPanelOrder = ({
               width="100%"
               padding="10px 20px"
             >
-              <Flex height="100%">
-                <Flex align="center" width="15%">
-                  <Icon color="primary" fontSize="24px" boxSize="100px">
-                    {orderType === 'Compras' ? <FiGift /> : <BiMoney />}
-                  </Icon>
-                </Flex>
-                <Flex direction="column" margin="0px 15px" flex="1">
-                  <Flex wordBreak="break-all">
-                    <Text
-                      fontSize={{
-                        base: '12px',
-                        sm: '14px',
-                        md: '16px',
-                        lg: '18px',
-                        xl: '22px',
-                      }}
-                      fontWeight="bold"
-                      color="primary"
-                    >
-                      {orderId}
-                    </Text>
+              <Grid
+                height="100%"
+                width="100%"
+                templateColumns="repeat(10, 1fr)"
+              >
+                <GridItem colSpan={8}>
+                  <Flex direction="column" maxW="80%">
+                    <Flex wordBreak="break-all">
+                      <Text
+                        fontSize={{
+                          base: '12px',
+                          sm: '14px',
+                          md: '16px',
+                          lg: '18px',
+                          xl: '22px',
+                        }}
+                        fontWeight="bold"
+                        textAlign="start"
+                        color="primary"
+                      >
+                        {orderId}
+                      </Text>
+                    </Flex>
+                    <Flex direction="column">
+                      <List>
+                        {items.map((item, key) => (
+                          <ListItem key={key} width="100%">
+                            <Flex
+                              align="center"
+                              textAlign="start"
+                              width="100%"
+                              color="accordion_list"
+                              fontSize={{
+                                base: '12px',
+                                md: '14px',
+                                lg: '16px',
+                                xl: '20px',
+                              }}
+                            >
+                              <ListIcon
+                                as={() => QuantityIcon(item.quantity)}
+                              />
+                              <Text
+                                width="70%"
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                marginRight="10px"
+                              >
+                                {item.product.name}
+                              </Text>
+                              <Text w={{ base: '100px', md: '200px' }}>
+                                {item.product.salePrice.toLocaleString(
+                                  'pt-BR',
+                                  format,
+                                )}
+                              </Text>
+                            </Flex>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Flex>
                   </Flex>
-                  <Flex direction="column">
-                    <UnorderedList>
-                      {items.map((item, key) => (
-                        <ListItem key={key}>
-                          <Flex
-                            align="center"
-                            textAlign="start"
-                            fontSize={{
-                              base: '10px',
-                              sm: '12px',
-                              md: '14px',
-                              lg: '16px',
-                              xl: '20px',
-                            }}
-                          >
-                            <Text w="60%">{item.product.name}</Text>
-                            <Text w="25%">
-                              {item.product.salePrice.toLocaleString(
-                                'pt-BR',
-                                format,
-                              )}
-                            </Text>
-                            <Text w="5%">{item.quantity}</Text>
-                          </Flex>
-                        </ListItem>
-                      ))}
-                    </UnorderedList>
+                </GridItem>
+                <GridItem colSpan={2}>
+                  <Flex
+                    direction="column"
+                    minHeight="100%"
+                    align="end"
+                    justify="space-between"
+                    fontSize={{
+                      base: '14px',
+                      sm: '16px',
+                      md: '18px',
+                      xl: '20px',
+                    }}
+                    fontWeight="medium"
+                  >
+                    <Flex textAlign="center">
+                      <Text
+                        color={statusFormat[status].color}
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        textTransform="uppercase"
+                      >
+                        {statusFormat[status].text}
+                      </Text>
+                    </Flex>
+                    <Flex textAlign="center">
+                      <Text
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        color="primary"
+                      >
+                        {total.toLocaleString('pt-BR', format)}
+                      </Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-                <Flex
-                  direction="column"
-                  minHeight="100%"
-                  align="end"
-                  justify="space-between"
-                  width="15%"
-                  fontSize={{
-                    base: '16px',
-                    sm: '18px',
-                    md: '20px',
-                    xl: '22px',
-                  }}
-                  fontWeight="medium"
-                >
-                  <Flex textAlign="center">
-                    <Text
-                      color={statusFormat[status].color}
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      textTransform="uppercase"
-                    >
-                      {statusFormat[status].text}
-                    </Text>
-                  </Flex>
-                  <Flex textAlign="center">
-                    <Text
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      color="primary"
-                    >
-                      {total.toLocaleString('pt-BR', format)}
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
+                </GridItem>
+              </Grid>
             </Flex>
           </Flex>
         </Flex>
       </AccordionPanel>
     </>
+  );
+};
+
+const QuantityIcon = (quantity: number) => {
+  return (
+    <Flex height="15px" alignItems="center" marginRight="10px">
+      <Text width="15px">{quantity}</Text>
+    </Flex>
   );
 };
