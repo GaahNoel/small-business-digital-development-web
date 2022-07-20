@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Icon,
@@ -7,7 +6,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -89,7 +88,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
           direction="column"
           opacity="1"
           transition="0.2s ease-in-out"
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
           }}
         >
