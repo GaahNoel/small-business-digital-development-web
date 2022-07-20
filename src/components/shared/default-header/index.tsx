@@ -37,62 +37,49 @@ export const DefaultHeader = () => {
           }}
         ></Img>
         <Flex w="100px">
-          {!session ? (
-            <Button
-              bg="default_white"
-              _hover={{ bg: 'default_white_hover' }}
-              color="primary"
-              borderRadius="10px"
-              width="100%"
-              onClick={login}
-            >
-              Login
-            </Button>
-          ) : (
-            <Button
-              bg="default_white"
-              position={'relative'}
-              _hover={{
-                color: 'secondary',
-                border: '1px solid white',
+          <Button
+            onClick={!session ? login : logout}
+            bg="default_white"
+            position={'relative'}
+            _hover={{
+              color: 'secondary',
+              border: '1px solid white',
 
-                _before: {
-                  width: '100%',
-                },
-              }}
-              _before={{
-                position: 'absolute',
-                content: '""',
-                width: 0,
-                background: 'primary',
-                bottom: 0,
-                left: 0,
-                height: '100%',
-                transition: 'all 0.4s',
-                zIndex: -1,
-              }}
-              _after={{
-                position: 'absolute',
-                content: '""',
+              _before: {
                 width: '100%',
-                background: 'secondary',
-                bottom: 0,
-                left: 0,
-                height: '100%',
+              },
+            }}
+            _before={{
+              position: 'absolute',
+              content: '""',
+              width: 0,
+              background: 'primary',
+              bottom: 0,
+              left: 0,
+              height: '100%',
+              transition: 'all 0.4s',
+              zIndex: -1,
+            }}
+            _after={{
+              position: 'absolute',
+              content: '""',
+              width: '100%',
+              background: 'secondary',
+              bottom: 0,
+              left: 0,
+              height: '100%',
 
-                zIndex: -2,
-              }}
-              color="primary"
-              borderRadius="10px"
-              width="100%"
-              overflow={'hidden'}
-              zIndex={1}
-              onClick={logout}
-              transition={'all 0.2s ease-in-out'}
-            >
-              Logout
-            </Button>
-          )}
+              zIndex: -2,
+            }}
+            color="primary"
+            borderRadius="10px"
+            width="100%"
+            overflow={'hidden'}
+            zIndex={1}
+            transition={'all 0.2s ease-in-out'}
+          >
+            {!session ? 'Login' : 'Logout'}
+          </Button>
         </Flex>
       </Flex>
     </>
