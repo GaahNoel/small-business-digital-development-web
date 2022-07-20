@@ -77,7 +77,6 @@ export const ProductServiceListModal = ({
 
   const addCart = (item: ProductInfo) => {
     cart.addItem(item);
-    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
   return (
     <>

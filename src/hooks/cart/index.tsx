@@ -53,6 +53,7 @@ const useCart = () => {
 
     setTotal(total + item.price);
     setCart([...cart, item]);
+    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
 
   const incrementItem = (itemId: string) => {

@@ -41,7 +41,7 @@ import { ProductServiceListModal } from '../../components/shared/product-service
 import { InputType } from 'zlib';
 import { InputSearchItems } from '../../components/business-items/input-search-items';
 import { AccordionPanelItems } from '../../components/business-items/accordion-panel-items';
-import { AccordionButtonItems } from '../../components/business-items/accordion-button-items';
+import { AccordionButtonItems } from '../../components/shared/accordion-button-items';
 
 type ParamsProps = {
   id: string;

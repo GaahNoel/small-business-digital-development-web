@@ -23,18 +23,20 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { IconType } from 'react-icons';
 import { FiSearch } from 'react-icons/fi';
 import { InputType } from 'zlib';
-import FormErrorMessage from '../../shared/form-error-message';
-import { ListProductServiceCard } from '../../shared/list-product-service-card';
-import { NoItemsText } from '../../shared/no-items-text';
+import FormErrorMessage from '../form-error-message';
+import { ListProductServiceCard } from '../list-product-service-card';
+import { NoItemsText } from '../no-items-text';
 
 type AccordionButtonItemsProps = {
   icon: IconType;
   type_name: string;
+  color?: string;
 };
 
 export const AccordionButtonItems = ({
   icon,
   type_name,
+  color = 'default_white',
 }: AccordionButtonItemsProps) => {
   return (
     <>
@@ -47,7 +49,7 @@ export const AccordionButtonItems = ({
           '2xl': '30px',
         }}
         fontWeight="medium"
-        color="default_white"
+        color={color}
         gap={2}
         _hover={{
           svg: {
@@ -72,7 +74,7 @@ export const AccordionButtonItems = ({
             lg: '30px',
             '2xl': '36px',
           }}
-          color="default_white"
+          color={color}
           strokeWidth="1.5"
         />
         <Box flex="1" textAlign="left">

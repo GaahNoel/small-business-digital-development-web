@@ -16,6 +16,7 @@ type SideCartCardProps = {
   name: string;
   img: string;
   price: number;
+  type: 'product' | 'service';
   businessName: string;
   quantity: number;
 };
@@ -25,6 +26,7 @@ export const SideCartCard = ({
   name,
   img,
   price,
+  type,
   businessName,
   quantity,
 }: SideCartCardProps) => {
@@ -126,6 +128,7 @@ export const SideCartCard = ({
               borderRadius="full"
               size="xs"
               _hover={{ bg: 'primary_hover' }}
+              disabled={type === 'service'}
               onClick={decrementQuantity}
             >
               <Icon as={FiMinus} fontSize="20px"></Icon>
@@ -145,6 +148,7 @@ export const SideCartCard = ({
               borderRadius="full"
               size="xs"
               _hover={{ bg: 'primary_hover' }}
+              disabled={type === 'service'}
               onClick={incrementQuantity}
             >
               <Icon as={FiPlus} fontSize="20px"></Icon>

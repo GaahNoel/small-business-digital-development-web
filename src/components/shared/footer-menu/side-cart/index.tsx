@@ -146,6 +146,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   img={item.imageUrl}
                   price={item.price}
                   quantity={item.quantity}
+                  type={item.type}
                   businessName={cart.businessName as string}
                   key={key}
                 />

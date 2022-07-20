@@ -19,6 +19,7 @@ export const default_gray = '#808080';
 export const success_green = '#16DC36';
 export const error_red = '#FA0D0D';
 export const primary_opacity = 'rgba(86, 71, 178, 0.7)';
+export const accordion_order_gray = '#E1E1E1';
 
 export const Theme = extendTheme({
   semanticTokens: {
@@ -63,6 +64,8 @@ export const Theme = extendTheme({
       success_green_hover: darken(0.2, success_green),
       error_red,
       error_red_hover: darken(0.2, error_red),
+      accordion_order_gray,
+      accordion_order_gray_light: lighten(0.1, accordion_order_gray),
     },
   },
   styles: {
