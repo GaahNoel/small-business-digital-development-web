@@ -128,7 +128,6 @@ export const SideCartCard = ({
               borderRadius="full"
               size="xs"
               _hover={{ bg: 'primary_hover' }}
-              disabled={type === 'service'}
               onClick={decrementQuantity}
             >
               <Icon as={FiMinus} fontSize="20px"></Icon>

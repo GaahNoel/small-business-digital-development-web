@@ -37,10 +37,18 @@ const useCart = () => {
 
   const addItem = async (item: Item) => {
     console.log(item);
-    if (cart.length !== 0 && item.businessId !== businessId) return;
+    if (cart.length !== 0 && item.businessId !== businessId) {
+      toast.error(
+        `É possível incluir itens apenas de um estabelecimento no carrinho!`,
+      );
+      return;
+    }
 
     const itemAlreadyExists = cart.find((existingItem) => {
-      if (existingItem.id === item.id) return true;
+      if (existingItem.id === item.id) {
+        toast.error(`${item.name} já existe no carrinho!`);
+        return true;
+      }
     });
 
     if (itemAlreadyExists) return;

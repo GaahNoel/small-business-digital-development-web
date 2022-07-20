@@ -171,6 +171,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   width={{ base: '185px', md: '205px' }}
                   height="60px"
                   fontSize="22px"
+                  disabled={cart.itemsLength === 0}
                   onClick={cleanOrder}
                 >
                   Limpar pedido
@@ -182,6 +183,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   width={{ base: '185px', md: '205px' }}
                   height="60px"
                   fontSize="22px"
+                  disabled={cart.itemsLength === 0}
                   onClick={finalizeOrder}
                 >
                   {!finalizeOrderLoading ? (
