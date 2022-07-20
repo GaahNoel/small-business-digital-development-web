@@ -25,6 +25,8 @@ type UserInputProps = {
   additionalRegisterOptions?: object;
   reference?: React.RefObject<HTMLInputElement>;
   shouldCalcPasswordStrength?: boolean;
+  additionalStyleOptions?: object;
+  svgAdditionalStyles?: object;
 };
 
 export const UserInput = ({
@@ -37,6 +39,8 @@ export const UserInput = ({
   maxLength = 50,
   additionalRegisterOptions,
   shouldCalcPasswordStrength = false,
+  additionalStyleOptions,
+  svgAdditionalStyles,
 }: UserInputProps) => {
   const {
     register,
@@ -80,8 +84,12 @@ export const UserInput = ({
           >
             <Icon
               as={icon}
-              color="gray.500"
+              color="primary"
               fontSize={{ base: '1rem', md: '1.15rem' }}
+              {...(errors[id] && {
+                color: 'error_red',
+              })}
+              {...svgAdditionalStyles}
             />
           </InputLeftElement>
 
@@ -100,10 +108,14 @@ export const UserInput = ({
             fontSize={{ base: '1rem', md: '1.15rem' }}
             height={{ base: '40px', md: '50px' }}
             onChange={shouldCalcPasswordStrength ? onChange : undefined}
+            {...(errors[id] && {
+              borderColor: 'error_red',
+            })}
+            {...additionalStyleOptions}
           />
         </InputGroup>
         {errors[id] && errors[id].type === 'required' && (
-          <FormErrorMessage message="Campo necessário" />
+          <FormErrorMessage message="Campo obrigatório" />
         )}
         {errors[id] && errors[id].type === 'maxLength' && (
           <FormErrorMessage message="Máximo de caracteres ultrapassado" />

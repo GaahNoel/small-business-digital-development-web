@@ -30,6 +30,7 @@ export const FooterMenu = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const router = useRouter();
+  const { status } = useSession();
   const routerNavigate = (page: string) => {
     router.push(page);
   };

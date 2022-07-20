@@ -45,7 +45,7 @@ export const DefaultCard = ({
         cursor="pointer"
         overflow="hidden"
         transition="0.2s border ease-in-out"
-        _hover={{ border: '1px solid #000' }}
+        _hover={{ transform: 'scale(1.02)' }}
         onClick={detailClick}
         spacing={1}
       >

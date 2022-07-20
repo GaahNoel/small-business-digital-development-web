@@ -2,9 +2,11 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Fade,
   Flex,
   Heading,
   Icon,
+  ScaleFade,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -20,6 +22,8 @@ import { RightImage } from '../../components/user-register/right-image';
 
 const UserRegister = () => {
   const [formOption, setFormOption] = useState('Entrar');
+  const [loginMounted, setLoginMounted] = useState(true);
+  const [registerMounted, setRegisterMounted] = useState(false);
 
   const changeOption = (option: string) => {
     if (formOption != option) {
@@ -61,7 +65,7 @@ const UserRegister = () => {
             </Flex>
           </HeaderHalfCircleTop>
         </Box>
-        <Flex direction="row">
+        <Flex>
           <Flex
             border="2px #000"
             borderRadius="3xl"
@@ -119,11 +123,27 @@ const UserRegister = () => {
                 </Button>
               </ButtonGroup>
             </Flex>
-            {formOption === 'Entrar' ? (
+
+            <ScaleFade
+              in={!registerMounted && formOption === 'Entrar'}
+              unmountOnExit={true}
+              onUnmount={() => {
+                setLoginMounted(false);
+                setRegisterMounted(true);
+              }}
+            >
               <UserLoginForm />
-            ) : (
+            </ScaleFade>
+            <ScaleFade
+              in={!loginMounted && formOption === 'Registrar'}
+              unmountOnExit={true}
+              onUnmount={() => {
+                setRegisterMounted(false);
+                setLoginMounted(true);
+              }}
+            >
               <UserRegisterForm changeOption={changeOption} />
-            )}
+            </ScaleFade>
           </Flex>
           <Flex width="60%" display={{ base: 'none', lg: 'flex' }}>
             <RightImage />

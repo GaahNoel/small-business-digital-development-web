@@ -28,7 +28,7 @@ import { NoItemsText } from '../../shared/no-items-text';
 
 type AccordionPanelOrderProps = {
   orderId: string;
-  status: string;
+  status: 'CANCELED' | 'PENDING' | 'COMPLETED';
   total: number;
   items: Items;
   orderType: string;
@@ -61,12 +61,26 @@ export const AccordionPanelOrder = ({
     style: 'currency',
     currency: 'BRL',
   };
+  const statusFormat = {
+    CANCELED: {
+      color: 'error_red',
+      text: 'Cancelado',
+    },
+    PENDING: {
+      color: 'default_yellow',
+      text: 'Pendente',
+    },
+    COMPLETED: {
+      color: 'success_green',
+      text: 'Finalizado',
+    },
+  };
+
   return (
     <>
       <AccordionPanel bg={bgColor} padding="0px" paddingTop="15px">
-        <Flex align="center" justify="center">
+        <Flex align="center" justify="center" borderTop="1px solid #5647B2">
           <Flex
-            border="1px solid #000"
             width="100%"
             minHeight={{
               base: '120px',
@@ -77,6 +91,8 @@ export const AccordionPanelOrder = ({
             }}
             overflow="hidden"
             transition="0.2s transform ease-in-out"
+            cursor="pointer"
+            _hover={{ transform: 'scale(1.02)' }}
           >
             <Flex
               id="info"
@@ -89,7 +105,7 @@ export const AccordionPanelOrder = ({
             >
               <Flex height="100%">
                 <Flex align="center" width="15%">
-                  <Icon fontSize="24px" boxSize="100px">
+                  <Icon color="primary" fontSize="24px" boxSize="100px">
                     {orderType === 'Compras' ? <FiGift /> : <BiMoney />}
                   </Icon>
                 </Flex>
@@ -104,6 +120,7 @@ export const AccordionPanelOrder = ({
                         xl: '22px',
                       }}
                       fontWeight="bold"
+                      color="primary"
                     >
                       {orderId}
                     </Text>
@@ -141,49 +158,36 @@ export const AccordionPanelOrder = ({
                   direction="column"
                   minHeight="100%"
                   align="end"
-                  justify="end"
+                  justify="space-between"
                   width="15%"
+                  fontSize={{
+                    base: '16px',
+                    sm: '18px',
+                    md: '20px',
+                    xl: '22px',
+                  }}
+                  fontWeight="medium"
                 >
-                  <Flex
-                    textAlign="center"
-                    fontSize={{ base: '10px', lg: '12px', xl: '14px' }}
-                    fontWeight="medium"
-                  >
+                  <Flex textAlign="center">
                     <Text
-                      maxWidth={{
-                        base: '200px',
-                        sm: '230px',
-                        lg: '150px',
-                        xl: '200px',
-                      }}
+                      color={statusFormat[status].color}
                       whiteSpace="nowrap"
                       overflow="hidden"
                       textOverflow="ellipsis"
+                      textTransform="uppercase"
                     >
-                      {status}
+                      {statusFormat[status].text}
                     </Text>
                   </Flex>
-                  <Flex>
-                    <Flex
-                      width="100%"
-                      textAlign="center"
-                      fontSize={{
-                        base: '16px',
-                        sm: '18px',
-                        md: '20px',
-                        xl: '22px',
-                      }}
-                      fontWeight="medium"
+                  <Flex textAlign="center">
+                    <Text
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      color="primary"
                     >
-                      <Text
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        color="success_green"
-                      >
-                        {total.toLocaleString('pt-BR', format)}
-                      </Text>
-                    </Flex>
+                      {total.toLocaleString('pt-BR', format)}
+                    </Text>
                   </Flex>
                 </Flex>
               </Flex>

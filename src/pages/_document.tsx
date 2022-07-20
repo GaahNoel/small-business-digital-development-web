@@ -7,7 +7,7 @@ class myDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="manifest" href="/manifest.json" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/Logo.svg" />
           <link
             href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap"
             rel="stylesheet"

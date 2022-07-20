@@ -55,7 +55,7 @@ type Business = {
 
 type Order = {
   id: string;
-  status: string;
+  status: 'CANCELED' | 'PENDING' | 'COMPLETED';
   total: number;
   items: Item[];
   createdAt: string;
@@ -110,7 +110,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                   bg:
                     viewMode === 'Compras'
                       ? 'default_orange_hover'
-                      : 'secondary_hover',
+                      : 'default_white_hover',
                 }}
                 onClick={() => setViewMode('Compras')}
               >
@@ -153,16 +153,17 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
               {(viewMode === 'Compras' ? buyOrders : sellOrders).map(
                 (ordersForBusiness, key) => (
                   <AccordionItem
-                    bg="accordion_order_gray"
+                    bg="primary"
                     borderRadius="15px"
                     marginBottom="20px"
-                    border="1px solid #000"
+                    border="1px solid #5647B2"
+                    overflow="hidden"
                     key={key}
                   >
                     <AccordionButtonItems
                       icon={FiPackage}
                       type_name={ordersForBusiness.business.name}
-                      color="default_black"
+                      color="secondary"
                     />
                     {ordersForBusiness.orders.map((order, orderKey) => (
                       <AccordionPanelOrder
@@ -172,7 +173,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                         total={order.total}
                         items={order.items}
                         orderType={viewMode}
-                        bgColor="accordion_order_gray_light"
+                        bgColor="secondary"
                       />
                     ))}
                   </AccordionItem>

@@ -8,6 +8,8 @@ import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { UserInput } from '../../shared/user-input';
+import { useState } from 'react';
+import { EmailVerification, InvalidFieldError } from '../../../errors';
 
 type LoginFormData = {
   email: string;
@@ -16,6 +18,7 @@ type LoginFormData = {
 
 export const UserLoginForm = () => {
   const methods = useForm<LoginFormData>();
+  const [isLoading, setIsLoading] = useState(false);
   const { data } = useSession();
   const router = useRouter();
 
@@ -29,20 +32,51 @@ export const UserLoginForm = () => {
     email,
     password,
   }) => {
-    const response = await api.post('account/check-password', {
-      email,
-      password,
-    });
-    const { id, match, verified } = response.data;
-    if (match && verified) {
-      await signIn('credentials', {
-        redirect: false,
-        id: id,
-        email: email,
-        password: password,
-      }),
-        toast.success('Login realizado com sucesso!');
-      router.push('/');
+    setIsLoading(true);
+    try {
+      const response = await api.post('account/check-password', {
+        email,
+        password,
+      });
+
+      const { id, match, verified } = response.data;
+      if (match && verified) {
+        await signIn('credentials', {
+          redirect: false,
+          id: id,
+          email: email,
+          password: password,
+        }),
+          toast.success('Login realizado com sucesso!');
+
+        setIsLoading(false);
+        router.push('/');
+      }
+
+      if (!match) {
+        throw new InvalidFieldError('password');
+      }
+
+      if (!verified) {
+        throw new EmailVerification();
+      }
+    } catch (error) {
+      setIsLoading(false);
+      if (error instanceof InvalidFieldError) {
+        toast.error('Email ou senha incorretos!');
+        setError(error.field, { message: 'Campo incorreto' });
+        return;
+      }
+
+      if (error instanceof EmailVerification) {
+        toast.error(error.message);
+        setError('email', { message: 'Email não verificado' });
+        return;
+      }
+
+      toast.error('Ocorreu um erro, tente novamente!');
+      setError('email', {});
+      setError('password', {});
     }
   };
 
@@ -55,6 +89,7 @@ export const UserLoginForm = () => {
           maxWidth="275px"
           margin="5px auto"
           onSubmit={handleSubmit(onSubmit)}
+          transition="all 0.2s"
         >
           <Stack justify="center" spacing={2}>
             <UserInput
@@ -84,6 +119,7 @@ export const UserLoginForm = () => {
               color="default_white"
               text="Entrar"
               type="submit"
+              isLoading={isLoading}
             />
           </Stack>
         </FormControl>
