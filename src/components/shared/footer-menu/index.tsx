@@ -55,6 +55,7 @@ export const FooterMenu = () => {
         routerBack={routerBack}
         toggleCart={toggleCart}
         cartItemsLength={cart.itemsLength}
+        status={status}
       />
       {isLoaded && (
         <DesktopFooterMenu
@@ -62,6 +63,7 @@ export const FooterMenu = () => {
           routerBack={routerBack}
           toggleCart={toggleCart}
           cartItemsLength={cart.itemsLength}
+          status={status}
         />
       )}
       <SideCart isOpen={cartIsOpen} setIsOpen={setCartIsOpen} />
@@ -178,7 +180,13 @@ const DesktopFooterMenu = ({
         />
         <FooterMenuAction
           icon={FiUser}
-          clickFunction={() => routerNavigate('/user-edit')}
+          clickFunction={() => {
+            if (status !== 'authenticated') {
+              toast.error('É necessário estar logado para acessar esta página');
+              return;
+            }
+            routerNavigate('/user-edit');
+          }}
         />
         <Flex>
           <Flex

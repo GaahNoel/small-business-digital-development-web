@@ -46,7 +46,7 @@ export const DefaultHeader = () => {
         ></Img>
         <Flex w="100px">
           <Button
-            onClick={!status ? login : logout}
+            onClick={status !== 'authenticated' ? login : logout}
             bg="default_white"
             position={'relative'}
             _hover={{
