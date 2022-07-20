@@ -1,17 +1,25 @@
-import { Button, Flex, Img, Stack } from '@chakra-ui/react';
+import { Button, Flex, Img, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 export const DefaultHeader = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { status } = useSession();
+  const [buttonText, setButtonText] = useState('');
+
+  useEffect(() => {
+    if (status !== 'loading') {
+      setButtonText(status === 'authenticated' ? 'Logout' : 'Login');
+      return;
+    }
+  }, [status]);
 
   const login = () => {
     router.push('/login');
   };
 
   const logout = () => {
-    //console.log(session);
     signOut();
   };
 
@@ -38,7 +46,7 @@ export const DefaultHeader = () => {
         ></Img>
         <Flex w="100px">
           <Button
-            onClick={!session ? login : logout}
+            onClick={status !== 'authenticated' ? login : logout}
             bg="default_white"
             position={'relative'}
             _hover={{
@@ -77,7 +85,17 @@ export const DefaultHeader = () => {
             zIndex={1}
             transition={'all 0.2s ease-in-out'}
           >
-            {!session ? 'Login' : 'Logout'}
+            {buttonText ? (
+              buttonText
+            ) : (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="primary"
+                size="md"
+              />
+            )}
           </Button>
         </Flex>
       </Flex>

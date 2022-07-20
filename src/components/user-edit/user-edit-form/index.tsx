@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  Collapse,
   Flex,
   FormControl,
   FormLabel,
@@ -70,7 +71,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
           });
           throw 'Senhas não correspondem';
         }
-        const response = await api.put(
+        await api.put(
           `account/edit/${props.id}`,
           {
             name,
@@ -84,7 +85,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
           },
         );
       } else {
-        const response = await api.put(
+        await api.put(
           `account/edit/${props.id}`,
           {
             name,
@@ -99,7 +100,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
       }
       toast.success('Informações alteradas com sucesso!');
       router.push('/');
-    } catch (e: any) {
+    } catch (e) {
       console.log(e);
     }
   };
@@ -152,26 +153,24 @@ export const UserEditForm = (props: UserEditFormProps) => {
               placeholder="Digite o nome desejado"
               icon={FiUser}
             />
-            {changePassword && (
-              <>
-                <UserInput
-                  id="password"
-                  field="Senha"
-                  type="password"
-                  placeholder="Digite sua senha"
-                  icon={MdOutlineLock}
-                  required={false}
-                />
-                <UserInput
-                  id="confirm_password"
-                  field="Confirmar Senha"
-                  type="password"
-                  placeholder="Confirme sua senha"
-                  icon={MdOutlineLock}
-                  required={false}
-                />
-              </>
-            )}
+            <Collapse startingHeight={2} in={changePassword}>
+              <UserInput
+                id="password"
+                field="Senha"
+                type="password"
+                placeholder="Digite sua senha"
+                icon={MdOutlineLock}
+                required={false}
+              />
+              <UserInput
+                id="confirm_password"
+                field="Confirmar Senha"
+                type="password"
+                placeholder="Confirme sua senha"
+                icon={MdOutlineLock}
+                required={false}
+              />
+            </Collapse>
 
             <Checkbox
               {...register('change_password')}

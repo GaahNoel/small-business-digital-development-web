@@ -27,6 +27,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export const FooterMenu = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const router = useRouter();
   const { status } = useSession();
   const routerNavigate = (page: string) => {
@@ -35,17 +37,16 @@ export const FooterMenu = () => {
   const routerBack = () => {
     router.back();
   };
-  const [isLoaded, setIsLoaded] = useState(false);
+
   const [cartIsOpen, setCartIsOpen] = useState(false);
   const cart = useCart();
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
 
   const toggleCart = () => {
     setCartIsOpen(!cartIsOpen);
   };
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   return (
     <>
@@ -54,6 +55,7 @@ export const FooterMenu = () => {
         routerBack={routerBack}
         toggleCart={toggleCart}
         cartItemsLength={cart.itemsLength}
+        status={status}
       />
       {isLoaded && (
         <DesktopFooterMenu
@@ -61,6 +63,7 @@ export const FooterMenu = () => {
           routerBack={routerBack}
           toggleCart={toggleCart}
           cartItemsLength={cart.itemsLength}
+          status={status}
         />
       )}
       <SideCart isOpen={cartIsOpen} setIsOpen={setCartIsOpen} />
@@ -73,6 +76,7 @@ type FooterMenuProps = {
   routerBack: () => void;
   toggleCart: () => void;
   cartItemsLength: number;
+  status?: string;
 };
 
 const MobileFooterMenu = ({
@@ -80,6 +84,7 @@ const MobileFooterMenu = ({
   routerBack,
   toggleCart,
   cartItemsLength,
+  status = 'unauthorized',
 }: FooterMenuProps) => {
   return (
     <Flex
@@ -134,6 +139,10 @@ const MobileFooterMenu = ({
           justify="center"
           align="center"
           borderRadius="full"
+          cursor="pointer"
+          w="50px"
+          h="50px"
+          padding="10px"
           left="5px"
           bottom="10px"
           zIndex="1"
@@ -151,6 +160,7 @@ const DesktopFooterMenu = ({
   routerBack,
   toggleCart,
   cartItemsLength,
+  status = 'unauthorized',
 }: FooterMenuProps) => {
   return (
     <Flex
