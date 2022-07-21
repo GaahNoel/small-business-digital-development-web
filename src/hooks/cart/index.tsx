@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import {
+  ReactNode,
+  useEffect,
+  createContext,
+  useContext,
+  useState,
+} from 'react';
 import { toast } from 'react-toastify';
-import createPersistedState from 'use-persisted-state';
 import { api } from '../../service/api';
 
 type CartItems = Item[];
@@ -17,23 +22,72 @@ type Item = {
   quantity: number;
 };
 
-const useCartState = createPersistedState<CartItems>('cart');
-const useItemsLength = createPersistedState<number>('itemsLength');
-const useTotalState = createPersistedState<number>('total');
-const useBusinessNameState = createPersistedState<string>('businessNameCart');
-const useBusinessIdState = createPersistedState<string>('businessIdCart');
+type CartContextProps = {
+  children: ReactNode;
+};
 
-const useCart = () => {
-  const [cart, setCart] = useCartState([]);
-  const [itemsLength, setItemsLength] = useItemsLength(0);
-  const [total, setTotal] = useTotalState(0);
-  const [businessName, setBusinessName] = useBusinessNameState();
-  const [businessId, setBusinessId] = useBusinessIdState();
+export type CartContextData = {
+  items: CartItems;
+  itemsLength: number;
+  total: number;
+  businessName: string;
+  addItem: (params: Item) => void;
+  incrementItem: (itemId: string) => void;
+  decrementItem: (itemId: string) => void;
+  finalize: () => void;
+  clean: () => void;
+};
+
+export const CartContext = createContext<CartContextData>(
+  {} as CartContextData,
+);
+
+export const CartProvider = ({ children }: CartContextProps) => {
+  const [cartLength, setInternalCartLength] = useState(0);
+  const [total, setInternalTotal] = useState(0);
+  const [cart, setInternalCart] = useState<CartItems>([]);
+  const [businessName, setInternalBusinessName] = useState('');
+  const [businessId, setInternalBusinessId] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    setItemsLength(cart.length);
+    setInternalCartLength(Number(localStorage.getItem('itemsLength')) || 0);
+    setInternalCart(
+      (JSON.parse(localStorage.getItem('cart') || '') as CartItems) || [],
+    );
+    setInternalBusinessId(localStorage.getItem('businessId') || '');
+    setInternalBusinessName(localStorage.getItem('businessNameCart') || '');
+    setInternalTotal(Number(localStorage.getItem('total')));
+  }, []);
+
+  useEffect(() => {
+    setInternalCartLength(cart.length);
   }, [cart]);
+
+  const setCartLength = (lentgh: number) => {
+    localStorage.setItem('itemsLength', String(lentgh));
+    setInternalCartLength(lentgh);
+  };
+
+  const setTotal = (total: number) => {
+    localStorage.setItem('total', String(total));
+    setInternalTotal(total);
+  };
+
+  const setCart = (cart: CartItems) => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setInternalCart(cart);
+  };
+
+  const setBusinessName = (businessName: string) => {
+    localStorage.setItem('businessNameCart', businessName);
+    setInternalBusinessName(businessName);
+  };
+
+  const setBusinessId = (businessId: string) => {
+    localStorage.setItem('businessId', businessId);
+    setInternalBusinessId(businessId);
+  };
 
   const addItem = async (item: Item) => {
     if (cart.length !== 0 && item.businessId !== businessId) {
@@ -142,17 +196,31 @@ const useCart = () => {
     }
   };
 
-  return {
-    items: cart,
-    itemsLength,
-    total,
-    businessName,
-    addItem,
-    incrementItem,
-    decrementItem,
-    finalize,
-    clean,
-  };
+  return (
+    <CartContext.Provider
+      value={{
+        items: cart,
+        itemsLength: cartLength,
+        total,
+        businessName,
+        addItem,
+        incrementItem,
+        decrementItem,
+        finalize,
+        clean,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
+export function useCart() {
+  const context = useContext(CartContext);
+  if (!context) {
+    console.error('No Establishment Form Context found');
+  }
+
+  return context;
+}
 export default useCart;

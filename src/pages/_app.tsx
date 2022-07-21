@@ -6,19 +6,22 @@ import { ProductFormProvider } from '../context/product-form-context';
 import { EstablishmentFormProvider } from '../context/establishment-form-context';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CartProvider } from '../hooks/cart';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ToastContainer />
-      <EstablishmentFormProvider>
-        <ProductFormProvider>
-          <SessionProvider>
-            <ChakraProvider theme={Theme}>
-              <Component {...pageProps} />
-            </ChakraProvider>
-          </SessionProvider>
-        </ProductFormProvider>
-      </EstablishmentFormProvider>
+      <CartProvider>
+        <EstablishmentFormProvider>
+          <ProductFormProvider>
+            <SessionProvider>
+              <ChakraProvider theme={Theme}>
+                <Component {...pageProps} />
+              </ChakraProvider>
+            </SessionProvider>
+          </ProductFormProvider>
+        </EstablishmentFormProvider>
+      </CartProvider>
     </>
   );
 }

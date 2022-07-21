@@ -34,7 +34,7 @@ import { AccordionButtonItems } from '../../components/shared/accordion-button-i
 import { AccordionPanelOrder } from '../../components/order-list/accordion-panel-order';
 import { BiMoney } from 'react-icons/bi';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
-import useCart from '../../hooks/cart';
+import { useCart } from '../../hooks/cart';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { FiCreditCard, FiDollarSign } from 'react-icons/fi';
 import { ButtonCheckbox } from '../../components/finalize-order/button-checkbox';
@@ -52,8 +52,7 @@ type FinalizeOrderFormData = {
 type PaymentMethod = 'credit-card' | 'cash';
 
 const FinalizeOrder = () => {
-  const cart = useCart();
-  const { itemsLength } = useCart();
+  const { itemsLength, items, total } = useCart();
   const router = useRouter();
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const [useChange, setUseChange] = useState(false);
@@ -83,10 +82,6 @@ const FinalizeOrder = () => {
     console.log(paymentMethod);
     console.log(note);
   };
-
-  useEffect(() => {
-    console.log(cart.itemsLength);
-  }, [cart.itemsLength]);
 
   return (
     <>
@@ -140,7 +135,7 @@ const FinalizeOrder = () => {
                   >
                     Resumo
                   </Text>
-                  {cart.itemsLength > 0 ? (
+                  {itemsLength > 0 ? (
                     <Flex
                       id="summary-content"
                       direction="column"
@@ -181,7 +176,7 @@ const FinalizeOrder = () => {
                         >
                           <Text>Preço</Text>
                         </GridItem>
-                        {cart.items.map((item, key) => (
+                        {items.map((item, key) => (
                           <React.Fragment key={key}>
                             <GridItem colSpan={4} color="accordion_list">
                               <Text>{item.quantity}</Text>
@@ -320,7 +315,7 @@ const FinalizeOrder = () => {
                   >
                     <Text>Valor total</Text>
                     <Text color="success_green">
-                      {cart.total.toLocaleString('pt-BR', format)}
+                      {total.toLocaleString('pt-BR', format)}
                     </Text>
                   </Flex>
                 </Flex>
