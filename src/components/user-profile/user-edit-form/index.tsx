@@ -26,6 +26,7 @@ type UserEditFormProps = {
   id?: string;
   token: string;
   name: string;
+  setIsOpen: (params: boolean) => void;
 };
 
 type UserEditFormData = {
@@ -191,7 +192,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Sair"
-                onClick={() => router.push('/')}
+                onClick={() => props.setIsOpen(false)}
               />
               <DefaultButton
                 bg="primary"

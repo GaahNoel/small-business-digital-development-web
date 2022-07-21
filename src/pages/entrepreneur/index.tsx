@@ -374,7 +374,6 @@ const getBusinessList = async (token: string) => {
   const { sub: id } = jwt_decode(token) as {
     sub: string;
   };
-  console.log(id);
   const response = await api.get(`business/list/${id}`, {});
   return response.data;
 };

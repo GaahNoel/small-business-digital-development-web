@@ -22,7 +22,9 @@ export const UserRegisterForm = ({
 }: {
   changeOption: (param: 'Entrar' | 'Registrar') => void;
 }) => {
-  const methods = useForm<RegisterFormData>();
+  const methods = useForm<RegisterFormData>({
+    reValidateMode: 'onChange',
+  });
   const router = useRouter();
   const password = useRef({});
   const [submitLoading, setSubmitLoading] = useState(false);

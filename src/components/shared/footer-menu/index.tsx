@@ -126,7 +126,7 @@ const MobileFooterMenu = ({
             toast.error('É necessário estar logado para acessar esta página');
             return;
           }
-          routerNavigate('/user-edit');
+          routerNavigate('/user-profile');
         }}
       />
       <Flex>
@@ -181,7 +181,7 @@ const DesktopFooterMenu = ({
               toast.error('É necessário estar logado para acessar esta página');
               return;
             }
-            routerNavigate('/user-edit');
+            routerNavigate('/user-profile');
           }}
         />
         <Flex>

@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { UserInput } from '../../shared/user-input';
 import { useState } from 'react';
 import { EmailVerification, InvalidFieldError } from '../../../errors';
+import axios from 'axios';
 
 type LoginFormData = {
   email: string;
@@ -62,6 +63,17 @@ export const UserLoginForm = () => {
       }
     } catch (error) {
       setIsLoading(false);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          toast.error('Conta não encontrada! Verifique o email digitado');
+          setError('email', {
+            message: 'Endereço de email inválido',
+          });
+
+          return;
+        }
+      }
+
       if (error instanceof InvalidFieldError) {
         toast.error('Email ou senha incorretos!');
         setError(error.field, { message: 'Campo incorreto' });

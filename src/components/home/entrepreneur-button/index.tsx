@@ -42,7 +42,7 @@ export const EntrepreneurButton = () => {
                 fontSize={{ base: '1rem', xl: '1.3rem', '2xl': '1.45rem' }}
                 fontWeight="normal"
               >
-                Anuncie já seus produtos
+                Gerencie aqui seus negócios
               </Text>
             </Flex>
           </Stack>

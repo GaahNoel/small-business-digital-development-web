@@ -134,7 +134,7 @@ const Home: NextPage = () => (
                     '1.7rem',
                   ]}
                 >
-                  Busque produtos e serviços que deseja
+                  Anuncie os produtos e serviços que desejar
                 </Text>
               </Flex>
               <EntrepreneurButton />
