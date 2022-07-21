@@ -34,7 +34,11 @@ export type CartContextData = {
   addItem: (params: Item) => void;
   incrementItem: (itemId: string) => void;
   decrementItem: (itemId: string) => void;
-  finalize: () => void;
+  finalize: (
+    paymentMethod: string,
+    change: number,
+    description: string,
+  ) => void;
   clean: () => void;
 };
 
