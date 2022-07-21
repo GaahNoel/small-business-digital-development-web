@@ -6,6 +6,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
+import { Router, useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -20,6 +21,7 @@ type SideCartProps = {
 
 export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
+  const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -183,7 +185,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   height="60px"
                   fontSize={{ base: '18px', sm: '22px' }}
                   disabled={cart.itemsLength === 0}
-                  onClick={finalizeOrder}
+                  onClick={() => router.push('/finalize-order')}
                 >
                   {!finalizeOrderLoading ? (
                     'Finalizar pedido'

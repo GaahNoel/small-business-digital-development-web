@@ -1,6 +1,6 @@
 import axios from 'axios';
-import Router, { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import createPersistedState from 'use-persisted-state';
 import { api } from '../../service/api';
@@ -18,25 +18,24 @@ type Item = {
 };
 
 const useCartState = createPersistedState<CartItems>('cart');
-const useItemsLenght = createPersistedState<number>('itemsLenght');
+const useItemsLength = createPersistedState<number>('itemsLength');
 const useTotalState = createPersistedState<number>('total');
 const useBusinessNameState = createPersistedState<string>('businessNameCart');
 const useBusinessIdState = createPersistedState<string>('businessIdCart');
 
 const useCart = () => {
   const [cart, setCart] = useCartState([]);
-  const [itemsLength, setItemsLenght] = useItemsLenght(0);
+  const [itemsLength, setItemsLength] = useItemsLength(0);
   const [total, setTotal] = useTotalState(0);
   const [businessName, setBusinessName] = useBusinessNameState();
   const [businessId, setBusinessId] = useBusinessIdState();
   const router = useRouter();
 
   useEffect(() => {
-    setItemsLenght(cart.length);
+    setItemsLength(cart.length);
   }, [cart]);
 
   const addItem = async (item: Item) => {
-    console.log(item);
     if (cart.length !== 0 && item.businessId !== businessId) {
       toast.error(
         `É possível incluir itens apenas de um estabelecimento no carrinho!`,

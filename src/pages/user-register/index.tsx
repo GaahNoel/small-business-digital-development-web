@@ -16,7 +16,6 @@ import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-
 import { UserLoginForm } from '../../components/user-register/user-login-form';
 import { UserRegisterForm } from '../../components/user-register/user-register-form';
 import { GetServerSideProps } from 'next';
-import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
 import { RightImage } from '../../components/user-register/right-image';
 

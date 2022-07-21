@@ -24,9 +24,9 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token }) {
+    async jwt({ token, account }) {
       const response = await api.post('signup', {
-        name: token.name,
+        name: account?.provider === 'credentials' ? 'any' : token.name,
         email: token.email,
         provider: 'socialMedia',
       });
@@ -35,6 +35,11 @@ export default NextAuth({
 
       if (!token.id) {
         token.id = id;
+      }
+
+      if (!token.name) {
+        token.name = token.email;
+        token.picture = '';
       }
 
       return token;
