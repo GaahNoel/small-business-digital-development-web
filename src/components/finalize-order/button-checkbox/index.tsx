@@ -7,6 +7,7 @@ import {
   Icon,
   Input,
   Stack,
+  Text,
   Textarea,
 } from '@chakra-ui/react';
 
@@ -32,9 +33,8 @@ export const ButtonCheckbox = ({
 }: ButtonCheckboxProps) => {
   return (
     <>
-      <Flex width="100%" gap={4}>
+      <Flex width="100%" gap={4} align="center">
         <Button
-          bg="default_white"
           position={'relative'}
           _hover={{
             color: 'secondary',
@@ -67,8 +67,8 @@ export const ButtonCheckbox = ({
           color={
             currentPaymentMethod === paymentMethod ? 'default_white' : 'primary'
           }
-          borderRadius="10px"
-          width="150px"
+          borderRadius="5px"
+          width="200px"
           overflow={'hidden'}
           zIndex={1}
           transition={'all 0.2s ease-in-out'}
@@ -76,23 +76,22 @@ export const ButtonCheckbox = ({
             selectCurrentPaymentMethod(paymentMethod);
           }}
         >
-          {description}
+          <Flex gap={2} width="100%" align="center" justify="start">
+            <Icon
+              as={icon}
+              fontSize={{
+                base: '16px',
+                sm: '18px',
+                md: '22px',
+                lg: '26px',
+                '2xl': '30px',
+              }}
+              strokeWidth="1.5"
+              transition="0.2s ease-in-out"
+            />
+            <Text>{description}</Text>
+          </Flex>
         </Button>
-        <Icon
-          as={icon}
-          fontSize={{
-            base: '18px',
-            sm: '22px',
-            md: '26px',
-            lg: '30px',
-            '2xl': '36px',
-          }}
-          color={
-            currentPaymentMethod === paymentMethod ? 'primary' : 'empty_gray'
-          }
-          strokeWidth="1.5"
-          transition="0.2s ease-in-out"
-        />
       </Flex>
     </>
   );

@@ -30,6 +30,7 @@ export const Theme = extendTheme({
       success: 'green.500',
       primary: primary,
       primary_hover: darken(0.2, primary),
+      primary_light: lighten(0.15, primary),
       primary_opacity: primary_opacity,
       primary_opacity_hover: darken(0.2, primary_opacity),
       secondary,
