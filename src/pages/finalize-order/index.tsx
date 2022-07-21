@@ -43,21 +43,22 @@ import { NoItemsText } from '../../components/shared/no-items-text';
 import { UserInput } from '../../components/shared/user-input';
 import { MdOutlineLock } from 'react-icons/md';
 import CurrencyInput from 'react-currency-input-field';
+import Swal from 'sweetalert2';
 
 type FinalizeOrderFormData = {
-  paymentMethod: PaymentMethod;
-  note: string;
+  change: number;
+  noteArea: string;
 };
 
-type PaymentMethod = 'credit-card' | 'cash';
+type PaymentMethod = 'CreditCard' | 'Cash';
 
 const FinalizeOrder = () => {
-  const { itemsLength, items, total } = useCart();
+  const cart = useCart();
   const router = useRouter();
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const [useChange, setUseChange] = useState(false);
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>('credit-card');
+    useState<PaymentMethod>('CreditCard');
   const methods = useForm<FinalizeOrderFormData>();
   const {
     handleSubmit,
@@ -76,11 +77,33 @@ const FinalizeOrder = () => {
   };
 
   const onSubmit: SubmitHandler<FinalizeOrderFormData> = async ({
-    paymentMethod,
-    note,
+    change,
+    noteArea,
   }) => {
-    console.log(paymentMethod);
-    console.log(note);
+    finalizeOrder(change, noteArea);
+  };
+
+  useEffect(() => {
+    console.log(cart.itemsLength);
+  }, [cart.itemsLength]);
+
+  const finalizeOrder = (change: number, note: string) => {
+    Swal.fire({
+      title: 'Tem certeza que deseja finalizar o pedido?',
+      showDenyButton: true,
+      confirmButtonText: 'Sim',
+      denyButtonText: `Não`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmFinalizeOrder(change, note);
+      }
+    });
+  };
+
+  const confirmFinalizeOrder = async (change: number, note: string) => {
+    setFinalizeOrderLoading(true);
+    await cart.finalize(paymentMethod, change, note);
+    setFinalizeOrderLoading(false);
   };
 
   return (
@@ -109,114 +132,113 @@ const FinalizeOrder = () => {
         <Flex
           id="content"
           bg="secondary"
+          direction="column"
+          width="100%"
           height="100%"
           flex="1"
           borderTopRadius={{ base: '0px', md: '105px' }}
           paddingBottom={{ base: '80px', md: '0px' }}
         >
+          <Flex
+            width="100%"
+            maxW={{ base: '90%', md: '700px', lg: '900px' }}
+            direction="column"
+            margin="30px auto 0px auto"
+          >
+            <Flex id="summary" direction="column" width="100%">
+              <Text
+                color="primary"
+                fontSize={{
+                  base: '20px',
+                  sm: '26px',
+                  md: '32px',
+                  xl: '36px',
+                }}
+                fontWeight="medium"
+              >
+                Resumo
+              </Text>
+              {cart.itemsLength > 0 ? (
+                <Flex
+                  id="summary-content"
+                  direction="column"
+                  borderRadius="5px"
+                  border="2px solid #5647B2"
+                  padding="20px"
+                  fontSize={{
+                    base: '14px',
+                    sm: '18px',
+                    md: '22px',
+                    lg: '26px',
+                    xl: '28px',
+                  }}
+                >
+                  <Grid templateColumns="repeat(20, 1fr)" gap={4}>
+                    <GridItem colSpan={4} color="primary" fontWeight="medium">
+                      <Text display={{ base: 'none', md: 'initial' }}>
+                        Quantidade
+                      </Text>
+                      <Text display={{ base: 'initial', md: 'none' }}>
+                        Qtde
+                      </Text>
+                    </GridItem>
+                    <GridItem colSpan={10} color="primary" fontWeight="medium">
+                      <Text>Nome</Text>
+                    </GridItem>
+                    <GridItem colSpan={6} color="primary" fontWeight="medium">
+                      <Text>Preço</Text>
+                    </GridItem>
+                    {cart.items.map((item, key) => (
+                      <React.Fragment key={key}>
+                        <GridItem colSpan={4} color="accordion_list">
+                          <Text>{item.quantity}</Text>
+                        </GridItem>
+                        <GridItem colSpan={10} color="accordion_list">
+                          <Text
+                            maxWidth="300px"
+                            whiteSpace="nowrap"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                          >
+                            {item.name}
+                          </Text>
+                        </GridItem>
+                        <GridItem colSpan={6} color="accordion_list">
+                          <Text>
+                            {item.price.toLocaleString('pt-BR', format)}
+                          </Text>
+                        </GridItem>
+                      </React.Fragment>
+                    ))}
+                  </Grid>
+                </Flex>
+              ) : (
+                <Flex
+                  direction="row"
+                  align="center"
+                  justify="center"
+                  fontWeight="medium"
+                  width="90%"
+                  margin="30px auto"
+                  textAlign="center"
+                  color="primary"
+                >
+                  <Text fontSize={{ base: '18px', md: '30px', lg: '36px' }}>
+                    Sem itens no pedido para confirmar a compra
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+          </Flex>
+
           <FormProvider {...methods}>
             <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
               <Flex
                 width="100%"
                 maxW={{ base: '90%', md: '700px', lg: '900px' }}
-                margin="30px auto"
+                margin="0px auto"
                 direction="column"
               >
-                <Flex id="summary" direction="column" width="100%">
-                  <Text
-                    color="primary"
-                    fontSize={{
-                      base: '20px',
-                      sm: '26px',
-                      md: '32px',
-                      xl: '36px',
-                    }}
-                    fontWeight="medium"
-                  >
-                    Resumo
-                  </Text>
-                  {itemsLength > 0 ? (
-                    <Flex
-                      id="summary-content"
-                      direction="column"
-                      borderRadius="5px"
-                      border="2px solid #5647B2"
-                      padding="20px"
-                      fontSize={{
-                        base: '14px',
-                        sm: '18px',
-                        md: '24px',
-                        xl: '28px',
-                      }}
-                    >
-                      <Grid templateColumns="repeat(20, 1fr)" gap={4}>
-                        <GridItem
-                          colSpan={4}
-                          color="primary"
-                          fontWeight="medium"
-                        >
-                          <Text display={{ base: 'none', md: 'initial' }}>
-                            Quantidade
-                          </Text>
-                          <Text display={{ base: 'initial', md: 'none' }}>
-                            Qtde
-                          </Text>
-                        </GridItem>
-                        <GridItem
-                          colSpan={10}
-                          color="primary"
-                          fontWeight="medium"
-                        >
-                          <Text>Nome</Text>
-                        </GridItem>
-                        <GridItem
-                          colSpan={6}
-                          color="primary"
-                          fontWeight="medium"
-                        >
-                          <Text>Preço</Text>
-                        </GridItem>
-                        {items.map((item, key) => (
-                          <React.Fragment key={key}>
-                            <GridItem colSpan={4} color="accordion_list">
-                              <Text>{item.quantity}</Text>
-                            </GridItem>
-                            <GridItem colSpan={10} color="accordion_list">
-                              <Text
-                                maxWidth="300px"
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                              >
-                                {item.name}
-                              </Text>
-                            </GridItem>
-                            <GridItem colSpan={6} color="accordion_list">
-                              <Text>
-                                {item.price.toLocaleString('pt-BR', format)}
-                              </Text>
-                            </GridItem>
-                          </React.Fragment>
-                        ))}
-                      </Grid>
-                    </Flex>
-                  ) : (
-                    <Flex
-                      direction="row"
-                      align="center"
-                      justify="center"
-                      fontWeight="medium"
-                      width="90%"
-                      margin="30px auto"
-                      textAlign="center"
-                      color="primary"
-                    >
-                      <Text fontSize={{ base: '18px', md: '30px', lg: '36px' }}>
-                        Sem itens no pedido para confirmar a compra
-                      </Text>
-                    </Flex>
-                  )}
-                </Flex>
                 <Flex justify="space-between" width="100%" marginTop="30px">
                   <Flex id="payment-method" direction="column">
                     <Text
@@ -240,19 +262,19 @@ const FinalizeOrder = () => {
                       <ButtonCheckbox
                         description="Cartão de crédito"
                         icon={FiCreditCard}
-                        paymentMethod="credit-card"
+                        paymentMethod="CreditCard"
                         currentPaymentMethod={paymentMethod}
                         selectCurrentPaymentMethod={setPaymentMethod}
                       />
                       <ButtonCheckbox
                         description="Dinheiro"
                         icon={FiDollarSign}
-                        paymentMethod="cash"
+                        paymentMethod="Cash"
                         currentPaymentMethod={paymentMethod}
                         selectCurrentPaymentMethod={setPaymentMethod}
                       />
                     </Flex>
-                    <Collapse in={paymentMethod === 'cash'}>
+                    <Collapse in={paymentMethod === 'Cash'}>
                       <Flex
                         direction={{ base: 'column', md: 'row' }}
                         color="primary"
@@ -284,6 +306,7 @@ const FinalizeOrder = () => {
                             $
                           </InputLeftElement>
                           <Input
+                            {...register('change')}
                             as={CurrencyInput}
                             placeholder="Digite o valor"
                             _placeholder={{ color: 'primary_light' }}
@@ -315,7 +338,7 @@ const FinalizeOrder = () => {
                   >
                     <Text>Valor total</Text>
                     <Text color="success_green">
-                      {total.toLocaleString('pt-BR', format)}
+                      {cart.total.toLocaleString('pt-BR', format)}
                     </Text>
                   </Flex>
                 </Flex>
@@ -333,6 +356,7 @@ const FinalizeOrder = () => {
                     Observações
                   </Text>
                   <Textarea
+                    {...register('noteArea')}
                     placeholder="Digite quaisquer informações adicionais necessárias"
                     maxLength={300}
                     resize="none"
@@ -363,10 +387,12 @@ const FinalizeOrder = () => {
                         md: '20px',
                         lg: '22px',
                       }}
+                      onClick={router.back}
                     >
                       <Text>Cancelar</Text>
                     </Button>
                     <Button
+                      type="submit"
                       bg="primary"
                       _hover={{ bg: 'primary_hover' }}
                       color="default_white"
@@ -378,7 +404,7 @@ const FinalizeOrder = () => {
                         md: '20px',
                         lg: '22px',
                       }}
-                      disabled={itemsLength === 0}
+                      disabled={cart.itemsLength === 0}
                     >
                       {!finalizeOrderLoading ? (
                         <Text>Finalizar pedido</Text>

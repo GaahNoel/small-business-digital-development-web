@@ -38,12 +38,11 @@ export default async function handler(
         message: 'Usuário não logado',
       });
     }
-
     await api.post(
       'order/create',
       {
         ...req.body,
-        buyerId: decryptedToken?.sub,
+        buyerId: decryptedToken?.id,
       },
       {
         headers: {
@@ -58,10 +57,12 @@ export default async function handler(
       res
         .status(error.response?.status as number)
         .json({ message: error.response?.data.error });
+      console.log(error.response);
+      return;
     }
     if (error instanceof Error) {
-      console.log(error);
       res.status(500).json({ error: error.message });
     }
+    return;
   }
 }
