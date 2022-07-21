@@ -7,6 +7,7 @@ import {
   FormControl,
   Grid,
   GridItem,
+  Icon,
   IconButton,
   Input,
   Select,
@@ -102,9 +103,9 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
             <DefaultHeader />
             <Flex justify="space-between" padding="40px 0px">
               <Button
-                width="45%"
-                height="80px"
-                fontSize="34px"
+                width={viewMode === 'Compras' ? '100%' : '25%'}
+                height="60px"
+                fontSize="32px"
                 bg={viewMode === 'Compras' ? 'default_orange' : 'secondary'}
                 color={viewMode === 'Compras' ? 'default_white' : 'primary'}
                 transition="0.2s ease-in-out"
@@ -114,14 +115,17 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                       ? 'default_orange_hover'
                       : 'default_white_hover',
                 }}
+                borderRightRadius="0px"
+                gap={5}
                 onClick={() => setViewMode('Compras')}
               >
-                Compras
+                <Icon as={FiGift}></Icon>
+                {viewMode === 'Compras' ? 'Compras' : ''}
               </Button>
               <Button
-                width="45%"
-                height="80px"
-                fontSize="34px"
+                width={viewMode === 'Vendas' ? '100%' : '25%'}
+                height="60px"
+                fontSize="32px"
                 bg={viewMode === 'Vendas' ? 'default_orange' : 'secondary'}
                 color={viewMode === 'Vendas' ? 'default_white' : 'primary'}
                 transition="0.2s ease-in-out"
@@ -131,9 +135,12 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                       ? 'default_orange_hover'
                       : 'default_white_hover',
                 }}
+                gap={5}
+                borderLeftRadius="0px"
                 onClick={() => setViewMode('Vendas')}
               >
-                Vendas
+                <Icon as={FiDollarSign}></Icon>
+                {viewMode === 'Vendas' ? 'Vendas' : ''}
               </Button>
             </Flex>
           </Flex>

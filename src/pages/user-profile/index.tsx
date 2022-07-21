@@ -1,4 +1,12 @@
-import { Button, Flex, Heading, Icon, ScaleFade, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  ScaleFade,
+  Text,
+} from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HeaderTitle } from '../../components/shared/header-title';
 import { GetServerSideProps } from 'next';
@@ -176,9 +184,27 @@ export const UserSelection = ({ userInfo, setIsOpened }: UserInfo) => {
       width="100%"
     >
       <Flex direction="column" paddingBottom={50} width="100%" align={'center'}>
-        <Heading color="primary" textTransform={'uppercase'}>
-          {userInfo.name}
-        </Heading>
+        <Box position={'relative'} width="100%" justifyContent={'center'}>
+          <Button
+            position={'relative'}
+            left="0"
+            onClick={() => {
+              router.push('/');
+            }}
+            bg="default_black"
+            color="secondary"
+            _hover={{ bg: 'rgba(0,0,0,0.8)' }}
+          >
+            Voltar
+          </Button>
+          <Heading
+            color="primary"
+            textTransform={'uppercase'}
+            textAlign={'center'}
+          >
+            {userInfo.name}
+          </Heading>
+        </Box>
 
         <Flex gap={10} align={'center'}>
           <Text color="primary" opacity={0.6}>

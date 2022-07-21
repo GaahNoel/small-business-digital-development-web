@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Grid,
-  GridItem,
-  Icon,
-  Img,
-  Link,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Icon, Img, Link, Text } from '@chakra-ui/react';
 import { BsGithub } from 'react-icons/bs';
 
 type DevInformationProps = {
@@ -52,7 +43,8 @@ export const DevInformation = ({
             <Icon
               as={BsGithub}
               color="primary"
-              _hover={{ color: 'primary_hover' }}
+              transition="all 0.3s"
+              _hover={{ color: 'default_black' }}
               fontSize="50px"
             />
           </Link>

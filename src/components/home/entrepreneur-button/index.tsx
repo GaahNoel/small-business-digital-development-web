@@ -1,6 +1,7 @@
 import { Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BsArrowUpRight } from 'react-icons/bs';
+import { FiTrendingUp } from 'react-icons/fi';
 
 export const EntrepreneurButton = () => {
   const router = useRouter();
@@ -11,7 +12,17 @@ export const EntrepreneurButton = () => {
       >
         <Button
           bg="primary"
-          _hover={{ bg: 'primary_hover' }}
+          _hover={{
+            bgColor: `primary_hover`,
+            svg: {
+              animation: 'drawIcons 3s ease 1',
+              animationFillMode: 'backwards',
+            },
+            '@keyframes drawIcons': {
+              '0%': { strokeWidth: 0, strokeDasharray: '1 100' },
+              '100%': { strokeWidth: 1.5, strokeDasharray: '100 0' },
+            },
+          }}
           padding="50px"
           h="100px"
           minW="100px"
@@ -27,8 +38,9 @@ export const EntrepreneurButton = () => {
           >
             <Flex bg="default_white" padding="14px" borderRadius="full">
               <Icon
-                as={BsArrowUpRight}
+                as={FiTrendingUp}
                 color="primary"
+                strokeWidth={1.5}
                 fontSize={{ base: '25px', xl: '30px', '2xl': '35px' }}
               />
             </Flex>
