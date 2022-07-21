@@ -55,7 +55,7 @@ export const SideCartCard = ({
         borderRadius="2xl"
         border="1px solid #5647B2"
         width="95%"
-        minHeight={{
+        height={{
           base: '120px',
           sm: '140px',
           md: '160px',
@@ -82,7 +82,10 @@ export const SideCartCard = ({
         >
           <Flex wordBreak="break-all">
             <Text
-              maxWidth="300px"
+              maxWidth={{ base: '123px', sm: '175px', md: '193px' }}
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
               fontSize={{ base: '14px', md: '16px' }}
               fontWeight="bold"
             >
