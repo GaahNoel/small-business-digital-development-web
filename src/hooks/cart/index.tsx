@@ -97,11 +97,18 @@ const useCart = () => {
     setCart([]);
   };
 
-  const finalize = async () => {
+  const finalize = async (
+    paymentMethod: string,
+    change: number,
+    description: string,
+  ) => {
+    if (!change) change = 0;
     const finalCart = {
       businessId,
-      buyerId: '',
       total,
+      paymentMethod,
+      change,
+      description,
       items: cart.map((item) => {
         return {
           productId: item.id,
@@ -111,8 +118,9 @@ const useCart = () => {
     };
     try {
       await axios.post('/api/create-order', finalCart);
-      clean();
+      await router.push('/order-list');
       toast.success('Pedido realizado com sucesso!');
+      clean();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {

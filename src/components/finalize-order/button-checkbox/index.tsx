@@ -19,9 +19,9 @@ import { IconType } from 'react-icons';
 type ButtonCheckboxProps = {
   description: string;
   icon: IconType;
-  paymentMethod: 'credit-card' | 'cash';
-  currentPaymentMethod: 'credit-card' | 'cash';
-  selectCurrentPaymentMethod: (paymentMethod: 'credit-card' | 'cash') => void;
+  paymentMethod: 'CreditCard' | 'Cash';
+  currentPaymentMethod: 'CreditCard' | 'Cash';
+  selectCurrentPaymentMethod: (paymentMethod: 'CreditCard' | 'Cash') => void;
 };
 
 export const ButtonCheckbox = ({

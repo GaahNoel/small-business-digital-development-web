@@ -29,25 +29,6 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
   };
   const cart = useCart();
 
-  const finalizeOrder = () => {
-    Swal.fire({
-      title: 'Tem certeza que deseja finalizar o pedido?',
-      showDenyButton: true,
-      confirmButtonText: 'Sim',
-      denyButtonText: `Não`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        confirmFinalizeOrder();
-      }
-    });
-  };
-
-  const confirmFinalizeOrder = async () => {
-    setFinalizeOrderLoading(true);
-    await cart.finalize();
-    setFinalizeOrderLoading(false);
-  };
-
   const cleanOrder = () => {
     Swal.fire({
       title: 'Tem certeza que deseja limpar todos os itens do carrinho?',
