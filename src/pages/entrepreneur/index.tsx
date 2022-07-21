@@ -371,9 +371,11 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 };
 
 const getBusinessList = async (token: string) => {
-  const { sub: id } = jwt_decode(token) as {
-    sub: string;
+  const { id } = jwt_decode(token) as {
+    id: string;
   };
+  console.log(id);
+
   const response = await api.get(`business/list/${id}`, {});
   return response.data;
 };

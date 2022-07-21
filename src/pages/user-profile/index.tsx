@@ -98,14 +98,16 @@ const UserEdit = ({ session, id, userInfos }: UserEditProps) => {
 
 const getUserInfos = async (id: string, token: string) => {
   try {
+    console.log(id);
     const response = await api.get(`account/${id}`, {
       headers: {
         token,
       },
     });
+
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) console.log('s');
+    // if (axios.isAxiosError(error)) console.error(error);
   }
 };
 
@@ -125,8 +127,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const { sub: id } = jwt_decode(session) as {
-    sub: string;
+  const { id } = jwt_decode(session) as {
+    id: string;
   };
 
   const userInfos = await getUserInfos(id, session);

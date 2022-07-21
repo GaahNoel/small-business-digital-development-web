@@ -238,9 +238,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const { sub: id } = jwt_decode(session) as {
-    sub: string;
+  const { id } = jwt_decode(session) as {
+    id: string;
   };
+
   const buyOrders = await getOrders(id, session, 'buy');
   const sellOrders = await getOrders(id, session, 'sell');
 
