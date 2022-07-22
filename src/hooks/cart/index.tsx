@@ -57,7 +57,9 @@ export const CartProvider = ({ children }: CartContextProps) => {
   useEffect(() => {
     setInternalCartLength(Number(localStorage.getItem('itemsLength')) || 0);
     setInternalCart(
-      (JSON.parse(localStorage.getItem('cart') || '') as CartItems) || [],
+      (JSON.parse(
+        localStorage.getItem('cart') || (null as any),
+      ) as CartItems) || [],
     );
     setInternalBusinessId(localStorage.getItem('businessId') || '');
     setInternalBusinessName(localStorage.getItem('businessNameCart') || '');
