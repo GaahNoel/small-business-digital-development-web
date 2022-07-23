@@ -198,7 +198,7 @@ const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
       }
       const statusChange =
         status === orderInfo.buyerStatus || status === orderInfo.sellerStatus;
-      if (statusChange)
+      if (statusChange || status === 'CANCELED')
         setAllStatus({
           ...allStatus,
           general: status,
@@ -207,11 +207,6 @@ const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log(token);
-    console.log(orderInfo);
-  }, []);
 
   return (
     <>
