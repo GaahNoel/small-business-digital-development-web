@@ -27,6 +27,7 @@ import { InputType } from 'zlib';
 import FormErrorMessage from '../../shared/form-error-message';
 import { ListProductServiceCard } from '../../shared/list-product-service-card';
 import { NoItemsText } from '../../shared/no-items-text';
+import { Router, useRouter } from 'next/router';
 
 type AccordionPanelOrderProps = {
   orderId: string;
@@ -58,6 +59,7 @@ export const AccordionPanelOrder = ({
   orderType,
   bgColor,
 }: AccordionPanelOrderProps) => {
+  const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -95,6 +97,7 @@ export const AccordionPanelOrder = ({
             transition="0.2s transform ease-in-out"
             cursor="pointer"
             _hover={{ transform: 'scale(1.02)' }}
+            onClick={() => router.push(`/order-info/${orderId}`)}
           >
             <Flex
               id="info"

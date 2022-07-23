@@ -93,6 +93,7 @@ const FinalizeOrder = () => {
       showDenyButton: true,
       confirmButtonText: 'Sim',
       denyButtonText: `Não`,
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         confirmFinalizeOrder(change, note);
@@ -370,7 +371,7 @@ const FinalizeOrder = () => {
                     _hover={{ borderColor: 'primary_hover' }}
                   />
                 </Flex>
-                <Flex id="buttons" marginTop="30px" justify="flex-end">
+                <Flex id="buttons" margin="30px 0px" justify="flex-end">
                   <Flex
                     width={{ base: '100%', sm: '50%' }}
                     justify="space-between"

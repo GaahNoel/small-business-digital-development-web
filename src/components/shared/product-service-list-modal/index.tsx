@@ -78,6 +78,7 @@ export const ProductServiceListModal = ({
   const addCart = (item: ProductInfo) => {
     cart.addItem(item);
   };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>

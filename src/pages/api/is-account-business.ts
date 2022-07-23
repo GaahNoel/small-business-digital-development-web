@@ -11,21 +11,6 @@ type Data = {
   message?: string;
 };
 
-type Business = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  imageUrl: string;
-  latitude: string;
-  longitude: string;
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
@@ -53,44 +38,13 @@ export default async function handler(
         message: 'Usuário não logado',
       });
     }
-
+    const { businessId } = req.body.businessId;
     const businessList = await api.get(`business/list/${decryptedToken?.id}`, {
       headers: {
         token,
       },
     });
-
-    if (businessList.data) {
-      const businessBelongsUser = businessList.data.filter(
-        (business: Business) => {
-          if (business.id === req.body.businessId) return true;
-        },
-      );
-
-      if (businessBelongsUser.length) {
-        console.log('ERRO');
-        res.status(400).json({
-          error: 'BusinessError',
-          params: [''],
-          message:
-            'Não é possível realizar pedido em um estabelecimento que pertence ao usuário da sessão',
-        });
-      }
-    }
-
-    await api.post(
-      'order/create',
-      {
-        ...req.body,
-        buyerId: decryptedToken?.id,
-      },
-      {
-        headers: {
-          'content-type': 'application/json',
-          token,
-        },
-      },
-    );
+    console.log(businessList);
     res.status(200).send({});
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -109,7 +109,6 @@ export const CartProvider = ({ children }: CartContextProps) => {
         return true;
       }
     });
-
     if (itemAlreadyExists) return;
 
     if (cart.length === 0) {
@@ -167,7 +166,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
       businessId,
       total,
       paymentMethod,
-      change,
+      change: Number(change),
       description,
       items: cart.map((item) => {
         return {
@@ -176,6 +175,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
         };
       }),
     };
+
     try {
       await axios.post('/api/create-order', finalCart);
       await router.push('/order-list');
@@ -190,6 +190,15 @@ export const CartProvider = ({ children }: CartContextProps) => {
           if (error.response.data.message.toLowerCase().includes('total')) {
             toast.error(
               `Total dos itens não condiz com o valor total do pedido`,
+            );
+          }
+          if (
+            error.response.data.message
+              .toLowerCase()
+              .includes('pertence ao usuário da sessão')
+          ) {
+            toast.error(
+              `Não é possível realizar pedido em um estabelecimento que pertence ao usuário da sessão`,
             );
           }
         }
