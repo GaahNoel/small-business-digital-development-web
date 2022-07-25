@@ -20,10 +20,16 @@ export const EntrepreneurItems = () => {
             iconColor={default_yellow}
             price="50"
             icon={MdOutlineLocalOffer}
+            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
           />
         </GridItem>
         <GridItem>
-          <ItemCard iconColor={default_orange} price="75" icon={BsStar} />
+          <ItemCard
+            iconColor={default_orange}
+            price="75"
+            icon={BsStar}
+            description="Lorem Ipsum has been the industry"
+          />
         </GridItem>
       </Grid>
     </>

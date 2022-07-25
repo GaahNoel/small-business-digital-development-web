@@ -8,6 +8,7 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { BsCoin } from 'react-icons/bs';
+import { ShopTypeButton } from '../../components/shop/shop-type-button';
 
 type ShopProps = {
   type: FormOption;
@@ -38,70 +39,47 @@ const Shop = ({ type }: ShopProps) => {
               margin="0px auto"
             >
               <DefaultHeader />
-              <Flex justify="space-between" margin="50px 0px">
+              <Flex
+                direction={{ base: 'column', md: 'row' }}
+                gap={{ base: 6, md: 0 }}
+                justify="space-between"
+                align="center"
+                margin="50px 0px"
+              >
                 <ButtonGroup
-                  spacing={2}
-                  padding="2px"
+                  id="options"
                   bg="secondary"
                   borderRadius="14px"
+                  width={{ base: '100%', md: '50%' }}
+                  spacing={0}
                 >
-                  <Button
-                    bg={formOption === 'Consumidor' ? 'default_orange' : 'none'}
-                    _hover={
-                      formOption === 'Consumidor'
-                        ? { bg: 'default_orange_hover' }
-                        : { bg: 'secondary_hover' }
-                    }
-                    color={
-                      formOption === 'Consumidor' ? 'default_white' : 'primary'
-                    }
-                    borderRadius="14px"
+                  <ShopTypeButton
+                    text="Consumidor"
+                    type="Consumidor"
+                    typeSelected={formOption}
                     onClick={() => {
                       changeOption('Consumidor');
                     }}
-                  >
-                    Consumidor
-                  </Button>
-                  <Button
-                    bg={
-                      formOption === 'Empreendedor' ? 'default_orange' : 'none'
-                    }
-                    _hover={
-                      formOption === 'Empreendedor'
-                        ? { bg: 'default_orange_hover' }
-                        : { bg: 'secondary_hover' }
-                    }
-                    color={
-                      formOption === 'Empreendedor'
-                        ? 'default_white'
-                        : 'primary'
-                    }
-                    borderRadius="14px"
+                  />
+                  <ShopTypeButton
+                    text="Empreendedor"
+                    type="Empreendedor"
+                    typeSelected={formOption}
                     onClick={() => {
                       changeOption('Empreendedor');
                     }}
-                  >
-                    Empreendedor
-                  </Button>
-                  <Button
-                    bg={formOption === 'Missões' ? 'default_orange' : 'none'}
-                    _hover={
-                      formOption === 'Missões'
-                        ? { bg: 'default_orange_hover' }
-                        : { bg: 'secondary_hover' }
-                    }
-                    color={
-                      formOption === 'Missões' ? 'default_white' : 'primary'
-                    }
-                    borderRadius="14px"
+                  />
+                  <ShopTypeButton
+                    text="Missões"
+                    type="Missões"
+                    typeSelected={formOption}
                     onClick={() => {
                       changeOption('Missões');
                     }}
-                  >
-                    Missões
-                  </Button>
+                  />
                 </ButtonGroup>
                 <Stack
+                  id="coins"
                   bg="default_white"
                   borderRadius="14px"
                   color="default_yellow"
@@ -129,8 +107,9 @@ const Shop = ({ type }: ShopProps) => {
             paddingBottom={{ base: '80px', md: '0px' }}
           >
             <Flex
+              width="100%"
               maxW={{ base: '90%', md: '700px', lg: '900px' }}
-              margin="0px auto"
+              margin="40px auto"
             >
               {formOption === 'Consumidor' ? (
                 <ConsumerItems />

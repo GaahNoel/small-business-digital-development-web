@@ -52,9 +52,18 @@ type FinalizeOrderFormData = {
 
 type PaymentMethod = 'CreditCard' | 'Cash';
 
+type Location = {
+  lat: number | null;
+  lng: number | null;
+};
+
 const FinalizeOrder = () => {
   const cart = useCart();
   const router = useRouter();
+  const [location, setLocation] = useState<Location>({
+    lat: null,
+    lng: null,
+  });
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const [useChange, setUseChange] = useState(false);
   const [paymentMethod, setPaymentMethod] =
@@ -82,6 +91,15 @@ const FinalizeOrder = () => {
   }) => {
     finalizeOrder(change, noteArea);
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    });
+  }, []);
 
   useEffect(() => {
     console.log(cart.itemsLength);

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Collapse,
   color,
   Flex,
   Icon,
@@ -8,8 +9,10 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { IconType } from 'react-icons';
 import { BsCoin } from 'react-icons/bs';
+import { FiMinusCircle, FiPlusCircle } from 'react-icons/fi';
 import { ItemIcon } from '../item-icon';
 
 type ItemCardProps = {
@@ -17,9 +20,17 @@ type ItemCardProps = {
   price: string;
   text?: string;
   icon?: IconType;
+  description: string;
 };
 
-export const ItemCard = ({ iconColor, price, text, icon }: ItemCardProps) => {
+export const ItemCard = ({
+  iconColor,
+  price,
+  text,
+  icon,
+  description,
+}: ItemCardProps) => {
+  const [cardIsOpen, setCardIsOpen] = useState(false);
   return (
     <>
       <Stack
@@ -33,17 +44,8 @@ export const ItemCard = ({ iconColor, price, text, icon }: ItemCardProps) => {
         marginBottom="30px"
         width="170px"
         position="relative"
-        _after={{
-          content: '""',
-          width: 0,
-          height: 0,
-          borderLeft: '85px solid transparent',
-          borderRight: '85px solid transparent',
-          borderTop: '30px solid',
-          borderTopColor: 'default_white',
-          position: 'absolute',
-          top: '180px',
-        }}
+        borderRadius="12px"
+        transition="8s ease-in-out"
       >
         <ItemIcon color={iconColor} text={text} icon={icon} />
         <Stack
@@ -76,6 +78,33 @@ export const ItemCard = ({ iconColor, price, text, icon }: ItemCardProps) => {
             Resgatar
           </Button>
         </Stack>
+        <Collapse in={cardIsOpen}>
+          <Flex
+            height="150px"
+            maxW="100%"
+            overflowY="scroll"
+            textOverflow="ellipsis"
+            paddingRight="10px"
+          >
+            <Text color={iconColor}>{description}</Text>
+          </Flex>
+        </Collapse>
+
+        <Flex
+          className="icon"
+          cursor="pointer"
+          transition={'all 0.1s ease-in-out'}
+          _hover={{
+            filter: 'contrast(150%)',
+            transform: 'scale(1.1)',
+          }}
+        >
+          <Icon
+            as={!cardIsOpen ? FiPlusCircle : FiMinusCircle}
+            fontSize="1.8rem"
+            onClick={() => setCardIsOpen(!cardIsOpen)}
+          />
+        </Flex>
       </Stack>
     </>
   );
