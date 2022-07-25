@@ -46,6 +46,7 @@ import Swal from 'sweetalert2';
 import { api } from '../../service/api';
 import { getToken, JWT } from 'next-auth/jwt';
 import * as jwt from 'jsonwebtoken';
+import BusinessItems from '../business-items/[id]';
 
 type ParamsProps = {
   id: string;
@@ -225,8 +226,10 @@ const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
               fontWeight="medium"
               fontSize={{ base: '30px', sm: '36px', md: '38px', xl: '42px' }}
               justify="center"
+              direction="column"
               padding="40px 0px"
             >
+              <Text color="default_white">{orderInfo.id}</Text>
               <Text>{statusFormat[allStatus.general].text}</Text>
             </Flex>
             {allStatus.general === 'PENDING' &&
@@ -513,7 +516,7 @@ const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
                 Observações
               </Text>
               <Textarea
-                placeholder="Digite quaisquer informações adicionais necessárias"
+                placeholder="Nenhuma observação inserida"
                 maxLength={300}
                 resize="none"
                 borderColor="primary"

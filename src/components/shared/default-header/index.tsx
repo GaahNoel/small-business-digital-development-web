@@ -1,13 +1,36 @@
-import { Button, Flex, Img, Spinner } from '@chakra-ui/react';
+import { Button, Flex, Icon, IconButton, Img, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { FiMap, FiTarget } from 'react-icons/fi';
+import { DefaultHeaderIcon } from './default-header-icon';
+
+type Location = {
+  lat: number;
+  lng: number;
+};
 
 export const DefaultHeader = () => {
   const router = useRouter();
   const { status } = useSession();
   const [buttonText, setButtonText] = useState('');
+  const [mapIconExist, setMapIconExist] = useState(false);
+  const [location, setLocation] = useState<Location>();
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setMapIconExist(true);
+      },
+      () => {
+        setMapIconExist(false);
+      },
+    );
+  }, []);
   useEffect(() => {
     if (status !== 'loading') {
       setButtonText(status === 'authenticated' ? 'Logout' : 'Login');
@@ -21,6 +44,16 @@ export const DefaultHeader = () => {
 
   const logout = () => {
     signOut();
+  };
+
+  const mapNavigate = () => {
+    router.push({
+      pathname: '/businesses-nearby',
+      query: {
+        lat: location!.lat,
+        lng: location!.lng,
+      },
+    });
   };
 
   return (
@@ -44,10 +77,19 @@ export const DefaultHeader = () => {
             router.push('/');
           }}
         ></Img>
-        <Flex w="100px">
+        <Flex align="center" gap={4}>
+          {mapIconExist && (
+            <DefaultHeaderIcon icon={FiMap} onClick={mapNavigate} />
+          )}
+
+          <DefaultHeaderIcon
+            icon={FiTarget}
+            onClick={() => router.push('/shop?type=mission')}
+          />
           <Button
             onClick={status !== 'authenticated' ? login : logout}
             bg="default_white"
+            minW="100px"
             position={'relative'}
             _hover={{
               color: 'secondary',

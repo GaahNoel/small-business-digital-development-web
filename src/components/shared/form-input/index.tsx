@@ -9,6 +9,7 @@ import {
 import { IconType } from 'react-icons';
 import { useFormContext } from 'react-hook-form';
 import FormErrorMessage from '../form-error-message';
+import CurrencyInput from 'react-currency-input-field';
 
 type FormInputProps = {
   id: string;
@@ -58,6 +59,9 @@ export const FormInput = ({
           </InputLeftElement>
           <Input
             {...register(id, { required, maxLength })}
+            as={id === 'price' ? CurrencyInput : Input}
+            decimalsLimit={id === 'price' ? 2 : Infinity}
+            maxLength={id === 'price' ? 9 : Infinity}
             id={id}
             type={type}
             placeholder={placeholder}

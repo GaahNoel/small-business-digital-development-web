@@ -144,8 +144,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           name,
           type,
           description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
           businessId: props.establishmentBase.id,
           categoryId: category,
@@ -183,8 +183,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
         {
           name,
           description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
           productId: props.id,
         },
@@ -200,8 +200,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           id: props?.id as string,
           name: name,
           description: description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
         });
       toast.success('Produto alterado com sucesso!');
