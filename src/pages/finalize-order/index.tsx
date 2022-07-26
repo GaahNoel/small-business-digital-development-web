@@ -53,16 +53,16 @@ type FinalizeOrderFormData = {
 type PaymentMethod = 'CreditCard' | 'Cash';
 
 type Location = {
-  lat: number | null;
-  lng: number | null;
+  lat: number | undefined;
+  lng: number | undefined;
 };
 
 const FinalizeOrder = () => {
   const cart = useCart();
   const router = useRouter();
   const [location, setLocation] = useState<Location>({
-    lat: null,
-    lng: null,
+    lat: undefined,
+    lng: undefined,
   });
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const [useChange, setUseChange] = useState(false);
@@ -121,7 +121,13 @@ const FinalizeOrder = () => {
 
   const confirmFinalizeOrder = async (change: number, note: string) => {
     setFinalizeOrderLoading(true);
-    await cart.finalize(paymentMethod, change, note);
+    await cart.finalize(
+      paymentMethod,
+      change,
+      note,
+      location.lat,
+      location.lng,
+    );
     setFinalizeOrderLoading(false);
   };
 

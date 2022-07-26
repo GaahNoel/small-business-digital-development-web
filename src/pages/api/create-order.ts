@@ -47,7 +47,7 @@ export default async function handler(
     });
 
     if (!token) {
-      res.status(400).json({
+      return res.status(400).json({
         error: 'InvalidParamsError',
         params: ['auth'],
         message: 'Usuário não logado',
@@ -68,8 +68,7 @@ export default async function handler(
       );
 
       if (businessBelongsUser.length) {
-        console.log('ERRO');
-        res.status(400).json({
+        return res.status(400).json({
           error: 'BusinessError',
           params: [''],
           message:

@@ -38,6 +38,8 @@ export type CartContextData = {
     paymentMethod: string,
     change: number,
     description: string,
+    latitude: number | undefined,
+    longitude: number | undefined,
   ) => void;
   clean: () => void;
 };
@@ -160,6 +162,8 @@ export const CartProvider = ({ children }: CartContextProps) => {
     paymentMethod: string,
     change: number,
     description: string,
+    latitude: number | undefined,
+    longitude: number | undefined,
   ) => {
     if (!change) change = 0;
     const finalCart = {
@@ -168,6 +172,8 @@ export const CartProvider = ({ children }: CartContextProps) => {
       paymentMethod,
       change: Number(change),
       description,
+      latitude,
+      longitude,
       items: cart.map((item) => {
         return {
           productId: item.id,

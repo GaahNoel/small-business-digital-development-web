@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 import { DefaultHeader } from '../../components/shared/default-header';
 import { BsCoin } from 'react-icons/bs';
 import { ShopTypeButton } from '../../components/shop/shop-type-button';
+import { Missions } from '../../components/shop/missions';
 
 type ShopProps = {
   type: FormOption;
@@ -114,7 +115,10 @@ const Shop = ({ type }: ShopProps) => {
               {formOption === 'Consumidor' ? (
                 <ConsumerItems />
               ) : (
-                <EntrepreneurItems />
+                <>
+                  <EntrepreneurItems />
+                  <Missions />
+                </>
               )}
             </Flex>
           </Flex>
