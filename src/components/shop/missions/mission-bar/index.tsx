@@ -1,15 +1,54 @@
-import { Flex, Stack, Text } from '@chakra-ui/react';
+import { Flex, Icon, Stack, Text } from '@chakra-ui/react';
+import { BsCoin } from 'react-icons/bs';
+import { MissionProgressBar } from './mission-progress-bar';
 
-export const MissionBar = () => {
+type MissionBarProps = {
+  text: string;
+  progress: number;
+  goal: number;
+  coins: number;
+};
+
+export const MissionBar = ({
+  text,
+  progress,
+  goal,
+  coins,
+}: MissionBarProps) => {
   return (
     <>
       <Flex
-        width="100%"
+        width="60%"
         height="100%"
+        justify="center"
         align="center"
-        justify={{ base: 'center', md: 'start' }}
+        color="primary"
+        direction="column"
+        marginBottom="20px"
       >
-        <Text>Test</Text>
+        <Flex
+          w="100%"
+          align="center"
+          direction={{ base: 'column', md: 'row' }}
+          gap={{ base: 1, md: 3 }}
+          textAlign="center"
+        >
+          <Text fontWeight="medium">{text}</Text>
+          <Stack
+            color="default_yellow"
+            direction="row"
+            align="center"
+            fontWeight="bold"
+            spacing={1}
+          >
+            <Icon as={BsCoin} fontSize="20px" />
+            <Text>{`+${coins}`}</Text>
+          </Stack>
+        </Flex>
+        <Flex w="100%" align="center" gap={3}>
+          <Text>{`${progress}/${goal}`}</Text>
+          <MissionProgressBar progress={progress / goal} />
+        </Flex>
       </Flex>
     </>
   );

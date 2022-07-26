@@ -10,14 +10,58 @@ import { DefaultHeader } from '../../components/shared/default-header';
 import { BsCoin } from 'react-icons/bs';
 import { ShopTypeButton } from '../../components/shop/shop-type-button';
 import { Missions } from '../../components/shop/missions';
+import { api } from '../../service/api';
+import jwt_decode from 'jwt-decode';
+import { getToken } from 'next-auth/jwt';
 
 type ShopProps = {
   type: FormOption;
+  consumerDailyQuests: Challenge;
+  consumerWeeklyQuests: Challenge;
+  entrepreneurDailyQuests: Challenge;
+  entrepreneurWeeklyQuests: Challenge;
 };
 
 type FormOption = 'Consumidor' | 'Empreendedor' | 'Missões';
 
-const Shop = ({ type }: ShopProps) => {
+type Periodicity = 'daily' | 'weekly';
+
+type ChallengeType =
+  | 'buyAny'
+  | 'sellAny'
+  | 'buyProximity'
+  | 'buyback'
+  | 'buyProduct'
+  | 'buyService'
+  | 'sellProduct'
+  | 'sellService';
+
+type Challenge = {
+  id: string;
+  challenge: {
+    id: string;
+    description: string;
+    type: ChallengeType;
+    goal: number;
+    periodicity: Periodicity;
+    reward: number;
+    createdAt?: Date;
+    updatedAt?: Date;
+  };
+  accountId: string;
+  progress: number;
+  status: 'PENDING' | 'COMPLETED';
+  createdAt?: Date;
+  updatedAt?: Date;
+}[];
+
+const Shop = ({
+  type,
+  consumerDailyQuests,
+  consumerWeeklyQuests,
+  entrepreneurDailyQuests,
+  entrepreneurWeeklyQuests,
+}: ShopProps) => {
   const [formOption, setFormOption] = useState(type);
 
   const changeOption = (option: FormOption) => {
@@ -114,10 +158,18 @@ const Shop = ({ type }: ShopProps) => {
             >
               {formOption === 'Consumidor' ? (
                 <ConsumerItems />
-              ) : (
+              ) : formOption === 'Empreendedor' ? (
                 <>
                   <EntrepreneurItems />
-                  <Missions />
+                </>
+              ) : (
+                <>
+                  <Missions
+                    consumerDailyQuests={consumerDailyQuests}
+                    consumerWeeklyQuests={consumerWeeklyQuests}
+                    entrepreneurDailyQuests={entrepreneurDailyQuests}
+                    entrepreneurWeeklyQuests={entrepreneurWeeklyQuests}
+                  />
                 </>
               )}
             </Flex>
@@ -129,11 +181,33 @@ const Shop = ({ type }: ShopProps) => {
   );
 };
 
+const getUserInfo = async (token: string, accountId: string) => {
+  const response = await api.get(`account/${accountId}`, {
+    headers: {
+      token,
+    },
+  });
+  console.log(response.data);
+};
+
+const getAllMissions = async (token: string, accountId: string) => {
+  const response = await api.get(`challenge/${accountId}`, {
+    headers: {
+      token,
+    },
+  });
+  return response.data.challenges;
+};
+
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
 }) => {
-  const session = await getSession({ req });
+  const session = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
   if (!session) {
     return {
       redirect: {
@@ -150,8 +224,49 @@ export const getServerSideProps: GetServerSideProps = async ({
     type = 'Consumidor';
   }
 
+  const { id } = jwt_decode(session) as {
+    id: string;
+  };
+  getUserInfo(session, id);
+  const missions: Challenge = await getAllMissions(session, id);
+  const consumerDailyQuests = missions.filter((mission) => {
+    if (
+      mission.challenge.periodicity === 'daily' &&
+      mission.challenge.type.includes('buy')
+    )
+      return true;
+  });
+  const consumerWeeklyQuests = missions.filter((mission) => {
+    if (
+      mission.challenge.periodicity === 'weekly' &&
+      mission.challenge.type.includes('buy')
+    )
+      return true;
+  });
+
+  const entrepreneurDailyQuests = missions.filter((mission) => {
+    if (
+      mission.challenge.periodicity === 'daily' &&
+      mission.challenge.type.includes('sell')
+    )
+      return true;
+  });
+  const entrepreneurWeeklyQuests = missions.filter((mission) => {
+    if (
+      mission.challenge.periodicity === 'weekly' &&
+      mission.challenge.type.includes('sell')
+    )
+      return true;
+  });
+
   return {
-    props: { type },
+    props: {
+      type,
+      consumerDailyQuests,
+      consumerWeeklyQuests,
+      entrepreneurDailyQuests,
+      entrepreneurWeeklyQuests,
+    },
   };
 };
 
