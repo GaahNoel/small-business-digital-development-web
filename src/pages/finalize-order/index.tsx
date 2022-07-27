@@ -45,7 +45,7 @@ import { UserInput } from '../../components/shared/user-input';
 import { MdOutlineLock } from 'react-icons/md';
 import CurrencyInput from 'react-currency-input-field';
 import Swal from 'sweetalert2';
-import { OrderMapInput } from '../../components/shared/order-map-input';
+import { OrderMapInput } from '../../components/finalize-order/order-map-input';
 import { DefaultMapInput } from '../../components/shared/default-map-input';
 import { api } from '../../service/api';
 

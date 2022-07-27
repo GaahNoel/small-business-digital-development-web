@@ -49,6 +49,9 @@ import * as jwt from 'jsonwebtoken';
 import BusinessItems from '../business-items/[id]';
 import { User } from 'next-auth';
 import { userInfo } from 'os';
+import { OrderMapInput } from '../../components/finalize-order/order-map-input';
+import { OrderMapView } from '../../components/order-info/order-map-view';
+import { positionstackApi } from '../../service/positionstack-api';
 
 type ParamsProps = {
   id: string;
@@ -58,6 +61,7 @@ type OrderInfoProps = {
   token: string;
   id: string;
   orderInfo: OrderInfo;
+  businessInfo: BusinessInfo;
   usersInfo: FormatedUserInfo;
 };
 
@@ -69,8 +73,19 @@ type UserInfo = {
 };
 
 type FormatedUserInfo = {
-  buyerEmail: string;
-  sellerEmail: string;
+  buyer: {
+    email: string;
+    location: {
+      country: string;
+      region: string;
+      county: string;
+      street: string | null;
+      name: string | null;
+    };
+  };
+  seller: {
+    email: string;
+  };
 };
 
 type OrderInfo = {
@@ -88,6 +103,8 @@ type OrderInfo = {
   change: number;
   buyerStatus: Status;
   sellerStatus: Status;
+  latitude: number;
+  longitude: number;
 };
 
 type Items = {
@@ -109,7 +126,33 @@ type Status = 'CANCELED' | 'PENDING' | 'COMPLETED';
 
 type AllStatus = { general: Status; buyer: Status; seller: Status };
 
-const OrderInfo = ({ token, id, orderInfo, usersInfo }: OrderInfoProps) => {
+type BusinessInfo = {
+  id: string;
+  name: string;
+  description: string;
+  accountId: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+};
+
+type LocationProps = {
+  lat: string;
+  lng: string;
+};
+
+const OrderInfo = ({
+  token,
+  id,
+  orderInfo,
+  businessInfo,
+  usersInfo,
+}: OrderInfoProps) => {
   const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
@@ -359,7 +402,7 @@ const OrderInfo = ({ token, id, orderInfo, usersInfo }: OrderInfoProps) => {
                   xl: '30px',
                 }}
               >
-                {`Comprador: ${usersInfo.buyerEmail}`}
+                {`Comprador: ${usersInfo.buyer.email}`}
               </Text>
               <Text
                 color="primary"
@@ -370,8 +413,93 @@ const OrderInfo = ({ token, id, orderInfo, usersInfo }: OrderInfoProps) => {
                   xl: '30px',
                 }}
               >
-                {`Vendedor: ${usersInfo.sellerEmail}`}
+                {`Vendedor: ${usersInfo.seller.email}`}
               </Text>
+            </Flex>
+          </Flex>
+          <Flex
+            width="100%"
+            maxW={{ base: '90%', md: '700px', lg: '900px' }}
+            direction="column"
+            margin="0px auto"
+          >
+            <Flex
+              id="map-input"
+              direction="column"
+              width="100%"
+              marginTop="30px"
+            >
+              <Text
+                color="primary"
+                fontSize={{
+                  base: '20px',
+                  sm: '26px',
+                  md: '32px',
+                  xl: '36px',
+                }}
+                fontWeight="medium"
+              >
+                Localização
+              </Text>
+              {usersInfo && businessInfo && (
+                <Flex
+                  width="100%"
+                  fontSize={{
+                    base: '15px',
+                    md: '18px',
+                    lg: '20px',
+                    '2xl': '22px',
+                  }}
+                  justify="space-between"
+                  color="primary"
+                >
+                  <Flex direction="column" width="45%">
+                    <Text fontWeight="medium">Comprador</Text>
+                    <Text>Estado: {usersInfo.buyer.location.region}</Text>
+                    <Text>
+                      Cidade:{' '}
+                      {usersInfo.buyer.location.county ===
+                      usersInfo.buyer.location.country
+                        ? usersInfo.buyer.location.region
+                        : usersInfo.buyer.location.county}
+                    </Text>
+                    {usersInfo.buyer.location.street && (
+                      <Text>
+                        Localização: Próximo à {usersInfo.buyer.location.street}
+                      </Text>
+                    )}
+                  </Flex>
+                  <Flex direction="column" textAlign="end" width="45%">
+                    <Text fontWeight="medium">Vendedor</Text>
+                    <Text>Estado: {businessInfo.state}</Text>
+                    <Text>
+                      Cidade:{' '}
+                      {businessInfo.city === businessInfo.country
+                        ? businessInfo.state
+                        : businessInfo.city}
+                    </Text>
+                    {businessInfo.street && (
+                      <Text>Localização: Próximo à {businessInfo.street}</Text>
+                    )}
+                  </Flex>
+                </Flex>
+              )}
+
+              <OrderMapView
+                user={{
+                  location: {
+                    lng: orderInfo.longitude,
+                    lat: orderInfo.latitude,
+                  },
+                }}
+                business={{
+                  imageUrl: businessInfo.imageUrl,
+                  location: {
+                    lng: Number(businessInfo.longitude),
+                    lat: Number(businessInfo.latitude),
+                  },
+                }}
+              />
             </Flex>
           </Flex>
           <Flex
@@ -610,6 +738,19 @@ const getOrderInfo = async (orderId: string, token: string) => {
   }
 };
 
+const getBusinessInfo = async (businessId: string, token: string) => {
+  try {
+    const response = await api.get(`business/${businessId}`, {
+      headers: {
+        token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getUserInfo = async (userId: string, token: string) => {
   try {
     const response = await api.get(`account/${userId}`, {
@@ -618,6 +759,23 @@ const getUserInfo = async (userId: string, token: string) => {
       },
     });
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAddressInfo = async ({ lat, lng }: LocationProps) => {
+  try {
+    const response = await positionstackApi.get(
+      `reverse?access_key=${process.env.POSITION_STACK_KEY}&query=${lat},${lng}`,
+      {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      },
+    );
+    const { country, region, county, street, name } = response.data.data[0];
+    return { country, region, county, street, name };
   } catch (error) {
     console.log(error);
   }
@@ -632,7 +790,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     raw: true,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  console.log(session);
   if (!session) {
     return {
       redirect: {
@@ -641,21 +798,39 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-  console.log(params);
   const { id: orderId } = params as ParamsProps;
   const orderInfo: OrderInfo = await getOrderInfo(orderId, session);
+  const businessInfo: BusinessInfo = await getBusinessInfo(
+    orderInfo.businessId,
+    session,
+  );
   const buyerInfo: UserInfo = await getUserInfo(orderInfo.buyerId, session);
   const sellerInfo: UserInfo = await getUserInfo(orderInfo.sellerId, session);
+  const addressInfo = await getAddressInfo({
+    lat: orderInfo.latitude.toString(),
+    lng: orderInfo.longitude.toString(),
+  });
   const usersInfo: FormatedUserInfo = {
-    buyerEmail: buyerInfo.email,
-    sellerEmail: sellerInfo.email,
+    buyer: {
+      email: buyerInfo.email,
+      location: {
+        country: addressInfo?.country,
+        region: addressInfo?.region,
+        county: addressInfo?.country,
+        street: addressInfo?.street,
+        name: addressInfo?.name,
+      },
+    },
+    seller: {
+      email: sellerInfo.email,
+    },
   };
   const { id } = jwt_decode(session) as {
     id: string;
   };
 
   return {
-    props: { token: session, id, orderInfo, usersInfo },
+    props: { token: session, id, orderInfo, businessInfo, usersInfo },
   };
 };
 
