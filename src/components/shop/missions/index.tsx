@@ -82,6 +82,7 @@ export const Missions = ({
               fontSize={{ base: '20px', sm: '22px', md: '30px' }}
               fontWeight="medium"
               color="primary"
+              display={{ base: 'none', sm: 'flex' }}
             >
               <Flex width="50%" justify="center">
                 <Text>Consumidor</Text>

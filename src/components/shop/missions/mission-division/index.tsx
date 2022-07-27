@@ -54,9 +54,10 @@ export const MissionDivision = ({
         color="primary"
       >
         <Text
-          fontSize={{ base: '20px', md: '26px' }}
-          marginTop={{ base: '20px', md: '40px' }}
-          marginBottom="20px"
+          fontSize={{ base: '30px', sm: '20px', md: '26px' }}
+          marginTop={{ base: '30px', md: '40px' }}
+          fontWeight={{ base: 'medium', sm: 'normal' }}
+          marginBottom="10px"
         >
           {periodicity}
         </Text>
@@ -64,14 +65,28 @@ export const MissionDivision = ({
           width="100%"
           marginBottom={{ base: '0px', md: '20px' }}
           justify="center"
+          align={{ base: 'center', sm: 'start' }}
+          direction={{ base: 'column', sm: 'row' }}
         >
           <Flex
             id="consumer"
             direction="column"
-            width="50%"
+            height="100%"
+            width={{ base: '80%', sm: '50%' }}
             align="center"
             justify="center"
           >
+            <Flex
+              fontSize={{ base: '20px', sm: '22px', md: '30px' }}
+              fontWeight="medium"
+              color="primary"
+              marginBottom="10px"
+              display={{ base: 'flex', sm: 'none' }}
+            >
+              <Flex width="100%" justify="center">
+                <Text>Consumidor</Text>
+              </Flex>
+            </Flex>
             {consumerQuests.length ? (
               consumerQuests.map((quest, key) => (
                 <MissionBar
@@ -91,10 +106,22 @@ export const MissionDivision = ({
           <Flex
             id="entrepeneur"
             direction="column"
-            width="50%"
+            height="100%"
+            width={{ base: '80%', sm: '50%' }}
             align="center"
             justify="center"
           >
+            <Flex
+              fontSize={{ base: '20px', sm: '22px', md: '30px' }}
+              fontWeight="medium"
+              color="primary"
+              marginBottom="10px"
+              display={{ base: 'flex', sm: 'none' }}
+            >
+              <Flex width="100%" justify="center">
+                <Text>Vendedor</Text>
+              </Flex>
+            </Flex>
             {entrepeneurQuests.length ? (
               entrepeneurQuests.map((quest, key) => (
                 <MissionBar

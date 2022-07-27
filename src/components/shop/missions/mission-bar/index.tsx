@@ -19,7 +19,7 @@ export const MissionBar = ({
   return (
     <>
       <Flex
-        width="60%"
+        width={{ base: '100%', sm: '60%' }}
         height="100%"
         justify="center"
         align="center"
@@ -30,7 +30,6 @@ export const MissionBar = ({
         <Flex
           w="100%"
           align="center"
-          direction={{ base: 'column', md: 'row' }}
           gap={{ base: 1, md: 3 }}
           textAlign="center"
         >
