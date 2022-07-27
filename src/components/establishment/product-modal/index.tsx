@@ -83,7 +83,12 @@ export const ProductModal = ({
             width="90vw"
             maxWidth="300px"
           >
-            <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
+            <Image
+              src={imageUrl}
+              boxSize="250px"
+              borderRadius="2xl"
+              objectFit="cover"
+            />
             <Stack
               spacing={1}
               marginTop="30px"
