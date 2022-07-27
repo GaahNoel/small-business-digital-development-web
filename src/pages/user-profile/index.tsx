@@ -47,10 +47,7 @@ const UserEdit = ({ session, id, userInfos }: UserEditProps) => {
         flex="1"
       >
         <Flex display={{ base: 'flex', lg: 'none' }}>
-          <HeaderTitle
-            text="Altere já suas informações!"
-            icon={FaShoppingBag}
-          />
+          <HeaderTitle text="Acesse suas informações!" icon={FaShoppingBag} />
         </Flex>
         <Flex width="45%" display={{ base: 'none', lg: 'flex' }} minH="100vh">
           <EstablishmentHalfImage />
@@ -242,7 +239,7 @@ export const UserSelection = ({ userInfo, setIsOpened }: UserInfo) => {
         <Button onClick={() => router.push('entrepreneur')}>
           Meus estabelecimentos
         </Button>
-        <Button onClick={() => router.push('order-list')}>Meus Pedidos</Button>
+        <Button onClick={() => router.push('order-list')}>Meus pedidos</Button>
       </Flex>
     </Flex>
   );
