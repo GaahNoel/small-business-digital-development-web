@@ -181,7 +181,7 @@ const OrderInfo = ({
       text: 'Pendente, aguarde o comprador confirmar a solicitação de ',
     },
   };
-  const [changeStatusLoading, setChangeStatusLoading] = useState(false);
+  const [changeStatusLoading, setChangeStatusLoading] = useState('NONE');
   const [allStatus, setAllStatus] = useState<AllStatus>({
     general: 'PENDING',
     buyer: 'PENDING',
@@ -232,6 +232,7 @@ const OrderInfo = ({
   };
 
   const changeStatus = async (status: Status) => {
+    setChangeStatusLoading(status);
     try {
       await api.put(
         `order/edit/status/${orderInfo.id}`,
@@ -264,6 +265,8 @@ const OrderInfo = ({
         });
     } catch (error) {
       console.log(error);
+    } finally {
+      setChangeStatusLoading('NONE');
     }
   };
 
@@ -310,8 +313,19 @@ const OrderInfo = ({
                         lg: '22px',
                       }}
                       onClick={cancelOrder}
+                      disabled={changeStatusLoading === 'COMPLETED'}
                     >
-                      <Text>Cancelar</Text>
+                      {changeStatusLoading !== 'CANCELED' ? (
+                        <Text>Cancelar</Text>
+                      ) : (
+                        <Spinner
+                          thickness="4px"
+                          speed="0.65s"
+                          emptyColor="gray.200"
+                          color="default_white"
+                          size="md"
+                        />
+                      )}
                     </Button>
                     <Button
                       bg="primary"
@@ -328,8 +342,9 @@ const OrderInfo = ({
                         lg: '22px',
                       }}
                       onClick={confirmOrder}
+                      disabled={changeStatusLoading === 'CANCELED'}
                     >
-                      {!changeStatusLoading ? (
+                      {changeStatusLoading !== 'COMPLETED' ? (
                         <Text>Finalizar</Text>
                       ) : (
                         <Spinner
