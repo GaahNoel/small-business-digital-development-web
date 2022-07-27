@@ -51,6 +51,18 @@ type Items = {
   };
 }[];
 
+type UserInfoCompleted = {
+  name: string;
+  email: string;
+  verified: boolean;
+  provider: string;
+};
+
+type UserInfoNedeed = {
+  name: string;
+  email: string;
+};
+
 export const AccordionPanelOrder = ({
   orderId,
   status,

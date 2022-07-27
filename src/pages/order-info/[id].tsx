@@ -47,6 +47,8 @@ import { api } from '../../service/api';
 import { getToken, JWT } from 'next-auth/jwt';
 import * as jwt from 'jsonwebtoken';
 import BusinessItems from '../business-items/[id]';
+import { User } from 'next-auth';
+import { userInfo } from 'os';
 
 type ParamsProps = {
   id: string;
@@ -56,6 +58,19 @@ type OrderInfoProps = {
   token: string;
   id: string;
   orderInfo: OrderInfo;
+  usersInfo: FormatedUserInfo;
+};
+
+type UserInfo = {
+  name: string;
+  email: string;
+  verified: boolean;
+  provider: string;
+};
+
+type FormatedUserInfo = {
+  buyerEmail: string;
+  sellerEmail: string;
 };
 
 type OrderInfo = {
@@ -94,7 +109,7 @@ type Status = 'CANCELED' | 'PENDING' | 'COMPLETED';
 
 type AllStatus = { general: Status; buyer: Status; seller: Status };
 
-const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
+const OrderInfo = ({ token, id, orderInfo, usersInfo }: OrderInfoProps) => {
   const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
@@ -316,6 +331,49 @@ const OrderInfo = ({ token, id, orderInfo }: OrderInfoProps) => {
           borderTopRadius={{ base: '0px', md: '105px' }}
           paddingBottom={{ base: '80px', md: '0px' }}
         >
+          <Flex
+            width="100%"
+            maxW={{ base: '90%', md: '700px', lg: '900px' }}
+            direction="column"
+            margin="30px auto 0px auto"
+          >
+            <Flex id="contact" direction="column" width="100%">
+              <Text
+                color="primary"
+                fontSize={{
+                  base: '20px',
+                  sm: '26px',
+                  md: '32px',
+                  xl: '36px',
+                }}
+                fontWeight="medium"
+              >
+                Contato
+              </Text>
+              <Text
+                color="primary"
+                fontSize={{
+                  base: '14px',
+                  sm: '20px',
+                  md: '26px',
+                  xl: '30px',
+                }}
+              >
+                {`Comprador: ${usersInfo.buyerEmail}`}
+              </Text>
+              <Text
+                color="primary"
+                fontSize={{
+                  base: '14px',
+                  sm: '20px',
+                  md: '26px',
+                  xl: '30px',
+                }}
+              >
+                {`Vendedor: ${usersInfo.sellerEmail}`}
+              </Text>
+            </Flex>
+          </Flex>
           <Flex
             width="100%"
             maxW={{ base: '90%', md: '700px', lg: '900px' }}
@@ -552,6 +610,19 @@ const getOrderInfo = async (orderId: string, token: string) => {
   }
 };
 
+const getUserInfo = async (userId: string, token: string) => {
+  try {
+    const response = await api.get(`account/${userId}`, {
+      headers: {
+        token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   params,
@@ -570,14 +641,21 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+  console.log(params);
   const { id: orderId } = params as ParamsProps;
-  const orderInfo = await getOrderInfo(orderId, session);
+  const orderInfo: OrderInfo = await getOrderInfo(orderId, session);
+  const buyerInfo: UserInfo = await getUserInfo(orderInfo.buyerId, session);
+  const sellerInfo: UserInfo = await getUserInfo(orderInfo.sellerId, session);
+  const usersInfo: FormatedUserInfo = {
+    buyerEmail: buyerInfo.email,
+    sellerEmail: sellerInfo.email,
+  };
   const { id } = jwt_decode(session) as {
     id: string;
   };
 
   return {
-    props: { token: session, id, orderInfo },
+    props: { token: session, id, orderInfo, usersInfo },
   };
 };
 

@@ -1,5 +1,6 @@
 import { Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { BsCoin } from 'react-icons/bs';
+import { MdDone } from 'react-icons/md';
 import { MissionProgressBar } from './mission-progress-bar';
 
 type MissionBarProps = {
@@ -46,7 +47,12 @@ export const MissionBar = ({
           </Stack>
         </Flex>
         <Flex w="100%" align="center" gap={3}>
-          <Text>{`${progress}/${goal}`}</Text>
+          {progress !== goal ? (
+            <Text>{`${progress}/${goal}`}</Text>
+          ) : (
+            <Icon as={MdDone} color="green" />
+          )}
+
           <MissionProgressBar progress={progress / goal} />
         </Flex>
       </Flex>
