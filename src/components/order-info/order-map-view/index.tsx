@@ -49,7 +49,6 @@ export const OrderMapView = ({ user, business }: OrderMapViewProps) => {
           padding: 5px;
           display: inline-block;
           transform-style: preserve-3d;
-          cursor: pointer;
         `;
 
     element.className = 'selected-marker';
