@@ -16,6 +16,7 @@ import {
   InputLeftElement,
   NumberInput,
   Spinner,
+  Stack,
   Text,
   Textarea,
   useDisclosure,
@@ -44,6 +45,13 @@ import { UserInput } from '../../components/shared/user-input';
 import { MdOutlineLock } from 'react-icons/md';
 import CurrencyInput from 'react-currency-input-field';
 import Swal from 'sweetalert2';
+import { OrderMapInput } from '../../components/shared/order-map-input';
+import { DefaultMapInput } from '../../components/shared/default-map-input';
+import { api } from '../../service/api';
+
+type FinalizeOrderProps = {
+  token: string;
+};
 
 type FinalizeOrderFormData = {
   change: number;
@@ -57,13 +65,31 @@ type Location = {
   lng: number | undefined;
 };
 
-const FinalizeOrder = () => {
+type Position = {
+  getLngLat: () => { lng: number | undefined; lat: number | undefined };
+};
+
+type BusinessInfo = {
+  accountId: string;
+  city: string;
+  country: string;
+  description: string;
+  id: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  name: string;
+  state: string;
+  street: string;
+  zip: string;
+};
+
+const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
   const cart = useCart();
   const router = useRouter();
-  const [location, setLocation] = useState<Location>({
-    lat: undefined,
-    lng: undefined,
-  });
+  const [mapLoading, setMapLoading] = useState(true);
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo>();
+  const [position, setPosition] = useState<Position>();
   const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const [useChange, setUseChange] = useState(false);
   const [paymentMethod, setPaymentMethod] =
@@ -93,17 +119,25 @@ const FinalizeOrder = () => {
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    });
-  }, []);
-
-  useEffect(() => {
     console.log(cart.itemsLength);
   }, [cart.itemsLength]);
+
+  useEffect(() => {
+    if (cart.businessId) {
+      getBusinessLocation(cart.businessId, token);
+    }
+  }, [cart.businessId]);
+
+  const getBusinessLocation = async (businessId: string, token: string) => {
+    const response = await api.get(`business/${businessId}`, {
+      headers: {
+        token,
+      },
+    });
+    console.log(response.data);
+    setBusinessInfo(response.data as BusinessInfo);
+    setMapLoading(false);
+  };
 
   const finalizeOrder = (change: number, note: string) => {
     Swal.fire({
@@ -120,13 +154,14 @@ const FinalizeOrder = () => {
   };
 
   const confirmFinalizeOrder = async (change: number, note: string) => {
+    if (!position) return;
     setFinalizeOrderLoading(true);
     await cart.finalize(
       paymentMethod,
       change,
       note,
-      location.lat,
-      location.lng,
+      position.getLngLat().lat,
+      position.getLngLat().lng,
     );
     setFinalizeOrderLoading(false);
   };
@@ -255,7 +290,6 @@ const FinalizeOrder = () => {
               )}
             </Flex>
           </Flex>
-
           <FormProvider {...methods}>
             <FormControl as="form" onSubmit={handleSubmit(onSubmit)}>
               <Flex
@@ -395,6 +429,49 @@ const FinalizeOrder = () => {
                     _hover={{ borderColor: 'primary_hover' }}
                   />
                 </Flex>
+                <Flex
+                  id="map-input"
+                  direction="column"
+                  width="100%"
+                  marginTop="30px"
+                  align={mapLoading ? 'center' : 'initial'}
+                >
+                  {!mapLoading && businessInfo ? (
+                    <>
+                      <Text
+                        color="primary"
+                        fontSize={{
+                          base: '20px',
+                          sm: '26px',
+                          md: '32px',
+                          xl: '36px',
+                        }}
+                        fontWeight="medium"
+                      >
+                        Indique a sua localização
+                      </Text>
+                      <OrderMapInput
+                        setPosition={setPosition}
+                        business={{
+                          imageUrl: businessInfo.imageUrl,
+                          location: {
+                            lng: Number(businessInfo.longitude),
+                            lat: Number(businessInfo.latitude),
+                          },
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="default_white"
+                      size="lg"
+                    />
+                  )}
+                </Flex>
+
                 <Flex id="buttons" margin="30px 0px" justify="flex-end">
                   <Flex
                     width={{ base: '100%', sm: '50%' }}
@@ -470,9 +547,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
-
+  const token = session;
   return {
-    props: { session },
+    props: { token },
   };
 };
 

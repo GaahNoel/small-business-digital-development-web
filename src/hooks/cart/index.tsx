@@ -30,6 +30,7 @@ export type CartContextData = {
   items: CartItems;
   itemsLength: number;
   total: number;
+  businessId: string;
   businessName: string;
   addItem: (params: Item) => void;
   incrementItem: (itemId: string) => void;
@@ -231,6 +232,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
         items: cart,
         itemsLength: cartLength,
         total,
+        businessId,
         businessName,
         addItem,
         incrementItem,
