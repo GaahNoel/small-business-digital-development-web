@@ -25,6 +25,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import { EstablishmentEditModal } from '../../components/entrepreneur/establishment-edit-modal';
+import Error from 'next/error';
+import axios from 'axios';
 
 type EstablishmentProps = {
   id: string;
@@ -135,8 +137,12 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
         }),
       );
       toast.success('Estabelecimento apagado com sucesso!');
-    } catch (e: any) {
-      console.log(e);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.message.includes('500')) {
+        toast.error(
+          'Não é possível apagar um estabelecimento que contém itens registrados!',
+        );
+      }
     }
   };
 
