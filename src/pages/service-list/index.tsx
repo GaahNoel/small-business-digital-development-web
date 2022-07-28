@@ -288,6 +288,13 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                         salePrice={service.salePrice}
                         businessId={service.business.id}
                         businessName={service.business.name}
+                        distance={
+                          service.business.distance
+                            ? service.business.distance
+                                .toString()
+                                .replace('.', ',')
+                            : ''
+                        }
                         detailClick={() => {
                           openModal({
                             id: service.id,
@@ -351,6 +358,13 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                             salePrice={service.salePrice}
                             businessId={service.business.id}
                             businessName={service.business.name}
+                            distance={
+                              service.business.distance
+                                ? service.business.distance
+                                    .toString()
+                                    .replace('.', ',')
+                                : ''
+                            }
                             detailClick={() => {
                               openModal({
                                 id: service.id,

@@ -12,6 +12,7 @@ type ListProductServiceCardProps = {
   salePrice: number;
   businessId: string;
   businessName: string;
+  distance?: string;
   detailClick: () => void;
 };
 
@@ -23,6 +24,7 @@ export const ListProductServiceCard = ({
   salePrice,
   businessId,
   businessName,
+  distance,
   detailClick,
 }: ListProductServiceCardProps) => {
   const format = {
@@ -44,8 +46,8 @@ export const ListProductServiceCard = ({
           base: '330px',
           sm: '380px',
           md: '420px',
-          lg: '360px',
-          xl: '430px',
+          lg: '450px',
+          xl: '480px',
           '2xl': '530px',
         }}
         height={{
@@ -90,11 +92,19 @@ export const ListProductServiceCard = ({
           textAlign="center"
           height="100%"
           flex="1"
-          padding={{ base: '10px', md: '20px' }}
+          padding={{ base: '10px', md: '10px' }}
         >
-          <Flex wordBreak="break-all">
+          <Flex>
             <Text
-              maxWidth="300px"
+              maxWidth={{
+                base: '200px',
+                sm: '230px',
+                md: '250px',
+                xl: '275px',
+              }}
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
               fontSize={{ base: '14px', md: '16px', lg: '18px', xl: '22px' }}
               fontWeight="bold"
             >
@@ -128,10 +138,11 @@ export const ListProductServiceCard = ({
               justify="start"
               fontSize={{ base: '10px', lg: '12px', xl: '14px' }}
               fontWeight="medium"
+              direction="column"
+              fontStyle="italic"
             >
-              <Text maxWidth="200px" fontStyle="italic">
-                {businessName}
-              </Text>
+              <Text maxWidth="200px">{businessName}</Text>
+              {distance && <Text maxWidth="200px">{distance}km</Text>}
             </Flex>
             <Flex
               width="100%"

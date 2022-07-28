@@ -286,6 +286,13 @@ const ProductList = ({ cities }: ProductListProps) => {
                         salePrice={product.salePrice}
                         businessId={product.business.id}
                         businessName={product.business.name}
+                        distance={
+                          product.business.distance
+                            ? product.business.distance
+                                .toString()
+                                .replace('.', ',')
+                            : ''
+                        }
                         detailClick={() => {
                           openModal({
                             id: product.id,
@@ -349,6 +356,13 @@ const ProductList = ({ cities }: ProductListProps) => {
                             salePrice={product.salePrice}
                             businessId={product.business.id}
                             businessName={product.business.name}
+                            distance={
+                              product.business.distance
+                                ? product.business.distance
+                                    .toString()
+                                    .replace('.', ',')
+                                : ''
+                            }
                             detailClick={() => {
                               openModal({
                                 id: product.id,

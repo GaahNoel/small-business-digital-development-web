@@ -1,4 +1,4 @@
-import { Flex, IconButton, Img, Stack, Text } from '@chakra-ui/react';
+import { Flex, IconButton, Img, Image, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -55,8 +55,9 @@ export const DefaultCard = ({
           align="center"
           justify={{ base: 'center', md: 'start' }}
         >
-          <Img
+          <Image
             src={img}
+            fallbackSrc="https://gndesign.com.br/thaisbicalho/wp-content/uploads/2021/02/preloader.gif"
             width={{
               base: '80px',
               sm: '100px',
