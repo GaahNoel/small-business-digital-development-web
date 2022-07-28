@@ -48,6 +48,15 @@ import Swal from 'sweetalert2';
 import { OrderMapInput } from '../../components/finalize-order/order-map-input';
 import { DefaultMapInput } from '../../components/shared/default-map-input';
 import { api } from '../../service/api';
+import { CouponCard } from '../../components/finalize-order/coupon-card';
+import {
+  default_orange,
+  export_default_orange_hover,
+  default_yellow,
+  export_default_yellow_hover,
+  service_blue,
+  export_service_blue_hover,
+} from '../../styles/theme';
 
 type FinalizeOrderProps = {
   token: string;
@@ -84,6 +93,8 @@ type BusinessInfo = {
   zip: string;
 };
 
+type CouponSelected = 'none' | 'five' | 'seven' | 'ten';
+
 const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
   const cart = useCart();
   const router = useRouter();
@@ -94,6 +105,14 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
   const [useChange, setUseChange] = useState(false);
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>('CreditCard');
+  const [couponProvidedByBusiness, setCouponProvidedByBusiness] =
+    useState(true);
+  const [userCoupons, setUserCoupons] = useState({
+    five: 1,
+    seven: 0,
+    ten: 4,
+  });
+  const [couponSelected, setCouponSelected] = useState<CouponSelected>('none');
   const methods = useForm<FinalizeOrderFormData>();
   const {
     handleSubmit,
@@ -299,7 +318,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                 direction="column"
               >
                 <Flex justify="space-between" width="100%" marginTop="30px">
-                  <Flex id="payment-method" direction="column">
+                  <Flex id="payment-method" direction="column" width="45%">
                     <Text
                       color="primary"
                       fontSize={{
@@ -394,6 +413,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     align="end"
                     textAlign="end"
                     direction="column"
+                    width="45%"
                   >
                     <Text>Valor total</Text>
                     <Text color="success_green">
@@ -401,7 +421,65 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     </Text>
                   </Flex>
                 </Flex>
-                <Flex id="note" direction="column" marginTop="30px">
+                <Flex id="coupon" direction="column" marginTop="30px">
+                  <Text
+                    color="primary"
+                    fontSize={{
+                      base: '20px',
+                      sm: '26px',
+                      md: '32px',
+                      xl: '36px',
+                    }}
+                    fontWeight="medium"
+                  >
+                    Cupom
+                  </Text>
+                  {couponProvidedByBusiness ? (
+                    <Flex justify="space-between">
+                      <CouponCard
+                        text="5%"
+                        iconColor={default_yellow}
+                        iconColorHover={export_default_yellow_hover}
+                        quantity={userCoupons.five}
+                        coupon="five"
+                        couponSelected={couponSelected}
+                        setCouponSelected={setCouponSelected}
+                      />
+                      <CouponCard
+                        text="7%"
+                        iconColor={default_orange}
+                        iconColorHover={export_default_orange_hover}
+                        quantity={userCoupons.seven}
+                        coupon="seven"
+                        couponSelected={couponSelected}
+                        setCouponSelected={setCouponSelected}
+                      />
+                      <CouponCard
+                        text="10%"
+                        iconColor={service_blue}
+                        iconColorHover={export_service_blue_hover}
+                        quantity={userCoupons.ten}
+                        coupon="ten"
+                        couponSelected={couponSelected}
+                        setCouponSelected={setCouponSelected}
+                      />
+                    </Flex>
+                  ) : (
+                    <Text
+                      color="primary"
+                      fontSize={{
+                        base: '14px',
+                        sm: '16px',
+                        md: '18px',
+                        lg: '20px',
+                        xl: '22px',
+                      }}
+                    >
+                      O estabelecimento não disponibiliza o uso de cupons
+                    </Text>
+                  )}
+                </Flex>
+                <Flex id="note" direction="column">
                   <Text
                     color="primary"
                     fontSize={{
@@ -471,7 +549,6 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     />
                   )}
                 </Flex>
-
                 <Flex id="buttons" margin="30px 0px" justify="flex-end">
                   <Flex
                     width={{ base: '100%', sm: '50%' }}

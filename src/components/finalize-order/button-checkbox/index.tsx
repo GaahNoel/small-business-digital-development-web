@@ -89,7 +89,14 @@ export const ButtonCheckbox = ({
               strokeWidth="1.5"
               transition="0.2s ease-in-out"
             />
-            <Text>{description}</Text>
+            <Text
+              fontSize={{
+                base: '13px',
+                sm: '16px',
+              }}
+            >
+              {description}
+            </Text>
           </Flex>
         </Button>
       </Flex>
