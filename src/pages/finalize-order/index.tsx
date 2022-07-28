@@ -331,6 +331,10 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     >
                       Método de pagamento
                     </Text>
+                    <Text color="primary" marginBottom="15px">
+                      *Observação: Não há pagamento on-line, esse método
+                      escolhido é utilizado na entrega*
+                    </Text>
                     <Flex
                       direction={{ base: 'column', md: 'row' }}
                       align="center"
@@ -435,7 +439,10 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     Cupom
                   </Text>
                   {couponProvidedByBusiness ? (
-                    <Flex justify="space-between">
+                    <Flex
+                      gap={{ base: 0, md: 4 }}
+                      justify={{ base: 'space-between', md: 'start' }}
+                    >
                       <CouponCard
                         text="5%"
                         iconColor={default_yellow}
