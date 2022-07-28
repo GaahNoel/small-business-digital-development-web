@@ -15,6 +15,7 @@ import jwt_decode from 'jwt-decode';
 import { getToken } from 'next-auth/jwt';
 
 type ShopProps = {
+  userFormated: UserFormated;
   type: FormOption;
   consumerDailyQuests: Challenge;
   consumerWeeklyQuests: Challenge;
@@ -55,7 +56,20 @@ type Challenge = {
   updatedAt?: Date;
 }[];
 
+type User = {
+  name: string;
+  email: string;
+  verified: boolean;
+  provider: string;
+  balance: number;
+};
+
+type UserFormated = {
+  balance: number;
+};
+
 const Shop = ({
+  userFormated,
   type,
   consumerDailyQuests,
   consumerWeeklyQuests,
@@ -136,7 +150,7 @@ const Shop = ({
                   spacing={2}
                 >
                   <Icon as={BsCoin} fontSize="28px" />
-                  <Text>650 Moedas</Text>
+                  <Text>{`${userFormated.balance} moedas`} </Text>
                 </Stack>
               </Flex>
             </Flex>
@@ -187,7 +201,7 @@ const getUserInfo = async (token: string, accountId: string) => {
       token,
     },
   });
-  console.log(response.data);
+  return response.data;
 };
 
 const getAllMissions = async (token: string, accountId: string) => {
@@ -227,7 +241,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { id } = jwt_decode(session) as {
     id: string;
   };
-  getUserInfo(session, id);
+  const user: User = await getUserInfo(session, id);
+  const userFormated: UserFormated = { balance: user.balance };
   const missions: Challenge = await getAllMissions(session, id);
   const consumerDailyQuests = missions.filter((mission) => {
     if (
@@ -261,6 +276,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      userFormated,
       type,
       consumerDailyQuests,
       consumerWeeklyQuests,
