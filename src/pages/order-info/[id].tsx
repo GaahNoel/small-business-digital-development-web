@@ -411,10 +411,10 @@ const OrderInfo = ({
               <Text
                 color="primary"
                 fontSize={{
-                  base: '14px',
-                  sm: '20px',
-                  md: '26px',
-                  xl: '30px',
+                  base: '15px',
+                  md: '18px',
+                  lg: '20px',
+                  '2xl': '22px',
                 }}
               >
                 {`Comprador: ${usersInfo.buyer.email}`}
@@ -422,10 +422,10 @@ const OrderInfo = ({
               <Text
                 color="primary"
                 fontSize={{
-                  base: '14px',
-                  sm: '20px',
-                  md: '26px',
-                  xl: '30px',
+                  base: '15px',
+                  md: '18px',
+                  lg: '20px',
+                  '2xl': '22px',
                 }}
               >
                 {`Vendedor: ${usersInfo.seller.email}`}
