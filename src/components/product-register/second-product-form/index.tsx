@@ -240,7 +240,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           <Stack
             direction="column"
             spacing={3}
-            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '25vw' }}
+            width="100%"
+            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '35vw' }}
             margin="0px auto"
             border="2px #000"
             borderRadius="3xl"

@@ -10,12 +10,12 @@ type ModalInfoProps = {
 export const ModalInfo = ({ info, data, icon }: ModalInfoProps) => {
   return (
     <>
-      <Flex justifyContent="space-between" w="90%">
+      <Flex justifyContent="space-between" w="100%">
         <Flex alignItems="center" gap={2}>
           <Icon as={icon} />
           <Text fontWeight="semibold">{info}</Text>
         </Flex>
-        <Text>{data}</Text>
+        <Text textAlign="end">{data}</Text>
       </Flex>
     </>
   );

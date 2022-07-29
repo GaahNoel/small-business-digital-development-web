@@ -44,7 +44,7 @@ export const InputMap = () => {
         margin={{ base: '30px auto 100px auto', md: '30px auto 50px auto' }}
         align="center"
         justify="center"
-        zIndex={3}
+        zIndex={2}
         sx={{
           '.mapboxgl-ctrl': {
             width: '100%',

@@ -98,7 +98,7 @@ export const ProductModal = ({
               alignItems="center"
               width="100%"
             >
-              <Flex justifyContent="space-between" w="90%" direction="column">
+              <Flex justifyContent="space-between" w="100%" direction="column">
                 <Flex alignItems="center" gap={2}>
                   <Icon as={MdOutlineDescription} />
                   <Text fontWeight="semibold">Descrição:</Text>
