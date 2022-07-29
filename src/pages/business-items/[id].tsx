@@ -43,6 +43,13 @@ import { InputType } from 'zlib';
 import { InputSearchItems } from '../../components/business-items/input-search-items';
 import { AccordionPanelItems } from '../../components/business-items/accordion-panel-items';
 import { AccordionButtonItems } from '../../components/shared/accordion-button-items';
+import {
+  default_orange,
+  default_yellow,
+  empty_gray,
+  service_blue,
+} from '../../styles/theme';
+import { CouponInfo } from '../../components/shared/coupon-info';
 
 type ParamsProps = {
   id: string;
@@ -78,6 +85,7 @@ type Business = {
   state: string;
   zip: string;
   country: string;
+  maxPermittedCouponPercentage: number;
 };
 
 type ItemModalProps = {
@@ -101,11 +109,23 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
     onClose: viewItemOnClose,
   } = useDisclosure();
   const searchBar = useRef<HTMLInputElement>();
+  const couponArray = [
+    { color: empty_gray, value: 0 },
+    { color: default_yellow, value: 5 },
+    { color: default_orange, value: 7 },
+    { color: service_blue, value: 10 },
+  ];
 
   useEffect(() => {
     setFilteredItems(items);
-    console.log(items);
   }, []);
+
+  const getCouponColor = () => {
+    const couponIndex = couponArray.findIndex((coupon) => {
+      return coupon.value === business.maxPermittedCouponPercentage;
+    });
+    return couponArray[couponIndex].color;
+  };
 
   const openModal = ({
     id,
@@ -202,6 +222,29 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
           paddingBottom={{ base: '80px', md: '0px' }}
         >
           <Flex align="center" direction="column" width="100%" marginTop="40px">
+            {business.maxPermittedCouponPercentage !== 0 && (
+              <Flex align="center" direction="column" paddingBottom="40px">
+                <Stack direction="column" spacing={3}>
+                  <Text
+                    fontSize={{
+                      base: '18px',
+                      sm: '22px',
+                      md: '26px',
+                      lg: '30px',
+                      '2xl': '34px',
+                    }}
+                    fontWeight="bold"
+                    color="primary"
+                  >
+                    {`Disponíveis cupons até`}
+                  </Text>
+                  <CouponInfo
+                    iconColor={getCouponColor()}
+                    text={`${business.maxPermittedCouponPercentage}%`}
+                  />
+                </Stack>
+              </Flex>
+            )}
             <Flex align="center" direction="column" paddingBottom="40px">
               <InputSearchItems
                 items={items}

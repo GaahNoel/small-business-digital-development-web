@@ -27,6 +27,13 @@ import { ProductModal } from '../../components/establishment/product-modal';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { ProductEditModal } from '../../components/establishment/product-edit-modal';
+import {
+  default_orange,
+  default_yellow,
+  empty_gray,
+  service_blue,
+} from '../../styles/theme';
+import { CouponInfo } from '../../components/shared/coupon-info';
 
 type ParamsProps = {
   id: string;
@@ -45,6 +52,7 @@ type EstablishmentProps = {
   state: string;
   zip: string;
   country: string;
+  maxPermittedCouponPercentage: number;
 };
 
 type ProductProps = {
@@ -129,6 +137,13 @@ const Establishment = ({
     },
   ]);
 
+  const couponArray = [
+    { color: empty_gray, value: 0 },
+    { color: default_yellow, value: 5 },
+    { color: default_orange, value: 7 },
+    { color: service_blue, value: 10 },
+  ];
+
   useEffect(() => {
     setProductsState(products);
     setToken(token);
@@ -137,6 +152,13 @@ const Establishment = ({
       name: establishmentInfo.name,
     });
   }, []);
+
+  const getCouponColor = () => {
+    const couponIndex = couponArray.findIndex((coupon) => {
+      return coupon.value === establishmentInfo.maxPermittedCouponPercentage;
+    });
+    return couponArray[couponIndex].color;
+  };
 
   const clickNewProduct = (id: string) => {
     setStage('first');
@@ -354,6 +376,21 @@ const Establishment = ({
             isOpen={viewProductIsOpen}
             onClose={viewProductOnClose}
           />
+          <Flex align="center" direction="column" paddingBottom="40px">
+            <Stack direction="column" spacing={3}>
+              <Text
+                fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
+                fontWeight="bold"
+                color="primary"
+              >
+                {`Disponíveis cupons até`}
+              </Text>
+              <CouponInfo
+                iconColor={getCouponColor()}
+                text={`${establishmentInfo.maxPermittedCouponPercentage}%`}
+              />
+            </Stack>
+          </Flex>
           <Flex
             direction="column"
             margin="0px auto"
@@ -363,6 +400,7 @@ const Establishment = ({
             <Text
               fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
               fontWeight="bold"
+              color="primary"
               marginBottom="20px"
             >
               Seus produtos cadastrados

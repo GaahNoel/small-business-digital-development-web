@@ -50,7 +50,7 @@ import { api } from '../../../service/api';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { positionstackApi } from '../../../service/positionstack-api';
-import { CouponInfo } from '../coupon-info';
+import { CouponInfo } from '../../shared/coupon-info';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
