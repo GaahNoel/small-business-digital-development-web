@@ -88,7 +88,10 @@ export const InputSearchItems = ({
             margin="0px auto"
             direction="row"
           >
-            <InputGroup>
+            <InputGroup
+              _hover={{ transform: 'scale(1.02)' }}
+              transition={'all 0.2s ease-in-out'}
+            >
               <InputLeftElement
                 pointerEvents="none"
                 fontSize={{

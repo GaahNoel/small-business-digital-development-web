@@ -10,10 +10,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   MdOutlineAttachMoney,
   MdOutlineCategory,
@@ -74,9 +76,16 @@ export const ProductServiceListModal = ({
     currency: 'BRL',
   };
   const cart = useCart();
+  const [routerLoading, setRouterLoading] = useState(false);
 
   const addCart = (item: ProductInfo) => {
     cart.addItem(item);
+  };
+
+  const navigateToBusinessPage = async (businessId: string) => {
+    setRouterLoading(true);
+    await router.push(`/business-items/${businessId}`);
+    setRouterLoading(false);
   };
 
   return (
@@ -174,9 +183,20 @@ export const ProductServiceListModal = ({
                 <Button
                   bg="primary"
                   _hover={{ bg: 'primary_hover' }}
-                  onClick={() => router.push(`/business-items/${businessId}`)}
+                  disabled={routerLoading}
+                  onClick={() => navigateToBusinessPage(businessId)}
                 >
-                  Visitar página da loja
+                  {!routerLoading ? (
+                    <Text>Visitar página da loja</Text>
+                  ) : (
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="primary"
+                      size="md"
+                    />
+                  )}
                 </Button>
               )}
               <Button

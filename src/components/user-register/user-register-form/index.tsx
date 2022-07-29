@@ -10,6 +10,12 @@ import { toast } from 'react-toastify';
 import { UserInput } from '../../shared/user-input';
 import { useRef, useState } from 'react';
 
+type UserRegisterProps = {
+  changeOption: (param: 'Entrar' | 'Registrar') => void;
+  submitLoading: boolean;
+  setSubmitLoading: (submitLoading: boolean) => void;
+};
+
 type RegisterFormData = {
   name: string;
   email: string;
@@ -19,15 +25,15 @@ type RegisterFormData = {
 
 export const UserRegisterForm = ({
   changeOption,
-}: {
-  changeOption: (param: 'Entrar' | 'Registrar') => void;
-}) => {
+  submitLoading,
+  setSubmitLoading,
+}: UserRegisterProps) => {
   const methods = useForm<RegisterFormData>({
     reValidateMode: 'onChange',
   });
   const router = useRouter();
   const password = useRef({});
-  const [submitLoading, setSubmitLoading] = useState(false);
+
   password.current = methods.watch('password', '');
 
   const {
@@ -112,6 +118,7 @@ export const UserRegisterForm = ({
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              disabled={submitLoading}
               onClick={() => router.push('/login')}
             />
             <DefaultButton
@@ -120,6 +127,7 @@ export const UserRegisterForm = ({
               text="Enviar"
               type="submit"
               isLoading={submitLoading}
+              disabled={submitLoading}
             />
           </Stack>
         </FormControl>

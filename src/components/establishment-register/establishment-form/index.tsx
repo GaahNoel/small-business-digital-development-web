@@ -266,8 +266,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     nome,
     descricao,
   }) => {
-    setSubmitLoading(true);
     try {
+      setSubmitLoading(true);
       if (props.registerForm) {
         await registerEstablishment({ nome, descricao });
       } else {
@@ -364,6 +364,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Cancelar"
+                disabled={submitLoading}
                 onClick={() => {
                   props.clickBackButton();
                 }}
@@ -373,6 +374,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 color="default_white"
                 text="Enviar"
                 isLoading={submitLoading}
+                disabled={submitLoading}
                 type="submit"
               />
             </Stack>

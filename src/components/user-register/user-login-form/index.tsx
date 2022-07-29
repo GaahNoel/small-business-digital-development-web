@@ -12,14 +12,21 @@ import { useState } from 'react';
 import { EmailVerification, InvalidFieldError } from '../../../errors';
 import axios from 'axios';
 
+type UserLoginForm = {
+  submitLoading: boolean;
+  setSubmitLoading: (submitLoading: boolean) => void;
+};
+
 type LoginFormData = {
   email: string;
   password: string;
 };
 
-export const UserLoginForm = () => {
+export const UserLoginForm = ({
+  submitLoading,
+  setSubmitLoading,
+}: UserLoginForm) => {
   const methods = useForm<LoginFormData>();
-  const [isLoading, setIsLoading] = useState(false);
   const { data } = useSession();
   const router = useRouter();
 
@@ -33,7 +40,7 @@ export const UserLoginForm = () => {
     email,
     password,
   }) => {
-    setIsLoading(true);
+    setSubmitLoading(true);
     try {
       const response = await api.post('account/check-password', {
         email,
@@ -50,7 +57,7 @@ export const UserLoginForm = () => {
         }),
           toast.success('Login realizado com sucesso!');
 
-        setIsLoading(false);
+        setSubmitLoading(false);
         router.push('/');
       }
 
@@ -62,7 +69,7 @@ export const UserLoginForm = () => {
         throw new EmailVerification();
       }
     } catch (error) {
-      setIsLoading(false);
+      setSubmitLoading(false);
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 404) {
           toast.error('Conta não encontrada! Verifique o email digitado');
@@ -124,6 +131,7 @@ export const UserLoginForm = () => {
               bg="default_black"
               color="default_white"
               text="Cancelar"
+              disabled={submitLoading}
               onClick={() => router.push('/login')}
             />
             <DefaultButton
@@ -131,7 +139,8 @@ export const UserLoginForm = () => {
               color="default_white"
               text="Entrar"
               type="submit"
-              isLoading={isLoading}
+              isLoading={submitLoading}
+              disabled={submitLoading}
             />
           </Stack>
         </FormControl>

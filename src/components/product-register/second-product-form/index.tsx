@@ -157,8 +157,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
+
+      await router.push(`/establishment/${props.establishmentBase.id}`);
       toast.success('Produto cadastrado com sucesso!');
-      router.push(`/establishment/${props.establishmentBase.id}`);
     } catch (e) {
       console.error(e);
     }
@@ -204,8 +205,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
         });
-      toast.success('Produto alterado com sucesso!');
+
       props.clickBackButton();
+      toast.success('Produto alterado com sucesso!');
       //router.push('/entrepreneur');
     } catch (e) {
       console.error(e);
@@ -308,6 +310,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Cancelar"
+                disabled={submitLoading}
                 onClick={() => props.clickBackButton()}
               />
               <DefaultButton
@@ -315,6 +318,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 color="default_white"
                 text="Enviar"
                 isLoading={submitLoading}
+                disabled={submitLoading}
                 type="submit"
               />
             </Stack>

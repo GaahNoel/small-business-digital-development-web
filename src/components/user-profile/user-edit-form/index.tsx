@@ -192,6 +192,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Sair"
+                disabled={submitLoading}
                 onClick={() => props.setIsOpen(false)}
               />
               <DefaultButton
@@ -199,6 +200,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
                 color="default_white"
                 text="Alterar"
                 isLoading={submitLoading}
+                disabled={submitLoading}
                 type="submit"
               />
             </Stack>

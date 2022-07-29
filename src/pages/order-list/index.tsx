@@ -83,6 +83,7 @@ type Item = {
 const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
   const router = useRouter();
   const [viewMode, setViewMode] = useState('Compras');
+  const [navigateLoading, setNavigateLoading] = useState(false);
 
   useEffect(() => {
     console.log(buyOrders);
@@ -117,6 +118,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                 }}
                 borderRightRadius="0px"
                 gap={5}
+                disabled={navigateLoading}
                 onClick={() => setViewMode('Compras')}
               >
                 <Icon as={FiGift}></Icon>
@@ -137,6 +139,7 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                 }}
                 gap={5}
                 borderLeftRadius="0px"
+                disabled={navigateLoading}
                 onClick={() => setViewMode('Vendas')}
               >
                 <Icon as={FiDollarSign}></Icon>
@@ -184,6 +187,8 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
                           items={order.items}
                           orderType={viewMode}
                           bgColor="secondary"
+                          navigateLoading={navigateLoading}
+                          setNavigateLoading={setNavigateLoading}
                         />
                       ))}
                     </AccordionItem>

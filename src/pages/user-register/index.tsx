@@ -23,6 +23,7 @@ const UserRegister = () => {
   const [formOption, setFormOption] = useState('Entrar');
   const [loginMounted, setLoginMounted] = useState(true);
   const [registerMounted, setRegisterMounted] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const changeOption = (option: string) => {
     if (formOption != option) {
@@ -95,6 +96,7 @@ const UserRegister = () => {
                   height={{ base: '40px', md: '50px' }}
                   width={{ base: '100px', md: '130px' }}
                   fontSize={{ base: '16px', md: '20px' }}
+                  disabled={submitLoading}
                   onClick={() => {
                     changeOption('Entrar');
                   }}
@@ -114,6 +116,7 @@ const UserRegister = () => {
                   height={{ base: '40px', md: '50px' }}
                   width={{ base: '100px', md: '130px' }}
                   fontSize={{ base: '16px', md: '20px' }}
+                  disabled={submitLoading}
                   onClick={() => {
                     changeOption('Registrar');
                   }}
@@ -131,7 +134,10 @@ const UserRegister = () => {
                 setRegisterMounted(true);
               }}
             >
-              <UserLoginForm />
+              <UserLoginForm
+                submitLoading={submitLoading}
+                setSubmitLoading={setSubmitLoading}
+              />
             </ScaleFade>
             <ScaleFade
               in={!loginMounted && formOption === 'Registrar'}
@@ -141,7 +147,11 @@ const UserRegister = () => {
                 setLoginMounted(true);
               }}
             >
-              <UserRegisterForm changeOption={changeOption} />
+              <UserRegisterForm
+                submitLoading={submitLoading}
+                setSubmitLoading={setSubmitLoading}
+                changeOption={changeOption}
+              />
             </ScaleFade>
           </Flex>
           <Flex width="60%" display={{ base: 'none', lg: 'flex' }}>

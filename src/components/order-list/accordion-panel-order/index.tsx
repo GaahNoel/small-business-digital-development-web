@@ -37,6 +37,8 @@ type AccordionPanelOrderProps = {
   items: Items;
   orderType: string;
   bgColor: string;
+  navigateLoading: boolean;
+  setNavigateLoading: (navigateLoading: boolean) => void;
 };
 
 type Items = {
@@ -71,6 +73,8 @@ export const AccordionPanelOrder = ({
   items,
   orderType,
   bgColor,
+  navigateLoading,
+  setNavigateLoading,
 }: AccordionPanelOrderProps) => {
   const router = useRouter();
   const format = {
@@ -92,19 +96,23 @@ export const AccordionPanelOrder = ({
       text: 'Finalizado',
     },
   };
-  const [navigateLoading, setNavigateLoading] = useState(false);
+  const [navigateLoadingLocal, setNavigateLoadingLocal] = useState(false);
 
   const navigateToOrder = async (orderId: string) => {
-    setNavigateLoading(true);
-    await router.push(`/order-info/${orderId}`);
-    setNavigateLoading(false);
+    if (!navigateLoading) {
+      setNavigateLoadingLocal(true);
+      setNavigateLoading(true);
+      await router.push(`/order-info/${orderId}`);
+      setNavigateLoadingLocal(false);
+      setNavigateLoading(false);
+    }
   };
 
   return (
     <>
       <AccordionPanel bg={bgColor} padding="0px" paddingTop="15px">
         <Flex align="center" justify="center" borderTop="1px solid #5647B2">
-          {!navigateLoading ? (
+          {!navigateLoadingLocal ? (
             <Flex
               width="100%"
               minHeight={{
@@ -116,8 +124,8 @@ export const AccordionPanelOrder = ({
               }}
               overflow="hidden"
               transition="0.2s transform ease-in-out"
-              cursor="pointer"
-              _hover={{ transform: 'scale(1.02)' }}
+              cursor={!navigateLoading ? 'pointer' : 'default'}
+              _hover={!navigateLoading ? { transform: 'scale(1.02)' } : {}}
               onClick={() => navigateToOrder(orderId)}
             >
               <Flex

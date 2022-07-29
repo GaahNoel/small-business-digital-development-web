@@ -573,6 +573,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                         md: '20px',
                         lg: '22px',
                       }}
+                      disabled={finalizeOrderLoading}
                       onClick={router.back}
                     >
                       <Text>Cancelar</Text>
@@ -590,7 +591,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                         md: '20px',
                         lg: '22px',
                       }}
-                      disabled={cart.itemsLength === 0}
+                      disabled={cart.itemsLength === 0 || finalizeOrderLoading}
                     >
                       {!finalizeOrderLoading ? (
                         <Text>Finalizar pedido</Text>
