@@ -118,6 +118,7 @@ const MobileFooterMenu = ({
         w="50px"
         h="50px"
         padding="10px"
+        onClick={() => routerNavigate('/entrepreneur')}
       />
       <IconMenu
         icon={FiUser}

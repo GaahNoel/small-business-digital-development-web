@@ -56,6 +56,7 @@ export const InputMap = () => {
             padding: '25px 50px',
             borderRadius: '20px',
             bg: 'default_white',
+            zIndex: 2,
           },
           '.mapboxgl-ctrl-geocoder--icon-search': {
             width: '40px',
