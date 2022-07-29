@@ -91,6 +91,7 @@ type BusinessInfo = {
   state: string;
   street: string;
   zip: string;
+  maxPermittedCouponPercentage: number;
 };
 
 type CouponSelected = 'none' | 'five' | 'seven' | 'ten';
@@ -438,7 +439,8 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                   >
                     Cupom
                   </Text>
-                  {couponProvidedByBusiness ? (
+                  {(businessInfo?.maxPermittedCouponPercentage as number) >
+                  0 ? (
                     <Flex
                       gap={{ base: 0, md: 4 }}
                       justify={{ base: 'space-between', md: 'start' }}
@@ -448,6 +450,10 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                         iconColor={default_yellow}
                         iconColorHover={export_default_yellow_hover}
                         quantity={userCoupons.five}
+                        value={5}
+                        businessMaxPermittedCouponPercentage={
+                          businessInfo?.maxPermittedCouponPercentage as number
+                        }
                         coupon="five"
                         couponSelected={couponSelected}
                         setCouponSelected={setCouponSelected}
@@ -457,6 +463,10 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                         iconColor={default_orange}
                         iconColorHover={export_default_orange_hover}
                         quantity={userCoupons.seven}
+                        value={7}
+                        businessMaxPermittedCouponPercentage={
+                          businessInfo?.maxPermittedCouponPercentage as number
+                        }
                         coupon="seven"
                         couponSelected={couponSelected}
                         setCouponSelected={setCouponSelected}
@@ -466,6 +476,10 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                         iconColor={service_blue}
                         iconColorHover={export_service_blue_hover}
                         quantity={userCoupons.ten}
+                        value={10}
+                        businessMaxPermittedCouponPercentage={
+                          businessInfo?.maxPermittedCouponPercentage as number
+                        }
                         coupon="ten"
                         couponSelected={couponSelected}
                         setCouponSelected={setCouponSelected}
@@ -486,7 +500,15 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     </Text>
                   )}
                 </Flex>
-                <Flex id="note" direction="column">
+                <Flex
+                  id="note"
+                  direction="column"
+                  marginTop={
+                    (businessInfo?.maxPermittedCouponPercentage as number) > 0
+                      ? '0px'
+                      : '30px'
+                  }
+                >
                   <Text
                     color="primary"
                     fontSize={{

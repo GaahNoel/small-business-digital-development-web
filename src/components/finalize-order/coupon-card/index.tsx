@@ -23,6 +23,8 @@ type CouponCardProps = {
   text?: string;
   icon?: IconType;
   quantity: number;
+  value: 0 | 5 | 7 | 10;
+  businessMaxPermittedCouponPercentage: number;
   coupon: 'five' | 'seven' | 'ten';
   couponSelected: 'none' | 'five' | 'seven' | 'ten';
   setCouponSelected: (coupon: 'none' | 'five' | 'seven' | 'ten') => void;
@@ -34,38 +36,42 @@ export const CouponCard = ({
   text,
   icon,
   quantity,
+  value,
+  businessMaxPermittedCouponPercentage,
   coupon,
   couponSelected,
   setCouponSelected,
 }: CouponCardProps) => {
   return (
     <>
-      <Stack
-        color={quantity !== 0 ? iconColor : empty_gray}
-        direction="column"
-        align="center"
-        justify="center"
-        spacing={1}
-        padding={{ base: '0px', sm: '10px' }}
-        marginBottom="30px"
-        width="170px"
-        position="relative"
-        borderRadius="12px"
-      >
-        <CouponIcon
+      {value <= businessMaxPermittedCouponPercentage && (
+        <Stack
           color={quantity !== 0 ? iconColor : empty_gray}
-          colorHover={iconColorHover}
-          quantity={quantity}
-          text={text}
-          icon={icon}
-          coupon={coupon}
-          couponSelected={couponSelected}
-          setCouponSelected={setCouponSelected}
-        />
-        <Flex>
-          <Text fontWeight="medium">{`Disponível: ${quantity}`}</Text>
-        </Flex>
-      </Stack>
+          direction="column"
+          align="center"
+          justify="center"
+          spacing={1}
+          padding={{ base: '0px', sm: '10px' }}
+          marginBottom="30px"
+          width="170px"
+          position="relative"
+          borderRadius="12px"
+        >
+          <CouponIcon
+            color={quantity !== 0 ? iconColor : empty_gray}
+            colorHover={iconColorHover}
+            quantity={quantity}
+            text={text}
+            icon={icon}
+            coupon={coupon}
+            couponSelected={couponSelected}
+            setCouponSelected={setCouponSelected}
+          />
+          <Flex>
+            <Text fontWeight="medium">{`Disponível: ${quantity}`}</Text>
+          </Flex>
+        </Stack>
+      )}
     </>
   );
 };
