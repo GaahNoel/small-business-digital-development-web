@@ -1,4 +1,4 @@
-import { Flex, IconButton, Img, Stack, Text } from '@chakra-ui/react';
+import { Flex, IconButton, Image, Img, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -77,9 +77,10 @@ export const ListProductServiceCard = ({
           align="center"
           justify={{ base: 'center', md: 'start' }}
         >
-          <Img
+          <Image
             objectFit="cover"
             src={img}
+            fallbackSrc="/imgLoader.gif"
             width="100%"
             height={{ base: '80px', sm: '100px', md: '100%' }}
             borderBottomRightRadius={{ base: 'full', md: '100px' }}

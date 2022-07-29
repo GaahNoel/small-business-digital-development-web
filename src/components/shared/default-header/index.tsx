@@ -1,4 +1,12 @@
-import { Button, Flex, Icon, IconButton, Img, Spinner } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Image,
+  Img,
+  Spinner,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -64,7 +72,7 @@ export const DefaultHeader = () => {
         align="center"
         margin="15px 0px"
       >
-        <Img
+        <Image
           src="/Logo.svg"
           cursor="pointer"
           transition={'all 0.1s ease-in-out'}
@@ -76,7 +84,7 @@ export const DefaultHeader = () => {
           onClick={() => {
             router.push('/');
           }}
-        ></Img>
+        />
         <Flex align="center" gap={4}>
           {mapIconExist && (
             <DefaultHeaderIcon icon={FiMap} onClick={mapNavigate} />

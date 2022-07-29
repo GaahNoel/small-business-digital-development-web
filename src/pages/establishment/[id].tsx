@@ -5,6 +5,7 @@ import {
   GridItem,
   Heading,
   Icon,
+  Image,
   Img,
   Modal,
   Stack,
@@ -250,9 +251,10 @@ const Establishment = ({
             color="default_white"
             spacing={1}
           >
-            <Img
+            <Image
               objectFit="cover"
               src={establishmentInfo.imageUrl}
+              fallbackSrc="/imgLoader.gif"
               width={{ base: '120px', md: '200px', lg: '240px' }}
               height={{ base: '120px', md: '200px', lg: '240px' }}
               borderRadius="full"

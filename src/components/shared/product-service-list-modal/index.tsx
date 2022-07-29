@@ -112,7 +112,12 @@ export const ProductServiceListModal = ({
             width="90vw"
             maxWidth="400px"
           >
-            <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
+            <Image
+              src={imageUrl}
+              fallbackSrc="/imgLoader.gif"
+              boxSize="250px"
+              borderRadius="2xl"
+            />
             <Stack
               spacing={1}
               marginTop="30px"

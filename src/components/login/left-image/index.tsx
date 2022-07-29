@@ -15,6 +15,7 @@ export const LeftImage = () => {
       >
         <Image
           width="550px"
+          fallbackSrc="/imgLoader.gif"
           marginRight={{ base: '0px', xl: '20%' }}
           src="Shop.svg"
           alt="Shop"

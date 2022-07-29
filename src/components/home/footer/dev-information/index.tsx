@@ -1,4 +1,13 @@
-import { Flex, Grid, GridItem, Icon, Img, Link, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Image,
+  Img,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import { BsGithub } from 'react-icons/bs';
 
 type DevInformationProps = {
@@ -24,7 +33,13 @@ export const DevInformation = ({
         gap={2}
       >
         <GridItem colSpan={1} rowSpan={1}>
-          <Img src={img} width="100px" borderRadius="90px" objectFit="cover" />
+          <Image
+            src={img}
+            fallbackSrc="/imgLoader.gif"
+            width="100px"
+            borderRadius="90px"
+            objectFit="cover"
+          />
         </GridItem>
         <GridItem colSpan={3} rowSpan={1}>
           <Flex

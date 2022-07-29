@@ -13,6 +13,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Image,
   Img,
   Input,
   Select,
@@ -150,8 +151,9 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
               color="default_white"
               spacing={1}
             >
-              <Img
+              <Image
                 src={business.imageUrl}
+                fallbackSrc="/imgLoader.gif"
                 width={{ base: '120px', md: '200px', lg: '240px' }}
                 height={{ base: '120px', md: '200px', lg: '240px' }}
                 objectFit="cover"

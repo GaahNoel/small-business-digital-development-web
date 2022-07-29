@@ -3,6 +3,7 @@ import {
   Flex,
   Icon,
   IconButton,
+  Image,
   Img,
   Stack,
   Text,
@@ -65,9 +66,10 @@ export const SideCartCard = ({
         spacing={1}
       >
         <Flex height="100%" width="160px" align="center" justify="start">
-          <Img
+          <Image
             objectFit="cover"
             src={img}
+            fallbackSrc="/imgLoader.gif"
             width="100%"
             height="100%"
             borderBottomRightRadius="100px"

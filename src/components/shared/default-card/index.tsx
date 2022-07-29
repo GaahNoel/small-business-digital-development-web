@@ -57,7 +57,7 @@ export const DefaultCard = ({
         >
           <Image
             src={img}
-            fallbackSrc="https://gndesign.com.br/thaisbicalho/wp-content/uploads/2021/02/preloader.gif"
+            fallbackSrc="/imgLoader.gif"
             width={{
               base: '80px',
               sm: '100px',

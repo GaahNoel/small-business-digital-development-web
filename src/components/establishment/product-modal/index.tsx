@@ -85,6 +85,7 @@ export const ProductModal = ({
           >
             <Image
               src={imageUrl}
+              fallbackSrc="/imgLoader.gif"
               boxSize="250px"
               borderRadius="2xl"
               objectFit="cover"
