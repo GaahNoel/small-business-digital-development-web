@@ -67,7 +67,7 @@ export const EstablishmentEditModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px"
+            maxWidth="500px"
             wordBreak="break-all"
           >
             {name}
@@ -79,7 +79,7 @@ export const EstablishmentEditModal = ({
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            width="90vw"
+            width="100%"
             maxWidth="500px"
           >
             <EstablishmentForm

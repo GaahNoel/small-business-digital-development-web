@@ -267,9 +267,6 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     descricao,
   }) => {
     setSubmitLoading(true);
-    if (!position) {
-      console.log('ERRO');
-    }
     try {
       if (props.registerForm) {
         await registerEstablishment({ nome, descricao });
@@ -298,7 +295,9 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             boxShadow={
               props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
             }
-            padding={{ base: '25px', md: '25px 50px' }}
+            padding={
+              props.registerForm ? { base: '25px', md: '25px 50px' } : '0px'
+            }
           >
             <FormInput
               id="nome"

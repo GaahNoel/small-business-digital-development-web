@@ -246,7 +246,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
             boxShadow={
               props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
             }
-            padding={{ base: '25px', md: '25px 50px' }}
+            padding={
+              props.registerForm ? { base: '25px', md: '25px 50px' } : '0px'
+            }
           >
             <FormInput
               id="name"

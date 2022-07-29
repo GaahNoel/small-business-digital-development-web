@@ -71,7 +71,10 @@ export const ProductEditModal = ({
             justifyContent="center"
             color="primary"
             fontSize="30px"
+            width="100%"
+            maxWidth="500px"
             fontWeight="bold"
+            wordBreak="break-all"
           >
             {name}
           </ModalHeader>
