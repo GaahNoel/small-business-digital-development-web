@@ -15,10 +15,10 @@ export const EntrepreneurButton = () => {
           _hover={{
             bgColor: `primary_hover`,
             svg: {
-              animation: 'drawIcons 1s ease 1',
+              animation: 'drawIconsEntrepreneur 1s ease 1',
               animationFillMode: 'backwards',
             },
-            '@keyframes drawIcons': {
+            '@keyframes drawIconsEntrepreneur': {
               '0%': {
                 strokeWidth: 0,
                 strokeDasharray: '1 100',
