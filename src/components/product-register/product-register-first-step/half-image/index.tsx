@@ -17,7 +17,7 @@ export const HalfImage = () => {
           fallbackSrc="/imgLoader.gif"
           width="400px"
           marginRight="10%"
-          src="Item.svg"
+          src="/Item.svg"
           alt="Shop"
         />
       </Flex>

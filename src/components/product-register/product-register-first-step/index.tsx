@@ -32,7 +32,7 @@ export const ProductRegisterFirstStep = ({
         >
           <HeaderHalfCircleTop>
             <Flex width="100%" maxWidth="300px" justify="center">
-              <Image fallbackSrc="/imgLoader.gif" src="Item.svg" />
+              <Image fallbackSrc="/imgLoader.gif" src="/Item.svg" />
             </Flex>
           </HeaderHalfCircleTop>
         </Flex>

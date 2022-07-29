@@ -77,18 +77,23 @@ const ProductRegister = ({
 };
 
 const getCategories = async () => {
-  const response = await api.get('category/list', {});
-  console.log(response.data);
-  const categories = response.data.map((category: CategoryProps, key: any) => {
-    return { id: key, name: category.name };
-  });
-  return response.data;
+  try {
+    const response = await api.get('category/list', {});
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getEstablishmentInfo = async (id: string) => {
-  const response = await api.get(`business/${id}`);
-  console.log(response.data);
-  return response.data;
+  try {
+    const response = await api.get(`business/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -100,12 +105,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     raw: true,
     secret: process.env.NEXTAUTH_SECRET,
   });
-
-  const { id } = params as ParamsProps;
-
-  const categories = await getCategories();
-  const establishmentInfo = await getEstablishmentInfo(id);
-
   if (!session) {
     return {
       redirect: {
@@ -114,6 +113,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+  const { id } = params as ParamsProps;
+
+  const categories = await getCategories();
+  const establishmentInfo = await getEstablishmentInfo(id);
 
   return {
     props: {

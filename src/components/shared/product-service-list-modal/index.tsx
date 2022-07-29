@@ -117,6 +117,7 @@ export const ProductServiceListModal = ({
               fallbackSrc="/imgLoader.gif"
               boxSize="250px"
               borderRadius="2xl"
+              objectFit="cover"
             />
             <Stack
               spacing={1}

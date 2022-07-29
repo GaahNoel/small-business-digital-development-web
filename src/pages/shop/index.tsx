@@ -196,21 +196,29 @@ const Shop = ({
 };
 
 const getUserInfo = async (token: string, accountId: string) => {
-  const response = await api.get(`account/${accountId}`, {
-    headers: {
-      token,
-    },
-  });
-  return response.data;
+  try {
+    const response = await api.get(`account/${accountId}`, {
+      headers: {
+        token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getAllMissions = async (token: string, accountId: string) => {
-  const response = await api.get(`challenge/${accountId}`, {
-    headers: {
-      token,
-    },
-  });
-  return response.data.challenges;
+  try {
+    const response = await api.get(`challenge/${accountId}`, {
+      headers: {
+        token,
+      },
+    });
+    return response.data.challenges;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -244,35 +252,41 @@ export const getServerSideProps: GetServerSideProps = async ({
   const user: User = await getUserInfo(session, id);
   const userFormated: UserFormated = { balance: user.balance };
   const missions: Challenge = await getAllMissions(session, id);
-  const consumerDailyQuests = missions.filter((mission) => {
-    if (
-      mission.challenge.periodicity === 'daily' &&
-      mission.challenge.type.includes('buy')
-    )
-      return true;
-  });
-  const consumerWeeklyQuests = missions.filter((mission) => {
-    if (
-      mission.challenge.periodicity === 'weekly' &&
-      mission.challenge.type.includes('buy')
-    )
-      return true;
-  });
+  let consumerDailyQuests: Challenge = [];
+  let consumerWeeklyQuests: Challenge = [];
+  let entrepreneurDailyQuests: Challenge = [];
+  let entrepreneurWeeklyQuests: Challenge = [];
+  if (missions) {
+    consumerDailyQuests = missions.filter((mission) => {
+      if (
+        mission.challenge.periodicity === 'daily' &&
+        mission.challenge.type.includes('buy')
+      )
+        return true;
+    });
+    consumerWeeklyQuests = missions.filter((mission) => {
+      if (
+        mission.challenge.periodicity === 'weekly' &&
+        mission.challenge.type.includes('buy')
+      )
+        return true;
+    });
 
-  const entrepreneurDailyQuests = missions.filter((mission) => {
-    if (
-      mission.challenge.periodicity === 'daily' &&
-      mission.challenge.type.includes('sell')
-    )
-      return true;
-  });
-  const entrepreneurWeeklyQuests = missions.filter((mission) => {
-    if (
-      mission.challenge.periodicity === 'weekly' &&
-      mission.challenge.type.includes('sell')
-    )
-      return true;
-  });
+    entrepreneurDailyQuests = missions.filter((mission) => {
+      if (
+        mission.challenge.periodicity === 'daily' &&
+        mission.challenge.type.includes('sell')
+      )
+        return true;
+    });
+    entrepreneurWeeklyQuests = missions.filter((mission) => {
+      if (
+        mission.challenge.periodicity === 'weekly' &&
+        mission.challenge.type.includes('sell')
+      )
+        return true;
+    });
+  }
 
   return {
     props: {

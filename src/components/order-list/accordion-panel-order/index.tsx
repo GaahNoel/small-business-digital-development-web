@@ -15,11 +15,12 @@ import {
   ListIcon,
   ListItem,
   Select,
+  Spinner,
   Stack,
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
-import { MutableRefObject } from 'react';
+import { MutableRefObject, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiGift, FiSearch } from 'react-icons/fi';
 import { BiMoney } from 'react-icons/bi';
@@ -91,139 +92,171 @@ export const AccordionPanelOrder = ({
       text: 'Finalizado',
     },
   };
+  const [navigateLoading, setNavigateLoading] = useState(false);
+
+  const navigateToOrder = async (orderId: string) => {
+    setNavigateLoading(true);
+    await router.push(`/order-info/${orderId}`);
+    setNavigateLoading(false);
+  };
 
   return (
     <>
       <AccordionPanel bg={bgColor} padding="0px" paddingTop="15px">
         <Flex align="center" justify="center" borderTop="1px solid #5647B2">
-          <Flex
-            width="100%"
-            minHeight={{
-              base: '120px',
-              sm: '140px',
-              md: '160px',
-              lg: '180px',
-              xl: '200px',
-            }}
-            overflow="hidden"
-            transition="0.2s transform ease-in-out"
-            cursor="pointer"
-            _hover={{ transform: 'scale(1.02)' }}
-            onClick={() => router.push(`/order-info/${orderId}`)}
-          >
+          {!navigateLoading ? (
             <Flex
-              id="info"
-              direction="column"
-              textAlign="center"
-              position="relative"
-              minHeight="100%"
               width="100%"
-              padding="10px 20px"
+              minHeight={{
+                base: '120px',
+                sm: '140px',
+                md: '160px',
+                lg: '180px',
+                xl: '200px',
+              }}
+              overflow="hidden"
+              transition="0.2s transform ease-in-out"
+              cursor="pointer"
+              _hover={{ transform: 'scale(1.02)' }}
+              onClick={() => navigateToOrder(orderId)}
             >
-              <Grid
-                height="100%"
+              <Flex
+                id="info"
+                direction="column"
+                textAlign="center"
+                position="relative"
+                minHeight="100%"
                 width="100%"
-                templateColumns="repeat(10, 1fr)"
+                padding="10px 20px"
               >
-                <GridItem colSpan={8}>
-                  <Flex direction="column" maxW="80%">
-                    <Flex wordBreak="break-all">
-                      <Text
-                        fontSize={{
-                          base: '12px',
-                          sm: '14px',
-                          md: '16px',
-                          lg: '18px',
-                          xl: '22px',
-                        }}
-                        fontWeight="bold"
-                        textAlign="start"
-                        color="primary"
-                      >
-                        {orderId}
-                      </Text>
-                    </Flex>
-                    <Flex direction="column">
-                      <List>
-                        {items.map((item, key) => (
-                          <ListItem key={key} width="100%">
-                            <Flex
-                              align="center"
-                              textAlign="start"
-                              width="100%"
-                              color="accordion_list"
-                              fontSize={{
-                                base: '12px',
-                                md: '14px',
-                                lg: '16px',
-                                xl: '20px',
-                              }}
-                            >
-                              <ListIcon
-                                as={() => QuantityIcon(item.quantity)}
-                              />
-                              <Text
-                                width="70%"
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                marginRight="10px"
+                <Grid
+                  height="100%"
+                  width="100%"
+                  templateColumns="repeat(10, 1fr)"
+                >
+                  <GridItem colSpan={8}>
+                    <Flex direction="column" maxW="80%">
+                      <Flex wordBreak="break-all">
+                        <Text
+                          fontSize={{
+                            base: '12px',
+                            sm: '14px',
+                            md: '16px',
+                            lg: '18px',
+                            xl: '22px',
+                          }}
+                          fontWeight="bold"
+                          textAlign="start"
+                          color="primary"
+                        >
+                          {orderId}
+                        </Text>
+                      </Flex>
+                      <Flex direction="column">
+                        <List>
+                          {items.map((item, key) => (
+                            <ListItem key={key} width="100%">
+                              <Flex
+                                align="center"
+                                textAlign="start"
+                                width="100%"
+                                color="accordion_list"
+                                fontSize={{
+                                  base: '12px',
+                                  md: '14px',
+                                  lg: '16px',
+                                  xl: '20px',
+                                }}
                               >
-                                {item.product.name}
-                              </Text>
-                              <Text w={{ base: '100px', md: '200px' }}>
-                                {item.product.salePrice.toLocaleString(
-                                  'pt-BR',
-                                  format,
-                                )}
-                              </Text>
-                            </Flex>
-                          </ListItem>
-                        ))}
-                      </List>
+                                <ListIcon
+                                  as={() => QuantityIcon(item.quantity)}
+                                />
+                                <Text
+                                  width="70%"
+                                  whiteSpace="nowrap"
+                                  overflow="hidden"
+                                  textOverflow="ellipsis"
+                                  marginRight="10px"
+                                >
+                                  {item.product.name}
+                                </Text>
+                                <Text w={{ base: '100px', md: '200px' }}>
+                                  {item.product.salePrice.toLocaleString(
+                                    'pt-BR',
+                                    format,
+                                  )}
+                                </Text>
+                              </Flex>
+                            </ListItem>
+                          ))}
+                        </List>
+                      </Flex>
                     </Flex>
-                  </Flex>
-                </GridItem>
-                <GridItem colSpan={2}>
-                  <Flex
-                    direction="column"
-                    minHeight="100%"
-                    align="end"
-                    justify="space-between"
-                    fontSize={{
-                      base: '14px',
-                      sm: '16px',
-                      md: '18px',
-                      xl: '20px',
-                    }}
-                    fontWeight="medium"
-                  >
-                    <Flex textAlign="center">
-                      <Text
-                        color={statusFormat[status].color}
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        textTransform="uppercase"
-                      >
-                        {statusFormat[status].text}
-                      </Text>
+                  </GridItem>
+                  <GridItem colSpan={2}>
+                    <Flex
+                      direction="column"
+                      minHeight="100%"
+                      align="end"
+                      justify="space-between"
+                      fontSize={{
+                        base: '14px',
+                        sm: '16px',
+                        md: '18px',
+                        xl: '20px',
+                      }}
+                      fontWeight="medium"
+                    >
+                      <Flex textAlign="center">
+                        <Text
+                          color={statusFormat[status].color}
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          textTransform="uppercase"
+                        >
+                          {statusFormat[status].text}
+                        </Text>
+                      </Flex>
+                      <Flex textAlign="center">
+                        <Text
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          color="primary"
+                        >
+                          {total.toLocaleString('pt-BR', format)}
+                        </Text>
+                      </Flex>
                     </Flex>
-                    <Flex textAlign="center">
-                      <Text
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        color="primary"
-                      >
-                        {total.toLocaleString('pt-BR', format)}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </GridItem>
-              </Grid>
+                  </GridItem>
+                </Grid>
+              </Flex>
             </Flex>
-          </Flex>
+          ) : (
+            <Flex
+              width="100%"
+              minHeight={{
+                base: '120px',
+                sm: '140px',
+                md: '160px',
+                lg: '180px',
+                xl: '200px',
+              }}
+              overflow="hidden"
+              transition="0.2s transform ease-in-out"
+              align="center"
+              justify="center"
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="default_white"
+                size="xl"
+              />
+            </Flex>
+          )}
         </Flex>
       </AccordionPanel>
     </>
