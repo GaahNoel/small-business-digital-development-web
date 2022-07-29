@@ -480,7 +480,7 @@ const OrderInfo = ({
                     </Text>
                     {usersInfo.buyer.location.street && (
                       <Text>
-                        Localização: Próximo à {usersInfo.buyer.location.street}
+                        Localização: {usersInfo.buyer.location.street}
                       </Text>
                     )}
                   </Flex>
@@ -494,7 +494,7 @@ const OrderInfo = ({
                         : businessInfo.city}
                     </Text>
                     {businessInfo.street && (
-                      <Text>Localização: Próximo à {businessInfo.street}</Text>
+                      <Text>Localização: {businessInfo.street}</Text>
                     )}
                   </Flex>
                 </Flex>

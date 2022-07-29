@@ -41,6 +41,7 @@ type EstablishmentProps = {
   state?: string;
   zip?: string;
   country?: string;
+  maxPermittedCouponPercentage?: number;
 };
 
 type EstablishmentsProps = EstablishmentProps[];
@@ -58,6 +59,7 @@ type EstablishmentModalProps = {
   lat: string;
   lng: string;
   imageUrl: string;
+  maxPermittedCouponPercentage: number;
 };
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
@@ -110,6 +112,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     lat,
     lng,
     imageUrl,
+    maxPermittedCouponPercentage,
   }: EstablishmentModalProps) => {
     setEstablishmentModal({
       session,
@@ -119,6 +122,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
       lat,
       lng,
       imageUrl,
+      maxPermittedCouponPercentage,
     });
     editEstablishmentOnOpen();
   };
@@ -185,6 +189,9 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
         lat={establishmentModal?.lat as string}
         lng={establishmentModal?.lng as string}
         imageUrl={establishmentModal?.imageUrl as string}
+        maxPermittedCouponPercentage={
+          establishmentModal?.maxPermittedCouponPercentage as number
+        }
         isOpen={editEstablishmentIsOpen}
         onClose={editEstablishmentOnClose}
         updateState={updateEstablishmentState}
@@ -293,6 +300,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                           lat: establishment.latitude,
                           lng: establishment.longitude,
                           imageUrl: establishment.imageUrl,
+                          maxPermittedCouponPercentage:
+                            establishment.maxPermittedCouponPercentage as number,
                         });
                       }}
                       removeItem={(event) => {
@@ -345,6 +354,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                               lat: establishment.latitude,
                               lng: establishment.longitude,
                               imageUrl: establishment.imageUrl,
+                              maxPermittedCouponPercentage:
+                                establishment.maxPermittedCouponPercentage as number,
                             });
                           }}
                           removeItem={(event) => {
@@ -377,13 +388,16 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 };
 
 const getBusinessList = async (token: string) => {
-  const { id } = jwt_decode(token) as {
-    id: string;
-  };
-  console.log(id);
-
-  const response = await api.get(`business/list/${id}`, {});
-  return response.data;
+  try {
+    const { id } = jwt_decode(token) as {
+      id: string;
+    };
+    const response = await api.get(`business/list/${id}`, {});
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

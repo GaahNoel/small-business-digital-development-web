@@ -285,7 +285,7 @@ const Establishment = ({
                   : establishmentInfo.city}{' '}
               </Text>
               {establishmentInfo.street && (
-                <Text>Localização: Próximo à {establishmentInfo.street}</Text>
+                <Text>Localização: {establishmentInfo.street}</Text>
               )}
             </Flex>
           </Stack>
