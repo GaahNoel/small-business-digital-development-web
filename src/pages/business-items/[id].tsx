@@ -222,29 +222,70 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
           paddingBottom={{ base: '80px', md: '0px' }}
         >
           <Flex align="center" direction="column" width="100%" marginTop="40px">
-            {business.maxPermittedCouponPercentage !== 0 && (
-              <Flex align="center" direction="column" paddingBottom="40px">
-                <Stack direction="column" spacing={3}>
+            <Flex
+              id="coupon"
+              align="center"
+              direction="column"
+              paddingBottom="40px"
+            >
+              <Stack direction="column" align="center" spacing={3}>
+                <Text
+                  fontSize={{
+                    base: '18px',
+                    sm: '22px',
+                    md: '26px',
+                    lg: '30px',
+                    '2xl': '34px',
+                  }}
+                  fontWeight="bold"
+                  color="primary"
+                >
+                  {`Cupons disponíveis`}
+                </Text>
+                {business.maxPermittedCouponPercentage > 0 ? (
+                  <Flex>
+                    <CouponInfo
+                      iconColor={couponArray[1].color}
+                      text={`${couponArray[1].value}%`}
+                      value={couponArray[1].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                    <CouponInfo
+                      iconColor={couponArray[2].color}
+                      text={`${couponArray[2].value}%`}
+                      value={couponArray[2].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                    <CouponInfo
+                      iconColor={couponArray[3].color}
+                      text={`${couponArray[3].value}%`}
+                      value={couponArray[3].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                  </Flex>
+                ) : (
                   <Text
                     fontSize={{
-                      base: '18px',
-                      sm: '22px',
-                      md: '26px',
-                      lg: '30px',
-                      '2xl': '34px',
+                      base: '14px',
+                      sm: '18px',
+                      md: '20px',
+                      lg: '24px',
                     }}
-                    fontWeight="bold"
+                    fontWeight="medium"
                     color="primary"
                   >
-                    {`Disponíveis cupons até`}
+                    {`O estabelecimento não disponibiliza o uso de cupons`}
                   </Text>
-                  <CouponInfo
-                    iconColor={getCouponColor()}
-                    text={`${business.maxPermittedCouponPercentage}%`}
-                  />
-                </Stack>
-              </Flex>
-            )}
+                )}
+              </Stack>
+            </Flex>
+
             <Flex align="center" direction="column" paddingBottom="40px">
               <InputSearchItems
                 items={items}

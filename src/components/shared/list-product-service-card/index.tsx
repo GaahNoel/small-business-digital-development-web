@@ -43,7 +43,7 @@ export const ListProductServiceCard = ({
         borderRadius="2xl"
         boxShadow="dark-lg"
         width={{
-          base: '330px',
+          base: '300px',
           sm: '380px',
           md: '420px',
           lg: '450px',

@@ -68,7 +68,7 @@ export const ProductModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px"
+            maxWidth="600px"
             wordBreak="break-all"
           >
             {name}
@@ -81,12 +81,12 @@ export const ProductModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="300px"
+            maxWidth="600px"
           >
             <Image
               src={imageUrl}
               fallbackSrc="/imgLoader.gif"
-              boxSize="250px"
+              boxSize="300px"
               borderRadius="2xl"
               objectFit="cover"
             />

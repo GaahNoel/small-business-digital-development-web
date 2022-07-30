@@ -12,14 +12,23 @@ import {
 import { IconType } from 'react-icons';
 
 import { SvgIcon } from '../../shop/svg-icon';
+import { empty_gray } from '../../../styles/theme';
 
 type CouponCardProps = {
   iconColor: string;
   text?: string;
   icon?: IconType;
+  value: number;
+  maxPermittedCouponPercentage: number;
 };
 
-export const CouponInfo = ({ iconColor, text, icon }: CouponCardProps) => {
+export const CouponInfo = ({
+  iconColor,
+  text,
+  icon,
+  value,
+  maxPermittedCouponPercentage,
+}: CouponCardProps) => {
   return (
     <>
       <Stack
@@ -39,7 +48,11 @@ export const CouponInfo = ({ iconColor, text, icon }: CouponCardProps) => {
           justify="center"
           transition="0.2s ease-in-out"
         >
-          <SvgIcon color={iconColor} />
+          <SvgIcon
+            color={
+              value <= maxPermittedCouponPercentage ? iconColor : empty_gray
+            }
+          />
           <Flex
             fontSize={{ base: '24px', md: '30px' }}
             color="default_white"

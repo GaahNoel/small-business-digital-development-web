@@ -106,7 +106,7 @@ export const ProductServiceListModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="500px"
+            maxWidth="600px"
             wordBreak="break-all"
           >
             {name}
@@ -119,12 +119,12 @@ export const ProductServiceListModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="400px"
+            maxWidth="600px"
           >
             <Image
               src={imageUrl}
               fallbackSrc="/imgLoader.gif"
-              boxSize="250px"
+              boxSize="300px"
               borderRadius="2xl"
               objectFit="cover"
             />
@@ -136,7 +136,7 @@ export const ProductServiceListModal = ({
               alignItems="center"
               width="100%"
             >
-              <Flex justifyContent="space-between" w="90%" direction="column">
+              <Flex justifyContent="space-between" w="100%" direction="column">
                 <Flex alignItems="center" gap={2}>
                   <Icon as={MdOutlineDescription} />
                   <Text fontWeight="semibold">Descrição:</Text>

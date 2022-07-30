@@ -376,19 +376,64 @@ const Establishment = ({
             isOpen={viewProductIsOpen}
             onClose={viewProductOnClose}
           />
-          <Flex align="center" direction="column" paddingBottom="40px">
-            <Stack direction="column" spacing={3}>
+          <Flex
+            align="center"
+            direction="column"
+            paddingBottom={
+              establishmentInfo.maxPermittedCouponPercentage > 0
+                ? '10px'
+                : '50px'
+            }
+          >
+            <Stack direction="column" align="center" spacing={3}>
               <Text
                 fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
                 fontWeight="bold"
                 color="primary"
               >
-                {`Disponíveis cupons até`}
+                {`Cupons disponíveis`}
               </Text>
-              <CouponInfo
-                iconColor={getCouponColor()}
-                text={`${establishmentInfo.maxPermittedCouponPercentage}%`}
-              />
+              {establishmentInfo.maxPermittedCouponPercentage > 0 ? (
+                <Flex>
+                  <CouponInfo
+                    iconColor={couponArray[1].color}
+                    text={`${couponArray[1].value}%`}
+                    value={couponArray[1].value}
+                    maxPermittedCouponPercentage={
+                      establishmentInfo.maxPermittedCouponPercentage
+                    }
+                  />
+                  <CouponInfo
+                    iconColor={couponArray[2].color}
+                    text={`${couponArray[2].value}%`}
+                    value={couponArray[2].value}
+                    maxPermittedCouponPercentage={
+                      establishmentInfo.maxPermittedCouponPercentage
+                    }
+                  />
+                  <CouponInfo
+                    iconColor={couponArray[3].color}
+                    text={`${couponArray[3].value}%`}
+                    value={couponArray[3].value}
+                    maxPermittedCouponPercentage={
+                      establishmentInfo.maxPermittedCouponPercentage
+                    }
+                  />
+                </Flex>
+              ) : (
+                <Text
+                  fontSize={{
+                    base: '14px',
+                    sm: '18px',
+                    md: '20px',
+                    lg: '24px',
+                  }}
+                  fontWeight="medium"
+                  color="primary"
+                >
+                  {`Sem cupons disponíveis`}
+                </Text>
+              )}
             </Stack>
           </Flex>
           <Flex

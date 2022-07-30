@@ -332,7 +332,17 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                     >
                       Método de pagamento
                     </Text>
-                    <Text color="primary" marginBottom="15px">
+                    <Text
+                      color="primary"
+                      marginBottom="15px"
+                      fontSize={{
+                        base: '14px',
+                        sm: '16px',
+                        md: '18px',
+                        lg: '20px',
+                        xl: '22px',
+                      }}
+                    >
                       *Observação: Não há pagamento on-line, esse método
                       escolhido é utilizado na entrega*
                     </Text>
@@ -439,61 +449,78 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                   >
                     Cupom
                   </Text>
+                  <Text
+                    color="primary"
+                    marginBottom="15px"
+                    fontSize={{
+                      base: '14px',
+                      sm: '16px',
+                      md: '18px',
+                      lg: '20px',
+                      xl: '22px',
+                    }}
+                  >
+                    *Observação: Os cupons abaixo são os disponibilizados pelo
+                    estabelecimento*
+                  </Text>
                   {(businessInfo?.maxPermittedCouponPercentage as number) >
                   0 ? (
-                    <Flex
-                      gap={{ base: 0, md: 4 }}
-                      justify={{ base: 'space-between', md: 'start' }}
-                    >
-                      <CouponCard
-                        text="5%"
-                        iconColor={default_yellow}
-                        iconColorHover={export_default_yellow_hover}
-                        quantity={userCoupons.five}
-                        value={5}
-                        businessMaxPermittedCouponPercentage={
-                          businessInfo?.maxPermittedCouponPercentage as number
-                        }
-                        coupon="five"
-                        couponSelected={couponSelected}
-                        setCouponSelected={setCouponSelected}
-                      />
-                      <CouponCard
-                        text="7%"
-                        iconColor={default_orange}
-                        iconColorHover={export_default_orange_hover}
-                        quantity={userCoupons.seven}
-                        value={7}
-                        businessMaxPermittedCouponPercentage={
-                          businessInfo?.maxPermittedCouponPercentage as number
-                        }
-                        coupon="seven"
-                        couponSelected={couponSelected}
-                        setCouponSelected={setCouponSelected}
-                      />
-                      <CouponCard
-                        text="10%"
-                        iconColor={service_blue}
-                        iconColorHover={export_service_blue_hover}
-                        quantity={userCoupons.ten}
-                        value={10}
-                        businessMaxPermittedCouponPercentage={
-                          businessInfo?.maxPermittedCouponPercentage as number
-                        }
-                        coupon="ten"
-                        couponSelected={couponSelected}
-                        setCouponSelected={setCouponSelected}
-                      />
-                    </Flex>
+                    <>
+                      <Flex
+                        gap={{ base: 0, md: 4 }}
+                        justify={{ base: 'space-between', md: 'start' }}
+                      >
+                        <CouponCard
+                          text="5%"
+                          iconColor={default_yellow}
+                          iconColorHover={export_default_yellow_hover}
+                          quantity={userCoupons.five}
+                          value={5}
+                          businessMaxPermittedCouponPercentage={
+                            businessInfo?.maxPermittedCouponPercentage as number
+                          }
+                          coupon="five"
+                          couponSelected={couponSelected}
+                          setCouponSelected={setCouponSelected}
+                        />
+                        <CouponCard
+                          text="7%"
+                          iconColor={default_orange}
+                          iconColorHover={export_default_orange_hover}
+                          quantity={userCoupons.seven}
+                          value={7}
+                          businessMaxPermittedCouponPercentage={
+                            businessInfo?.maxPermittedCouponPercentage as number
+                          }
+                          coupon="seven"
+                          couponSelected={couponSelected}
+                          setCouponSelected={setCouponSelected}
+                        />
+                        <CouponCard
+                          text="10%"
+                          iconColor={service_blue}
+                          iconColorHover={export_service_blue_hover}
+                          quantity={userCoupons.ten}
+                          value={10}
+                          businessMaxPermittedCouponPercentage={
+                            businessInfo?.maxPermittedCouponPercentage as number
+                          }
+                          coupon="ten"
+                          couponSelected={couponSelected}
+                          setCouponSelected={setCouponSelected}
+                        />
+                      </Flex>
+                    </>
                   ) : (
                     <Text
                       color="primary"
+                      fontWeight="medium"
                       fontSize={{
-                        base: '14px',
-                        sm: '16px',
-                        md: '18px',
-                        lg: '20px',
-                        xl: '22px',
+                        base: '16px',
+                        sm: '18px',
+                        md: '20px',
+                        lg: '22px',
+                        xl: '24px',
                       }}
                     >
                       O estabelecimento não disponibiliza o uso de cupons
