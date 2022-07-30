@@ -42,6 +42,7 @@ export const Theme = extendTheme({
       secondary_full_hover: darken(0.2, secondary_full),
       default_white,
       default_white_hover: darken(0.2, default_white),
+      default_white_min_hover: darken(0.03, default_white),
       default_black,
       default_black_hover: lighten(0.2, default_black),
       card_white,

@@ -16,6 +16,7 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@types/zxcvbn": "^4.4.1",
     "axios": "^0.26.1",
+    "axios-cache-adapter": "^2.7.3",
     "filepond": "^4.30.3",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.11",

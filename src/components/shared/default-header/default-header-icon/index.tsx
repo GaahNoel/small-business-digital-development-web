@@ -19,10 +19,10 @@ export const DefaultHeaderIcon = ({
       <Flex
         _hover={{
           svg: {
-            animation: 'drawIcons 1s ease 1',
+            animation: 'drawIconsHeader 1s ease 1',
             animationFillMode: 'backwards',
           },
-          '@keyframes drawIcons': {
+          '@keyframes drawIconsHeader': {
             '0%': { strokeWidth: 1 },
             '100%': { strokeWidth: 2 },
           },

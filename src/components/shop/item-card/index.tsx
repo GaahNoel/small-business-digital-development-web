@@ -69,11 +69,13 @@ export const ItemCard = ({
           </Stack>
           <Button
             bg="default_white"
-            _hover={{ bg: 'default_white_hover' }}
-            color="primary"
+            color={iconColor}
             border="2px"
             fontSize="0.9rem"
             width="65px"
+            height="35px"
+            transition="0.2s ease-in-out"
+            _hover={{ bg: 'default_white_min_hover' }}
           >
             Resgatar
           </Button>

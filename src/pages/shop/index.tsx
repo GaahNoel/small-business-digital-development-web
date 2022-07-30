@@ -15,6 +15,7 @@ import jwt_decode from 'jwt-decode';
 import { getToken } from 'next-auth/jwt';
 
 type ShopProps = {
+  token: string;
   userFormated: UserFormated;
   type: FormOption;
   consumerDailyQuests: Challenge;
@@ -69,6 +70,7 @@ type UserFormated = {
 };
 
 const Shop = ({
+  token,
   userFormated,
   type,
   consumerDailyQuests,
@@ -171,10 +173,10 @@ const Shop = ({
               margin="40px auto"
             >
               {formOption === 'Consumidor' ? (
-                <ConsumerItems />
+                <ConsumerItems token={token} />
               ) : formOption === 'Empreendedor' ? (
                 <>
-                  <EntrepreneurItems />
+                  <EntrepreneurItems token={token} />
                 </>
               ) : (
                 <>
@@ -290,6 +292,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      token: session,
       userFormated,
       type,
       consumerDailyQuests,
