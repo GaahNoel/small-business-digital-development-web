@@ -41,7 +41,6 @@ export const ItemCard = ({
         justify="center"
         spacing={4}
         padding="10px"
-        marginBottom="30px"
         width="170px"
         position="relative"
         borderRadius="12px"

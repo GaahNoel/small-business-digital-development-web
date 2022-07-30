@@ -10,25 +10,19 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
+import { SvgIcon } from '../../../shop/svg-icon';
 
-import { SvgIcon } from '../../shop/svg-icon';
-import { empty_gray } from '../../../styles/theme';
-
-type CouponInfoProps = {
+type CouponInfoEstablishmentFormProps = {
   iconColor: string;
   text?: string;
   icon?: IconType;
-  value: number;
-  maxPermittedCouponPercentage: number;
 };
 
-export const CouponInfo = ({
+export const CouponInfoEstablishmentForm = ({
   iconColor,
   text,
   icon,
-  value,
-  maxPermittedCouponPercentage,
-}: CouponInfoProps) => {
+}: CouponInfoEstablishmentFormProps) => {
   return (
     <>
       <Stack
@@ -48,11 +42,7 @@ export const CouponInfo = ({
           justify="center"
           transition="0.2s ease-in-out"
         >
-          <SvgIcon
-            color={
-              value <= maxPermittedCouponPercentage ? iconColor : empty_gray
-            }
-          />
+          <SvgIcon color={iconColor} />
           <Flex
             fontSize={{ base: '24px', md: '30px' }}
             color="default_white"

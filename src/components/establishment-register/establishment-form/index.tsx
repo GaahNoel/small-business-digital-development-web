@@ -51,6 +51,7 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { positionstackApi } from '../../../service/positionstack-api';
 import { CouponInfo } from '../../shared/coupon-info';
+import { CouponInfoEstablishmentForm } from './coupon-info-establishment-form';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -425,7 +426,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                     </SliderTrack>
                     <SliderThumb boxSize={6} />
                   </Slider>
-                  <CouponInfo
+                  <CouponInfoEstablishmentForm
                     iconColor={couponArray[couponValue].color}
                     text={`${couponArray[couponValue].value}%`}
                   />

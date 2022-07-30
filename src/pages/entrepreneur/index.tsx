@@ -262,6 +262,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
             </Flex>
             <Flex direction="column" align="center" marginBottom="100px">
               <Text
+                color="primary"
                 fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
                 fontWeight="bold"
                 marginBottom="20px"
