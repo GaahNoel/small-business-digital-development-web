@@ -57,9 +57,11 @@ import {
   service_blue,
   export_service_blue_hover,
 } from '../../styles/theme';
+import { jwtDecoder } from '../../utils/jwt-decode';
 
 type FinalizeOrderProps = {
   token: string;
+  quantityUserCoupons: QuantityUserCoupons;
 };
 
 type FinalizeOrderFormData = {
@@ -96,7 +98,33 @@ type BusinessInfo = {
 
 type CouponSelected = 'none' | 'five' | 'seven' | 'ten';
 
-const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
+type UserCoupons = {
+  id: string;
+  accountId: string;
+  bonus: {
+    id: string;
+    type: string;
+    duration: number;
+    price: number;
+    name: string;
+    description: string;
+    percent: number;
+  };
+  quantity: number;
+  measure: string;
+  value: number;
+  status: 'ACTIVE' | 'EXPIRED' | 'USED';
+  createdAt: string;
+  updatedAt: string;
+}[];
+
+type QuantityUserCoupons = {
+  coupon5: number;
+  coupon7: number;
+  coupon10: number;
+};
+
+const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
   const cart = useCart();
   const router = useRouter();
   const [mapLoading, setMapLoading] = useState(true);
@@ -108,11 +136,6 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
     useState<PaymentMethod>('CreditCard');
   const [couponProvidedByBusiness, setCouponProvidedByBusiness] =
     useState(true);
-  const [userCoupons, setUserCoupons] = useState({
-    five: 1,
-    seven: 0,
-    ten: 4,
-  });
   const [couponSelected, setCouponSelected] = useState<CouponSelected>('none');
   const methods = useForm<FinalizeOrderFormData>();
   const {
@@ -127,6 +150,16 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
     currency: 'BRL',
   };
 
+  useEffect(() => {
+    console.log(quantityUserCoupons);
+  }, []);
+
+  useEffect(() => {
+    if (cart.businessId) {
+      getBusinessLocation(cart.businessId, token);
+    }
+  }, [cart.businessId]);
+
   const onCheckboxChange = async () => {
     setUseChange(!useChange);
   };
@@ -137,16 +170,6 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
   }) => {
     finalizeOrder(change, noteArea);
   };
-
-  useEffect(() => {
-    console.log(cart.itemsLength);
-  }, [cart.itemsLength]);
-
-  useEffect(() => {
-    if (cart.businessId) {
-      getBusinessLocation(cart.businessId, token);
-    }
-  }, [cart.businessId]);
 
   const getBusinessLocation = async (businessId: string, token: string) => {
     const response = await api.get(`business/${businessId}`, {
@@ -474,7 +497,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                           text="5%"
                           iconColor={default_yellow}
                           iconColorHover={export_default_yellow_hover}
-                          quantity={userCoupons.five}
+                          quantity={quantityUserCoupons.coupon5}
                           value={5}
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
@@ -487,7 +510,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                           text="7%"
                           iconColor={default_orange}
                           iconColorHover={export_default_orange_hover}
-                          quantity={userCoupons.seven}
+                          quantity={quantityUserCoupons.coupon7}
                           value={7}
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
@@ -500,7 +523,7 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
                           text="10%"
                           iconColor={service_blue}
                           iconColorHover={export_service_blue_hover}
-                          quantity={userCoupons.ten}
+                          quantity={quantityUserCoupons.coupon10}
                           value={10}
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
@@ -666,6 +689,27 @@ const FinalizeOrder = ({ token }: FinalizeOrderProps) => {
   );
 };
 
+const getUserCoupons = async (token: string, accountId: string) => {
+  try {
+    const response = await api.get(`bonus/${accountId}`, {
+      headers: {
+        token,
+      },
+      params: {
+        type: 'coupon',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        return [];
+      }
+    }
+    console.log(error);
+  }
+};
+
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getToken({
     req,
@@ -681,9 +725,40 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
+
+  const { accountId } = await jwtDecoder(req);
+
+  const userCoupons = (await getUserCoupons(session, accountId)) as UserCoupons;
+  let quantityUserCoupons: QuantityUserCoupons;
+
+  if (userCoupons) {
+    const coupon5Array = userCoupons.filter((coupon) => {
+      return coupon.bonus.percent === 5;
+    });
+    const coupon7Array = userCoupons.filter((coupon) => {
+      return coupon.bonus.percent === 7;
+    });
+    const coupon10Array = userCoupons.filter((coupon) => {
+      return coupon.bonus.percent === 10;
+    });
+
+    quantityUserCoupons = {
+      coupon5: coupon5Array.length,
+      coupon7: coupon7Array.length,
+      coupon10: coupon10Array.length,
+    };
+  } else {
+    quantityUserCoupons = {
+      coupon5: 0,
+      coupon7: 0,
+      coupon10: 0,
+    };
+  }
+  console.log(quantityUserCoupons);
+
   const token = session;
   return {
-    props: { token },
+    props: { token, quantityUserCoupons },
   };
 };
 

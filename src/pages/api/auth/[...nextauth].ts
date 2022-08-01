@@ -3,8 +3,8 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import * as jwt from 'jsonwebtoken';
-import { api } from '../../../service/api';
 import { JWT } from 'next-auth/jwt';
+import { api } from '../../../service/api';
 
 export default NextAuth({
   jwt: {
