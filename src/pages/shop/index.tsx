@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Flex, Icon, Stack, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { ConsumerItems } from '../../components/shop/consumer-items';
 import { EntrepreneurItems } from '../../components/shop/entrepreneur-items';
@@ -79,6 +79,11 @@ const Shop = ({
   entrepreneurWeeklyQuests,
 }: ShopProps) => {
   const [formOption, setFormOption] = useState(type);
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    setBalance(userFormated.balance);
+  }, []);
 
   const changeOption = (option: FormOption) => {
     console.log(option);
@@ -152,7 +157,7 @@ const Shop = ({
                   spacing={2}
                 >
                   <Icon as={BsCoin} fontSize="28px" />
-                  <Text>{`${userFormated.balance} moedas`} </Text>
+                  <Text>{`${balance} moedas`} </Text>
                 </Stack>
               </Flex>
             </Flex>
@@ -173,10 +178,18 @@ const Shop = ({
               margin="40px auto"
             >
               {formOption === 'Consumidor' ? (
-                <ConsumerItems token={token} />
+                <ConsumerItems
+                  token={token}
+                  balance={balance}
+                  setBalance={setBalance}
+                />
               ) : formOption === 'Empreendedor' ? (
                 <>
-                  <EntrepreneurItems token={token} />
+                  <EntrepreneurItems
+                    token={token}
+                    balance={balance}
+                    setBalance={setBalance}
+                  />
                 </>
               ) : (
                 <>

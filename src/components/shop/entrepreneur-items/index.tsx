@@ -12,6 +12,8 @@ import { apiCache } from '../../../service/api-cache';
 
 type EntrepreneurItemsProps = {
   token: string;
+  balance: number;
+  setBalance: (balance: number) => void;
 };
 
 type Bonus = {
@@ -24,7 +26,11 @@ type Bonus = {
   percent: number;
 }[];
 
-export const EntrepreneurItems = ({ token }: EntrepreneurItemsProps) => {
+export const EntrepreneurItems = ({
+  token,
+  balance,
+  setBalance,
+}: EntrepreneurItemsProps) => {
   const [businessBonus, setBusinessBonus] = useState<Bonus>([]);
   const [loadingBonus, setLoadingBonus] = useState(true);
 
@@ -73,10 +79,14 @@ export const EntrepreneurItems = ({ token }: EntrepreneurItemsProps) => {
           {businessBonus.map((bonus, key) => (
             <GridItem key={key}>
               <ItemCard
+                token={token}
+                bonusId={bonus.id}
                 iconColor={getHighlightColor(bonus.price)}
                 price={bonus.price.toString()}
                 icon={BsStar}
                 description={bonus.description}
+                balance={balance}
+                setBalance={setBalance}
               />
             </GridItem>
           ))}

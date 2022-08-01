@@ -11,6 +11,8 @@ import { apiCache } from '../../../service/api-cache';
 
 type ConsumerItemsProps = {
   token: string;
+  balance: number;
+  setBalance: (balance: number) => void;
 };
 
 type Bonus = {
@@ -23,7 +25,11 @@ type Bonus = {
   percent: number;
 }[];
 
-export const ConsumerItems = ({ token }: ConsumerItemsProps) => {
+export const ConsumerItems = ({
+  token,
+  balance,
+  setBalance,
+}: ConsumerItemsProps) => {
   const [clientBonus, setClientBonus] = useState<Bonus>([]);
   const [loadingBonus, setLoadingBonus] = useState(true);
   const couponArray = [
@@ -74,10 +80,14 @@ export const ConsumerItems = ({ token }: ConsumerItemsProps) => {
           {clientBonus.map((bonus, key) => (
             <GridItem key={key}>
               <ItemCard
+                token={token}
+                bonusId={bonus.id}
                 iconColor={getCouponColor(bonus.percent)}
                 price={bonus.price.toString()}
                 text={`${bonus.percent}%`}
                 description={bonus.description}
+                balance={balance}
+                setBalance={setBalance}
               />
             </GridItem>
           ))}
