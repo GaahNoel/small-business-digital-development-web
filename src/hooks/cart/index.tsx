@@ -41,6 +41,7 @@ export type CartContextData = {
     description: string,
     latitude: number | undefined,
     longitude: number | undefined,
+    couponId: string,
   ) => void;
   clean: () => void;
 };
@@ -165,6 +166,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
     description: string,
     latitude: number | undefined,
     longitude: number | undefined,
+    couponId: string,
   ) => {
     if (!change) change = 0;
     const finalCart = {
@@ -175,6 +177,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
       description,
       latitude,
       longitude,
+      couponId,
       items: cart.map((item) => {
         return {
           productId: item.id,

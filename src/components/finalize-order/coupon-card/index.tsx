@@ -25,9 +25,9 @@ type CouponCardProps = {
   quantity: number;
   value: 0 | 5 | 7 | 10;
   businessMaxPermittedCouponPercentage: number;
-  coupon: 'five' | 'seven' | 'ten';
-  couponSelected: 'none' | 'five' | 'seven' | 'ten';
-  setCouponSelected: (coupon: 'none' | 'five' | 'seven' | 'ten') => void;
+  coupon: 5 | 7 | 10;
+  couponSelected: 0 | 5 | 7 | 10;
+  setCouponSelected: (coupon: 0 | 5 | 7 | 10) => void;
 };
 
 export const CouponCard = ({

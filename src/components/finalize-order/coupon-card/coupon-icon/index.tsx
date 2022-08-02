@@ -9,9 +9,9 @@ type ItemIconProps = {
   quantity: number;
   text?: string;
   icon?: IconType;
-  coupon: 'five' | 'seven' | 'ten';
-  couponSelected: 'none' | 'five' | 'seven' | 'ten';
-  setCouponSelected: (coupon: 'none' | 'five' | 'seven' | 'ten') => void;
+  coupon: 5 | 7 | 10;
+  couponSelected: 0 | 5 | 7 | 10;
+  setCouponSelected: (coupon: 0 | 5 | 7 | 10) => void;
 };
 
 export const CouponIcon = ({
@@ -26,8 +26,8 @@ export const CouponIcon = ({
 }: ItemIconProps) => {
   const selectCoupon = () => {
     if (quantity === 0) return;
-    let couponValue: 'none' | 'five' | 'seven' | 'ten';
-    if (coupon === couponSelected) couponValue = 'none';
+    let couponValue: 0 | 5 | 7 | 10;
+    if (coupon === couponSelected) couponValue = 0;
     else couponValue = coupon;
     setCouponSelected(couponValue);
   };

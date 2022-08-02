@@ -61,6 +61,7 @@ import { jwtDecoder } from '../../utils/jwt-decode';
 
 type FinalizeOrderProps = {
   token: string;
+  userCoupons: UserCoupons;
   quantityUserCoupons: QuantityUserCoupons;
 };
 
@@ -96,7 +97,7 @@ type BusinessInfo = {
   maxPermittedCouponPercentage: number;
 };
 
-type CouponSelected = 'none' | 'five' | 'seven' | 'ten';
+type CouponSelected = 0 | 5 | 7 | 10;
 
 type UserCoupons = {
   id: string;
@@ -124,7 +125,11 @@ type QuantityUserCoupons = {
   coupon10: number;
 };
 
-const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
+const FinalizeOrder = ({
+  token,
+  userCoupons,
+  quantityUserCoupons,
+}: FinalizeOrderProps) => {
   const cart = useCart();
   const router = useRouter();
   const [mapLoading, setMapLoading] = useState(true);
@@ -136,7 +141,7 @@ const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
     useState<PaymentMethod>('CreditCard');
   const [couponProvidedByBusiness, setCouponProvidedByBusiness] =
     useState(true);
-  const [couponSelected, setCouponSelected] = useState<CouponSelected>('none');
+  const [couponSelected, setCouponSelected] = useState<CouponSelected>(0);
   const methods = useForm<FinalizeOrderFormData>();
   const {
     handleSubmit,
@@ -199,14 +204,24 @@ const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
   const confirmFinalizeOrder = async (change: number, note: string) => {
     if (!position) return;
     setFinalizeOrderLoading(true);
+    const couponId = getCouponId();
     await cart.finalize(
       paymentMethod,
       change,
       note,
       position.getLngLat().lat,
       position.getLngLat().lng,
+      couponId,
     );
     setFinalizeOrderLoading(false);
+  };
+
+  const getCouponId = () => {
+    if (couponSelected === 0) return '';
+    const couponsPercentSelected = userCoupons.filter((item) => {
+      return item.bonus.percent === couponSelected;
+    });
+    return couponsPercentSelected[0].id;
   };
 
   return (
@@ -502,7 +517,7 @@ const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
                           }
-                          coupon="five"
+                          coupon={5}
                           couponSelected={couponSelected}
                           setCouponSelected={setCouponSelected}
                         />
@@ -515,7 +530,7 @@ const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
                           }
-                          coupon="seven"
+                          coupon={7}
                           couponSelected={couponSelected}
                           setCouponSelected={setCouponSelected}
                         />
@@ -528,7 +543,7 @@ const FinalizeOrder = ({ token, quantityUserCoupons }: FinalizeOrderProps) => {
                           businessMaxPermittedCouponPercentage={
                             businessInfo?.maxPermittedCouponPercentage as number
                           }
-                          coupon="ten"
+                          coupon={10}
                           couponSelected={couponSelected}
                           setCouponSelected={setCouponSelected}
                         />
@@ -758,7 +773,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const token = session;
   return {
-    props: { token, quantityUserCoupons },
+    props: { token, userCoupons, quantityUserCoupons },
   };
 };
 
