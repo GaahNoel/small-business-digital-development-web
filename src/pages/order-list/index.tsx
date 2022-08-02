@@ -39,6 +39,7 @@ import { AccordionButtonItems } from '../../components/shared/accordion-button-i
 import { AccordionPanelOrder } from '../../components/order-list/accordion-panel-order';
 import { BiMoney } from 'react-icons/bi';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
+import { InputSearchStatusOrder } from '../../components/order-list/input-search-status-order';
 
 type OrderListProps = {
   session: string;
@@ -82,8 +83,13 @@ type Item = {
 
 const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
   const router = useRouter();
+  const searchBar = useRef<HTMLSelectElement>();
   const [viewMode, setViewMode] = useState('Compras');
   const [navigateLoading, setNavigateLoading] = useState(false);
+  const [buyOrdersFiltered, setBuyOrdersFiltered] =
+    useState<OrderByBusiness>(buyOrders);
+  const [sellOrdersFiltered, setSellOrdersFiltered] =
+    useState<OrderByBusiness>(sellOrders);
 
   useEffect(() => {
     console.log(buyOrders);
@@ -160,39 +166,59 @@ const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
             width="100%"
             maxW={{ base: '90%', md: '700px', lg: '900px' }}
             margin="30px auto"
+            direction="column"
           >
+            <Flex marginBottom="40px">
+              <InputSearchStatusOrder
+                searchBar={searchBar as MutableRefObject<HTMLSelectElement>}
+                buyOrders={buyOrders}
+                setBuyOrdersFiltered={setBuyOrdersFiltered}
+                sellOrders={sellOrders}
+                setSellOrdersFiltered={setSellOrdersFiltered}
+                disabled={navigateLoading}
+              />
+            </Flex>
             <Accordion allowMultiple marginBottom="60px" width="100%">
-              {(viewMode === 'Compras' ? buyOrders : sellOrders).length > 0 ? (
-                (viewMode === 'Compras' ? buyOrders : sellOrders).map(
-                  (ordersForBusiness, key) => (
-                    <AccordionItem
-                      bg="primary"
-                      borderRadius="15px"
-                      marginBottom="20px"
-                      border="1px solid #5647B2"
-                      overflow="hidden"
-                      key={key}
-                    >
-                      <AccordionButtonItems
-                        icon={viewMode === 'Compras' ? FiGift : FiDollarSign}
-                        type_name={ordersForBusiness.business.name}
-                        color="secondary"
-                      />
-                      {ordersForBusiness.orders.map((order, orderKey) => (
-                        <AccordionPanelOrder
-                          key={orderKey}
-                          orderId={order.id}
-                          status={order.status}
-                          total={order.total}
-                          items={order.items}
-                          orderType={viewMode}
-                          bgColor="secondary"
-                          navigateLoading={navigateLoading}
-                          setNavigateLoading={setNavigateLoading}
-                        />
-                      ))}
-                    </AccordionItem>
-                  ),
+              {(viewMode === 'Compras' ? buyOrdersFiltered : sellOrdersFiltered)
+                .length ? (
+                (viewMode === 'Compras'
+                  ? buyOrdersFiltered
+                  : sellOrdersFiltered
+                ).map(
+                  (ordersForBusiness, key) =>
+                    ordersForBusiness.orders.length > 0 && (
+                      <>
+                        <AccordionItem
+                          bg="primary"
+                          borderRadius="15px"
+                          marginBottom="20px"
+                          border="1px solid #5647B2"
+                          overflow="hidden"
+                          key={key}
+                        >
+                          <AccordionButtonItems
+                            icon={
+                              viewMode === 'Compras' ? FiGift : FiDollarSign
+                            }
+                            type_name={ordersForBusiness.business.name}
+                            color="secondary"
+                          />
+                          {ordersForBusiness.orders.map((order, orderKey) => (
+                            <AccordionPanelOrder
+                              key={orderKey}
+                              orderId={order.id}
+                              status={order.status}
+                              total={order.total}
+                              items={order.items}
+                              orderType={viewMode}
+                              bgColor="secondary"
+                              navigateLoading={navigateLoading}
+                              setNavigateLoading={setNavigateLoading}
+                            />
+                          ))}
+                        </AccordionItem>
+                      </>
+                    ),
                 )
               ) : (
                 <NoItemsText

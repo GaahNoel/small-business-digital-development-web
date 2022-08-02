@@ -473,8 +473,9 @@ const OrderInfo = ({
                     <Text>Estado: {usersInfo.buyer.location.region}</Text>
                     <Text>
                       Cidade:{' '}
-                      {usersInfo.buyer.location.county ===
-                      usersInfo.buyer.location.country
+                      {usersInfo.buyer.location.country &&
+                      usersInfo.buyer.location.county ===
+                        usersInfo.buyer.location.country
                         ? usersInfo.buyer.location.region
                         : usersInfo.buyer.location.county}
                     </Text>
