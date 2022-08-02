@@ -134,6 +134,7 @@ export const DefaultHeader = () => {
             overflow={'hidden'}
             zIndex={1}
             transition={'all 0.2s ease-in-out'}
+            disabled={!buttonText}
           >
             {buttonText ? (
               buttonText

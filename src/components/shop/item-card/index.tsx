@@ -9,6 +9,7 @@ import {
   Spinner,
   Stack,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IconType } from 'react-icons';
@@ -20,10 +21,13 @@ import { api } from '../../../service/api';
 import { ItemIcon } from '../item-icon';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import { BusinessSelectModal } from './business-select';
 
 type ItemCardProps = {
-  bonusId: string;
   token: string;
+  bonusId: string;
+  bonusType: string;
+  businessesInfo?: Businesses;
   iconColor: string;
   price: string;
   text?: string;
@@ -33,9 +37,27 @@ type ItemCardProps = {
   setBalance: (balance: number) => void;
 };
 
+type Businesses = {
+  city: string;
+  country: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  maxPermittedCouponPercentage: number;
+  name: string;
+  state: string;
+  street: string;
+  zip: string;
+}[];
+
 export const ItemCard = ({
-  bonusId,
   token,
+  bonusId,
+  bonusType,
+  businessesInfo = [],
   iconColor,
   price,
   text,
@@ -46,8 +68,24 @@ export const ItemCard = ({
 }: ItemCardProps) => {
   const [cardIsOpen, setCardIsOpen] = useState(false);
   const [buyLoading, setBuyLoading] = useState(false);
+  const [highlightBusinessId, setHighlightBusinessId] = useState(
+    businessesInfo.length > 0 ? businessesInfo[0].id : '',
+  );
+  const {
+    isOpen: viewBusinessSelectIsOpen,
+    onOpen: viewBusinessSelectOnOpen,
+    onClose: viewBusinessSelectOnClose,
+  } = useDisclosure();
 
   const buyItemAlert = () => {
+    if (bonusType === 'highlight') {
+      modalBusinessChoice();
+    } else {
+      onConfirm();
+    }
+  };
+
+  const onConfirm = () => {
     Swal.fire({
       title: 'Tem certeza que deseja comprar o item?',
       showDenyButton: true,
@@ -72,6 +110,7 @@ export const ItemCard = ({
         {
           accountId,
           bonusId,
+          businessId: highlightBusinessId,
           quantity: 1,
         },
         {
@@ -96,8 +135,20 @@ export const ItemCard = ({
     }
   };
 
+  const modalBusinessChoice = () => {
+    viewBusinessSelectOnOpen();
+  };
+
   return (
     <>
+      <BusinessSelectModal
+        isOpen={viewBusinessSelectIsOpen}
+        onClose={viewBusinessSelectOnClose}
+        onConfirm={onConfirm}
+        businessesInfo={businessesInfo}
+        highlightBusinessId={highlightBusinessId}
+        setHighlightBusinessId={setHighlightBusinessId}
+      />
       <Stack
         bg="default_white"
         color={iconColor}

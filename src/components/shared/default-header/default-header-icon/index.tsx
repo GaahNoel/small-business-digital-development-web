@@ -16,28 +16,17 @@ export const DefaultHeaderIcon = ({
 }: DefaultHeaderIconProps) => {
   return (
     <>
-      <Flex
-        _hover={{
-          svg: {
-            animation: 'drawIconsHeader 1s ease 1',
-            animationFillMode: 'backwards',
-          },
-          '@keyframes drawIconsHeader': {
-            '0%': { strokeWidth: 1 },
-            '100%': { strokeWidth: 2 },
-          },
-        }}
-      >
+      <Flex>
         <Icon
           as={icon}
           fontSize="30px"
-          color="empty_gray"
+          color="default_white"
           cursor="pointer"
-          transition={'all 0.1s ease-in-out'}
+          transition={'all 0.2s ease-in-out'}
           _hover={{
             filter: 'contrast(150%)',
             transform: 'scale(1.1)',
-            color: 'default_white',
+            color: 'default_white_hover',
           }}
           onClick={onClick}
         />

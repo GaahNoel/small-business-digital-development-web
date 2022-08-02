@@ -9,6 +9,7 @@ import {
 } from '../../../styles/theme';
 import { useEffect, useState } from 'react';
 import { apiCache } from '../../../service/api-cache';
+import jwt_decode from 'jwt-decode';
 
 type EntrepreneurItemsProps = {
   token: string;
@@ -26,12 +27,29 @@ type Bonus = {
   percent: number;
 }[];
 
+type Businesses = {
+  city: string;
+  country: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  imageUrl: string;
+  latitude: string;
+  longitude: string;
+  maxPermittedCouponPercentage: number;
+  name: string;
+  state: string;
+  street: string;
+  zip: string;
+}[];
+
 export const EntrepreneurItems = ({
   token,
   balance,
   setBalance,
 }: EntrepreneurItemsProps) => {
   const [businessBonus, setBusinessBonus] = useState<Bonus>([]);
+  const [businessesInfo, setBusinessesInfo] = useState<Businesses>([]);
   const [loadingBonus, setLoadingBonus] = useState(true);
 
   const highlightArray = [
@@ -42,6 +60,7 @@ export const EntrepreneurItems = ({
 
   useEffect(() => {
     getBonus();
+    getBusinessesInfo();
   }, []);
 
   const getHighlightColor = (highlightPrice: number) => {
@@ -60,6 +79,25 @@ export const EntrepreneurItems = ({
       });
       setBusinessBonus(clientBonusRes.data as Bonus);
       setLoadingBonus(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBusinessesInfo = async () => {
+    try {
+      const { id: accountId } = jwt_decode(token) as {
+        id: string;
+      };
+      const businessesInfoRes = await apiCache.get(
+        `business/list/${accountId}`,
+        {
+          headers: {
+            token,
+          },
+        },
+      );
+      setBusinessesInfo(businessesInfoRes.data as Businesses);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +122,8 @@ export const EntrepreneurItems = ({
               <ItemCard
                 token={token}
                 bonusId={bonus.id}
+                bonusType={bonus.type}
+                businessesInfo={businessesInfo}
                 iconColor={getHighlightColor(bonus.price)}
                 price={bonus.price.toString()}
                 icon={BsStar}
