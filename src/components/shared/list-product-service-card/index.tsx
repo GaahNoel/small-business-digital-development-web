@@ -1,5 +1,14 @@
-import { Flex, IconButton, Image, Img, Stack, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  Icon,
+  IconButton,
+  Image,
+  Img,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
+import { FaStar } from 'react-icons/fa';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { ModifyButton } from '../modify-button';
@@ -14,6 +23,7 @@ type ListProductServiceCardProps = {
   businessName: string;
   distance?: string;
   detailClick: () => void;
+  highlighted?: boolean;
 };
 
 export const ListProductServiceCard = ({
@@ -26,6 +36,7 @@ export const ListProductServiceCard = ({
   businessName,
   distance,
   detailClick,
+  highlighted = false,
 }: ListProductServiceCardProps) => {
   const format = {
     minimumFractionDigits: 2,
@@ -63,6 +74,8 @@ export const ListProductServiceCard = ({
         _hover={{ transform: 'scale(1.02)' }}
         spacing={1}
         onClick={detailClick}
+        border={highlighted ? '2px solid' : '0px'}
+        borderColor={highlighted ? 'default_yellow' : 'default_white'}
       >
         <Flex
           height="100%"
@@ -95,14 +108,23 @@ export const ListProductServiceCard = ({
           flex="1"
           padding={{ base: '10px', md: '10px' }}
         >
-          <Flex>
+          <Flex justify="space-between" align="center">
             <Text
-              maxWidth={{
-                base: '200px',
-                sm: '230px',
-                md: '250px',
-                xl: '275px',
-              }}
+              maxWidth={
+                !highlighted
+                  ? {
+                      base: '170px',
+                      sm: '230px',
+                      md: '250px',
+                      xl: '275px',
+                    }
+                  : {
+                      base: '140px',
+                      sm: '195px',
+                      md: '215px',
+                      xl: '240px',
+                    }
+              }
               whiteSpace="nowrap"
               overflow="hidden"
               textOverflow="ellipsis"
@@ -111,6 +133,9 @@ export const ListProductServiceCard = ({
             >
               {name}
             </Text>
+            {highlighted && (
+              <Icon as={FaStar} color="default_yellow" fontSize="26px" />
+            )}
           </Flex>
           <Flex
             textAlign="center"

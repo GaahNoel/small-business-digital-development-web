@@ -24,7 +24,7 @@ export const OrderMapView = ({ user, business }: OrderMapViewProps) => {
     mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
     const map = new mapboxgl.Map({
       container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
       center: [user.location.lng, user.location.lat], // starting position [lng, lat]
       zoom: 15, // starting zoom
     });

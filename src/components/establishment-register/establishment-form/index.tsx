@@ -52,9 +52,14 @@ import { toast } from 'react-toastify';
 import { positionstackApi } from '../../../service/positionstack-api';
 import { CouponInfo } from '../../shared/coupon-info';
 import { CouponInfoEstablishmentForm } from './coupon-info-establishment-form';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 // Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType,
+);
 
 type EstablishmentFormProps = {
   session: string;
@@ -392,6 +397,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 imageValidateSizeMinHeight={400}
                 imageValidateSizeMaxWidth={1080}
                 imageValidateSizeMaxHeight={1080}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['image/png', 'image/jpg', 'image/jpeg']}
                 name="files"
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />

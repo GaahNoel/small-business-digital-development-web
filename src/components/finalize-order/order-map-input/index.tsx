@@ -43,7 +43,7 @@ export const OrderMapInput = ({
         mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
         const map = new mapboxgl.Map({
           container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
           center: [geolocaltion.coords.longitude, geolocaltion.coords.latitude], // starting position [lng, lat]
           zoom: 15, // starting zoom
         });
@@ -134,7 +134,7 @@ export const OrderMapInput = ({
         mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
         const map: Map = new mapboxgl.Map({
           container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
           center: [defaultPoint[0], defaultPoint[1]], // starting position [lng, lat]
           zoom: 15, // starting zoom
         });

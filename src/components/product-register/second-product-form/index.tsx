@@ -33,15 +33,19 @@ import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+// Import the plugin code
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { runIfFn } from '@chakra-ui/utils';
 import { toast } from 'react-toastify';
 import { stringify } from 'querystring';
 
 // Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-// Register the plugin
-registerPlugin(FilePondPluginImageValidateSize);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginImageValidateSize,
+  FilePondPluginFileValidateType,
+);
 
 type ProductSecondFormProps = {
   id?: string;
@@ -295,8 +299,10 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 allowImageValidateSize={true}
                 imageValidateSizeMinWidth={400}
                 imageValidateSizeMinHeight={400}
-                imageValidateSizeMaxWidth={1080}
-                imageValidateSizeMaxHeight={1080}
+                imageValidateSizeMaxWidth={1800}
+                imageValidateSizeMaxHeight={1800}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['image/png', 'image/jpg', 'image/jpeg']}
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />
             </Box>

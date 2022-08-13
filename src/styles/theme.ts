@@ -90,6 +90,13 @@ export const Theme = extendTheme({
       '&::-webkit-scrollbar-thumb': {
         background: '#423788',
       },
+      '.icon::before': {
+        display: 'inline-block',
+        fontStyle: 'normal',
+        fontVariant: 'normal',
+        textRendering: 'auto',
+        '-webkit-font-smoothing': 'antialiased',
+      },
     },
   },
 });

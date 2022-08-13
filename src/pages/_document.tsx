@@ -21,6 +21,10 @@ class myDocument extends Document {
             href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css"
             rel="stylesheet"
           />
+          <script
+            src="https://kit.fontawesome.com/87778f72f1.js"
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body>
           <Main />

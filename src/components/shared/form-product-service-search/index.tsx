@@ -27,6 +27,7 @@ type FormProductServiceSearchData = {
 type Items = {
   business: {
     distance: number;
+    highlighted: boolean;
     id: string;
     latitude: string;
     longitude: string;
