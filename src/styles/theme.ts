@@ -80,6 +80,9 @@ export const Theme = extendTheme({
   },
   styles: {
     global: {
+      body: {
+        fontFamily: 'Nunito, sans-serif',
+      },
       '&::-webkit-scrollbar': {
         width: '10px',
       },
