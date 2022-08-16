@@ -313,7 +313,7 @@ const OrderInfo = ({
                         lg: '22px',
                       }}
                       onClick={cancelOrder}
-                      disabled={changeStatusLoading === 'COMPLETED'}
+                      disabled={changeStatusLoading !== 'NONE'}
                     >
                       {changeStatusLoading !== 'CANCELED' ? (
                         <Text>Cancelar</Text>
@@ -342,7 +342,7 @@ const OrderInfo = ({
                         lg: '22px',
                       }}
                       onClick={confirmOrder}
-                      disabled={changeStatusLoading === 'CANCELED'}
+                      disabled={changeStatusLoading !== 'NONE'}
                     >
                       {changeStatusLoading !== 'COMPLETED' ? (
                         <Text>Finalizar</Text>
