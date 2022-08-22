@@ -176,6 +176,15 @@ export const getServerSideProps: GetServerSideProps = async ({
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   // if(!query.lat || !query.lng){
   //   return {
   //     redirect: {
@@ -189,15 +198,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   console.log(query);
 
   const businesses = await getBusinessesNearby(Number(lat), Number(lng));
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
 
   return {
     props: { session, lat, lng, businesses },

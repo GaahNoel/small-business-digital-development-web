@@ -383,10 +383,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const { id } = params as ParamsProps;
-  const business = await getBusinessInfo(id);
-  const items = await getAllItems(id);
-
   if (!session) {
     return {
       redirect: {
@@ -395,6 +391,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+
+  const { id } = params as ParamsProps;
+  const business = await getBusinessInfo(id);
+  const items = await getAllItems(id);
 
   return {
     props: { session, items, business },

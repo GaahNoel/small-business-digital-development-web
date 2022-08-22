@@ -300,12 +300,7 @@ const Establishment = ({
               fontSize={{ base: '15px', md: '18px', lg: '20px', '2xl': '22px' }}
             >
               <Text>Estado: {establishmentInfo.state}</Text>
-              <Text>
-                Cidade:{' '}
-                {establishmentInfo.city === establishmentInfo.country
-                  ? establishmentInfo.state
-                  : establishmentInfo.city}{' '}
-              </Text>
+              <Text>Cidade: {establishmentInfo.city}</Text>
               {establishmentInfo.street && (
                 <Text>Localização: {establishmentInfo.street}</Text>
               )}
