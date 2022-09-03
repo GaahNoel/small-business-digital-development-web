@@ -22,7 +22,7 @@ export const LoginButton = ({
 
   const handleClick = (provider: 'custom' | 'facebook' | 'google') => {
     if (provider === 'custom') {
-      router.push('/user-register');
+      router.push('/credential-user');
     } else {
       signIn(provider);
     }

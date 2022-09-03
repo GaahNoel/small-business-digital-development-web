@@ -13,11 +13,11 @@ import {
 import { useState } from 'react';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HeaderHalfCircleTop } from '../../components/shared/header-half-circle-top';
-import { UserLoginForm } from '../../components/user-register/user-login-form';
-import { UserRegisterForm } from '../../components/user-register/user-register-form';
+import { UserLoginForm } from '../../components/credential-user/user-login-form';
+import { UserRegisterForm } from '../../components/credential-user/user-register-form';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
-import { RightImage } from '../../components/user-register/right-image';
+import { RightImage } from '../../components/credential-user/right-image';
 
 const UserRegister = () => {
   const [formOption, setFormOption] = useState('Entrar');
