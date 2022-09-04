@@ -26,7 +26,7 @@ export const EstablishmentFormContext = createContext<EstablishmentFormData>(
 export function EstablishmentFormProvider({
   children,
 }: EstablishmentFormProviderProps) {
-  const [id, setId] = useState('ABC');
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [state, setState] = useState('');

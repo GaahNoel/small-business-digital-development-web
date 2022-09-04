@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Fade,
   Flex,
   Heading,
   Icon,
@@ -19,7 +18,7 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { RightImage } from '../../components/credential-user/right-image';
 
-const UserRegister = () => {
+const CredentialUser = () => {
   const [formOption, setFormOption] = useState('Entrar');
   const [loginMounted, setLoginMounted] = useState(true);
   const [registerMounted, setRegisterMounted] = useState(false);
@@ -34,7 +33,11 @@ const UserRegister = () => {
   return (
     <>
       <Flex bg="secondary" direction="column" minHeight="100vh">
-        <Box width="100%" display={{ base: 'block', lg: 'none' }}>
+        <Box
+          className="header"
+          width="100%"
+          display={{ base: 'block', lg: 'none' }}
+        >
           <HeaderHalfCircleTop>
             <Flex
               width="100%"
@@ -180,4 +183,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default UserRegister;
+export default CredentialUser;

@@ -5,22 +5,22 @@ import { FiUser } from 'react-icons/fi';
 import { MdOutlineMail, MdOutlineLock } from 'react-icons/md';
 import { api } from '../../../service/api';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { UserInput } from '../../shared/user-input';
-import { useRef, useState } from 'react';
-
-type UserRegisterProps = {
-  changeOption: (param: 'Entrar' | 'Registrar') => void;
-  submitLoading: boolean;
-  setSubmitLoading: (submitLoading: boolean) => void;
-};
+import { useRef } from 'react';
 
 type RegisterFormData = {
   name: string;
   email: string;
   password: string;
   confirm_password: string;
+};
+
+type UserRegisterProps = {
+  changeOption: (param: 'Entrar' | 'Registrar') => void;
+  submitLoading: boolean;
+  setSubmitLoading: (submitLoading: boolean) => void;
 };
 
 export const UserRegisterForm = ({
@@ -56,7 +56,6 @@ export const UserRegisterForm = ({
         });
         throw 'Senhas não correspondem';
       }
-
       await api.post('signup', {
         name,
         email,
@@ -65,10 +64,10 @@ export const UserRegisterForm = ({
       });
       toast.success('E-mail de validação enviado!');
       changeOption('Entrar');
-      setSubmitLoading(false);
     } catch (e) {
-      setSubmitLoading(false);
       console.log(e);
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
