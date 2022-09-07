@@ -4,7 +4,7 @@ import { CartContext } from '../../context/cart';
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    console.error('No Establishment Form Context found');
+    console.error('No Cart Context found');
   }
 
   return context;

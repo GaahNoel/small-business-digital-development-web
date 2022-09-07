@@ -68,19 +68,14 @@ export const CartProvider = ({ children }: CartContextProps) => {
     setInternalCartLength(cart.length);
   }, [cart]);
 
-  const setCartLength = (lentgh: number) => {
-    localStorage.setItem('itemsLength', String(lentgh));
-    setInternalCartLength(lentgh);
+  const setCart = (cart: CartItems) => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setInternalCart(cart);
   };
 
   const setTotal = (total: number) => {
     localStorage.setItem('total', String(total));
     setInternalTotal(total);
-  };
-
-  const setCart = (cart: CartItems) => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setInternalCart(cart);
   };
 
   const setBusinessName = (businessName: string) => {
