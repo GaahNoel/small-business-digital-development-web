@@ -82,6 +82,7 @@ export const ConsumerItems = ({
               <ItemCard
                 token={token}
                 bonusId={bonus.id}
+                bonusType={bonus.type}
                 iconColor={getCouponColor(bonus.percent)}
                 price={bonus.price.toString()}
                 text={`${bonus.percent}%`}

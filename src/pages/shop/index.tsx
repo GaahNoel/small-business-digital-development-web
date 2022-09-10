@@ -13,15 +13,18 @@ import { Missions } from '../../components/shop/missions';
 import { api } from '../../service/api';
 import jwt_decode from 'jwt-decode';
 import { getToken } from 'next-auth/jwt';
+import { VideoDivision } from '../../components/shop/video-division';
 
 type ShopProps = {
   token: string;
+  accountId: string;
   userFormated: UserFormated;
   type: FormOption;
   consumerDailyQuests: Challenge;
   consumerWeeklyQuests: Challenge;
   entrepreneurDailyQuests: Challenge;
   entrepreneurWeeklyQuests: Challenge;
+  videosWatched: VideosWatched;
 };
 
 type FormOption = 'Consumidor' | 'Empreendedor' | 'Missões';
@@ -69,20 +72,26 @@ type UserFormated = {
   balance: number;
 };
 
+type VideosWatched = { videos: [] };
+
 const Shop = ({
   token,
+  accountId,
   userFormated,
   type,
   consumerDailyQuests,
   consumerWeeklyQuests,
   entrepreneurDailyQuests,
   entrepreneurWeeklyQuests,
+  videosWatched,
 }: ShopProps) => {
   const [formOption, setFormOption] = useState(type);
   const [balance, setBalance] = useState(0);
+  const [numberOfVideosWatched, setNumberOfVideosWatched] = useState(0);
 
   useEffect(() => {
     setBalance(userFormated.balance);
+    setNumberOfVideosWatched(videosWatched.videos.length);
   }, []);
 
   const changeOption = (option: FormOption) => {
@@ -144,21 +153,6 @@ const Shop = ({
                     }}
                   />
                 </ButtonGroup>
-                <Stack
-                  id="coins"
-                  bg="default_white"
-                  borderRadius="14px"
-                  color="default_yellow"
-                  direction="row"
-                  align="center"
-                  justify="center"
-                  padding="8px"
-                  fontWeight="bold"
-                  spacing={2}
-                >
-                  <Icon as={BsCoin} fontSize="28px" />
-                  <Text>{`${balance} moedas`} </Text>
-                </Stack>
               </Flex>
             </Flex>
           </Flex>
@@ -176,7 +170,55 @@ const Shop = ({
               width="100%"
               maxW={{ base: '90%', md: '700px', lg: '900px' }}
               margin="40px auto"
+              direction="column"
             >
+              <Stack
+                align="center"
+                justify="space-between"
+                bg="secondary"
+                borderRadius="2xl"
+                boxShadow="2xl"
+                w="100%"
+                overflow="hidden"
+                transition="0.2s border ease-in-out"
+                direction={{ base: 'column', md: 'row' }}
+                spacing={1}
+                padding="15px"
+                marginBottom="35px"
+              >
+                <Flex
+                  color="default_yellow"
+                  fontSize="35px"
+                  padding="8px"
+                  direction="column"
+                  justify="start"
+                >
+                  <Text color="primary" fontWeight="semibold">
+                    Marketcoins:
+                  </Text>
+                  <Stack
+                    id="coins"
+                    borderRadius="14px"
+                    direction="row"
+                    align="center"
+                    justify={{ base: 'center', md: 'start' }}
+                    fontWeight="bold"
+                    width="100%"
+                    spacing={2}
+                  >
+                    <Icon as={BsCoin} fontSize="35px" />
+                    <Text>{`${balance}`} </Text>
+                  </Stack>
+                </Flex>
+                <VideoDivision
+                  token={token}
+                  accountId={accountId}
+                  numberOfVideosWatched={numberOfVideosWatched}
+                  setNumberOfVideosWatched={setNumberOfVideosWatched}
+                  balance={balance}
+                  setBalance={setBalance}
+                />
+              </Stack>
               {formOption === 'Consumidor' ? (
                 <ConsumerItems
                   token={token}
@@ -236,6 +278,25 @@ const getAllMissions = async (token: string, accountId: string) => {
   }
 };
 
+const getAllVideosWatchedInTheDay = async (
+  token: string,
+  accountId: string,
+) => {
+  try {
+    const response = await api.get(
+      `watched-video/get-account-videos/${accountId}`,
+      {
+        headers: {
+          token,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
@@ -267,6 +328,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   const user: User = await getUserInfo(session, id);
   const userFormated: UserFormated = { balance: user.balance };
   const missions: Challenge = await getAllMissions(session, id);
+  const videosWatched: VideosWatched = await getAllVideosWatchedInTheDay(
+    session,
+    id,
+  );
   let consumerDailyQuests: Challenge = [];
   let consumerWeeklyQuests: Challenge = [];
   let entrepreneurDailyQuests: Challenge = [];
@@ -306,12 +371,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       token: session,
+      accountId: id,
       userFormated,
       type,
       consumerDailyQuests,
       consumerWeeklyQuests,
       entrepreneurDailyQuests,
       entrepreneurWeeklyQuests,
+      videosWatched,
     },
   };
 };

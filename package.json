@@ -44,6 +44,7 @@
     "sweetalert2": "^11.4.17",
     "swiper": "^8.0.7",
     "use-persisted-state": "^0.3.3",
+    "video-react": "^0.15.0",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
@@ -56,6 +57,7 @@
     "@types/react-lottie": "^1.2.6",
     "@types/styled-components": "^5.1.24",
     "@types/use-persisted-state": "^0.3.1",
+    "@types/video-react": "^0.15.1",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
     "eslint": "^8.11.0",

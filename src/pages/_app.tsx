@@ -6,6 +6,7 @@ import { ProductFormProvider } from '../context/product-form-context';
 import { EstablishmentFormProvider } from '../context/establishment-form-context';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../node_modules/video-react/dist/video-react.css';
 import { CartProvider } from '../context/cart';
 function MyApp({ Component, pageProps }: AppProps) {
   return (

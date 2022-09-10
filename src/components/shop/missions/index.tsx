@@ -2,6 +2,8 @@ import { Flex, Stack, Text } from '@chakra-ui/react';
 import { MissionDivision } from './mission-division';
 import { MissionBar } from './mission-bar';
 import { TypeMission } from './type-mission';
+import { AdVideo } from '../video-division/video-modal/ad-video';
+import { VideoDivision } from '../video-division';
 
 type MissionsProps = {
   consumerDailyQuests: Challenge;
@@ -55,7 +57,7 @@ export const Missions = ({
         justify={{ base: 'center', md: 'start' }}
         bg="secondary"
         borderRadius="2xl"
-        boxShadow="dark-lg"
+        boxShadow="2xl"
         w="100%"
         overflow="hidden"
         transition="0.2s border ease-in-out"
