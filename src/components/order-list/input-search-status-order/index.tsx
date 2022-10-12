@@ -154,7 +154,6 @@ export const InputSearchStatusOrder = ({
                 '2xl': '28px',
               }}
               height={{ base: '55px', sm: '60px', md: '70px' }}
-              paddingLeft="45px"
               color="primary"
               transition={'all 0.2s ease-in-out'}
               disabled={disabled}

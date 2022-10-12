@@ -5,6 +5,12 @@ import { FiTrendingUp } from 'react-icons/fi';
 
 export const EntrepreneurButton = () => {
   const router = useRouter();
+
+  const navigateToEntrepreneurPage = () => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
+    router.push('entrepreneur');
+  };
   return (
     <>
       <Flex
@@ -36,7 +42,7 @@ export const EntrepreneurButton = () => {
           minW="100px"
           margin={{ base: '15px auto', md: '15px auto 0px auto' }}
           boxShadow="dark-lg"
-          onClick={() => router.push('entrepreneur')}
+          onClick={navigateToEntrepreneurPage}
         >
           <Stack
             direction="row"

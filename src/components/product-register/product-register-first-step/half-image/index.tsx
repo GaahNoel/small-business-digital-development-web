@@ -14,7 +14,7 @@ export const HalfImage = () => {
         width="100%"
       >
         <Image
-          fallbackSrc="/imgLoader.gif"
+          fallbackSrc="/imgLoaderGrey.gif"
           width="400px"
           marginRight="10%"
           src="/Item.svg"

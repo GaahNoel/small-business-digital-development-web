@@ -297,12 +297,12 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 allowMultiple={false}
                 name="files"
                 allowImageValidateSize={true}
-                imageValidateSizeMinWidth={400}
-                imageValidateSizeMinHeight={400}
-                imageValidateSizeMaxWidth={1800}
-                imageValidateSizeMaxHeight={1800}
+                imageValidateSizeMinWidth={200}
+                imageValidateSizeMinHeight={200}
+                imageValidateSizeMaxWidth={2000}
+                imageValidateSizeMaxHeight={2000}
                 allowFileTypeValidation={true}
-                acceptedFileTypes={['image/png', 'image/jpg', 'image/jpeg']}
+                acceptedFileTypes={['image/jpg', 'image/jpeg']}
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />
             </Box>

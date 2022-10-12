@@ -20,6 +20,8 @@ export const InputMap = () => {
     // Add geocoder result to container.
     geocoder.on('result', (e) => {
       const [lng, lat] = e.result.center;
+      const homeLoader = document.getElementById('global-loader');
+      homeLoader?.classList.add('active');
       router.push({
         pathname: '/businesses-nearby',
         query: {

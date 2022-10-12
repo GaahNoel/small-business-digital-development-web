@@ -41,7 +41,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
       style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
       center: [Number(lng), Number(lat)], // starting position [lng, lat]
       zoom: 10, // starting zoom
-      minZoom: 15,
+      minZoom: 14,
     });
 
     businesses.map((business) => {
@@ -66,7 +66,6 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           cursor: pointer;
         `;
       elementImage.onload = () => {
-        console.log('ENTROU AQUI');
         element.style.backgroundImage = `url(${business.imageUrl})`;
         console.log(element.style.backgroundImage);
         elementImage.remove();
@@ -159,7 +158,6 @@ const getBusinessesNearby = async (lat: number, lng: number) => {
         radius: 5,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

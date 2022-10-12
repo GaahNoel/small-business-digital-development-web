@@ -12,6 +12,7 @@ import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import useCart from '../../../../hooks/cart';
+import { GlobalLoader } from '../../global-loader';
 import { SideCartCard } from './side-cart-card';
 
 type SideCartProps = {
@@ -20,7 +21,6 @@ type SideCartProps = {
 };
 
 export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
-  const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
   const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
@@ -43,8 +43,15 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
     });
   };
 
+  const finalizeOrder = () => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
+    router.push('/finalize-order');
+  };
+
   return (
     <>
+      <GlobalLoader />
       <Flex
         className="sidecart"
         width="100%"
@@ -166,19 +173,9 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   height="60px"
                   fontSize={{ base: '18px', sm: '22px' }}
                   disabled={cart.itemsLength === 0}
-                  onClick={() => router.push('/finalize-order')}
+                  onClick={finalizeOrder}
                 >
-                  {!finalizeOrderLoading ? (
-                    'Finalizar pedido'
-                  ) : (
-                    <Spinner
-                      thickness="4px"
-                      speed="0.65s"
-                      emptyColor="gray.200"
-                      color="default_white"
-                      size="md"
-                    />
-                  )}
+                  Finalizar pedido
                 </Button>
               </Flex>
             </Flex>

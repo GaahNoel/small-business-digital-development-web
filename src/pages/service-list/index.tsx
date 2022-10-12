@@ -441,6 +441,7 @@ const getAllCitiesWithBusiness = async () => {
     return response.data;
   } catch (e) {
     console.log(e);
+    return [];
   }
 };
 

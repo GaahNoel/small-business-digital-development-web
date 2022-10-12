@@ -19,6 +19,8 @@ export const PrincipalButton = ({
 }: PrincipalButtonProps) => {
   const router = useRouter();
   const handleClick = () => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
     router.push(page);
   };
   return (

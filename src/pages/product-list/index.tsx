@@ -436,9 +436,11 @@ const ProductList = ({ cities }: ProductListProps) => {
 const getAllCitiesWithBusiness = async () => {
   try {
     const response = await api.get('business/cities', {});
+    console.log(response.data);
     return response.data;
   } catch (e) {
     console.log(e);
+    return [];
   }
 };
 

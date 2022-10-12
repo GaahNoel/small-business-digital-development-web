@@ -376,7 +376,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             </Flex>
             <Box
               width="100%"
-              height="120px"
+              height="100%"
               margin="10px auto 0px auto"
               sx={{ '.filepond--credits': { display: 'none' } }}
             >
@@ -393,12 +393,12 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 onupdatefiles={setFiles}
                 instantUpload={false}
                 allowMultiple={false}
-                imageValidateSizeMinWidth={400}
-                imageValidateSizeMinHeight={400}
-                imageValidateSizeMaxWidth={1080}
-                imageValidateSizeMaxHeight={1080}
+                imageValidateSizeMinWidth={200}
+                imageValidateSizeMinHeight={200}
+                imageValidateSizeMaxWidth={2000}
+                imageValidateSizeMaxHeight={2000}
                 allowFileTypeValidation={true}
-                acceptedFileTypes={['image/png', 'image/jpg', 'image/jpeg']}
+                acceptedFileTypes={['image/jpg', 'image/jpeg']}
                 name="files"
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />

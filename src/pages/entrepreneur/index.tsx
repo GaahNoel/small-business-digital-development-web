@@ -101,6 +101,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     city: string,
     reference: string,
   ) => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
     router.push(`/establishment/${id}`);
   };
 

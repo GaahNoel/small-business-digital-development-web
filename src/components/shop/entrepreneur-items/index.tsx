@@ -54,7 +54,7 @@ export const EntrepreneurItems = ({
 
   const highlightArray = [
     { color: service_blue, price: 300 },
-    { color: default_orange, price: 150 },
+    { color: default_orange, price: 100 },
     { color: default_yellow, price: 50 },
   ];
 
