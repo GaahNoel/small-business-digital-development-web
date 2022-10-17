@@ -174,14 +174,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   // if(!query.lat || !query.lng){
   //   return {
