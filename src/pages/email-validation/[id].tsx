@@ -28,7 +28,7 @@ const EmailValidation = () => {
 
   return (
     <>
-      <Flex bg="primary" height="100vh" direction="column">
+      <Flex bg="primary" minHeight="100vh" direction="column">
         <Flex
           align="center"
           direction="column"
@@ -52,6 +52,8 @@ const EmailValidation = () => {
           bg="secondary"
           direction="column"
           height="100%"
+          flex="1"
+          paddingBottom="20px"
           justify="center"
           align="center"
           borderTopRadius="56px"
@@ -85,7 +87,7 @@ const EmailValidation = () => {
               bg="primary"
               color="default_white"
               text="Confirmar"
-              onClick={() => router.push('/user-register')}
+              onClick={() => router.push('/credential-user')}
             />
           </Stack>
         </Stack>

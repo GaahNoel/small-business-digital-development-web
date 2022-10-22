@@ -4,7 +4,18 @@ import {
   FormControl,
   FormLabel,
   Input,
+  RangeSlider,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+  RangeSliderTrack,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+  Spinner,
   Stack,
+  Text,
   Textarea,
 } from '@chakra-ui/react';
 import { FormInput } from '../../shared/form-input';
@@ -17,6 +28,12 @@ import { DefaultMapInput } from '../../shared/default-map-input';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
+import {
+  empty_gray,
+  default_orange,
+  default_yellow,
+  service_blue,
+} from '../../../styles/theme';
 
 // Import React FilePond
 import { FilePond, registerPlugin } from 'react-filepond';
@@ -33,9 +50,16 @@ import { api } from '../../../service/api';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { positionstackApi } from '../../../service/positionstack-api';
+import { CouponInfo } from '../../shared/coupon-info';
+import { CouponInfoEstablishmentForm } from './coupon-info-establishment-form';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 // Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType,
+);
 
 type EstablishmentFormProps = {
   session: string;
@@ -45,6 +69,7 @@ type EstablishmentFormProps = {
   lat: string;
   lng: string;
   imageUrl: string;
+  maxPermittedCouponPercentage: number;
   registerForm: boolean;
   clickBackButton: () => void;
   updateState?: (id: string, establishmentFound: EstablishmentProps) => void;
@@ -77,6 +102,7 @@ type EstablishmentProps = {
   state?: string;
   zip?: string;
   country?: string;
+  maxPermittedCouponPercentage?: number;
 };
 
 type ValueProps = 'nome' | 'descricao';
@@ -84,6 +110,13 @@ type ValueProps = 'nome' | 'descricao';
 export const EstablishmentForm = (props: EstablishmentFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [position, setPosition] = useState<PositionProps>();
+  const [couponValue, setCouponValue] = useState<number>(-1);
+  const couponArray = [
+    { color: empty_gray, value: 0 },
+    { color: default_yellow, value: 5 },
+    { color: default_orange, value: 7 },
+    { color: service_blue, value: 10 },
+  ];
   const router = useRouter();
   const methods = useForm<EstablishmentFormData>();
   const {
@@ -100,6 +133,17 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       setValue(value as ValueProps, props[value as ValueProps]);
     });
   }, []);
+
+  useEffect(() => {
+    getCouponValue();
+  }, [props.maxPermittedCouponPercentage]);
+
+  const getCouponValue = async () => {
+    const couponIndex = couponArray.findIndex((coupon) => {
+      return coupon.value === props.maxPermittedCouponPercentage;
+    });
+    setCouponValue(couponIndex);
+  };
 
   const postImageBB = async () => {
     const formData = new FormData();
@@ -175,9 +219,10 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           longitude: lng.toString(),
           state: addressInfo?.region,
           street: addressInfo?.street
-            ? addressInfo.street
-            : `Próximo ao/à ${addressInfo?.name}`,
+            ? `Próximo à/ao ${addressInfo.street}`
+            : `Próximo à/ao ${addressInfo?.name}`,
           zip: '',
+          maxPermittedCouponPercentage: couponArray[couponValue].value,
         },
         {
           headers: {
@@ -215,7 +260,6 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
       } as LocationProps;
 
       const addressInfo = await getAddressInfo(location);
-
       const response = await api.put(
         `business/edit/${props.id}`,
         {
@@ -229,9 +273,10 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           longitude: lng.toString(),
           state: addressInfo?.region,
           street: addressInfo?.street
-            ? addressInfo.street
-            : `Próximo ao/à ${addressInfo?.name}`,
+            ? `Próximo à/ao ${addressInfo.street}`
+            : `Próximo à/ao ${addressInfo?.name}`,
           zip: '',
+          maxPermittedCouponPercentage: couponArray[couponValue].value,
         },
         {
           headers: {
@@ -251,9 +296,10 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
           country: addressInfo?.county as string,
           state: addressInfo?.region,
           street: addressInfo?.street
-            ? addressInfo.street
-            : `Próximo ao/à ${addressInfo?.name}`,
+            ? `Próximo à/ao ${addressInfo.street}`
+            : `Próximo à/ao ${addressInfo?.name}`,
           description: descricao,
+          maxPermittedCouponPercentage: couponArray[couponValue].value,
         });
       toast.success('Estabelecimento alterado com sucesso!');
       props.clickBackButton();
@@ -266,11 +312,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
     nome,
     descricao,
   }) => {
-    setSubmitLoading(true);
-    if (!position) {
-      console.log('ERRO');
-    }
     try {
+      setSubmitLoading(true);
       if (props.registerForm) {
         await registerEstablishment({ nome, descricao });
       } else {
@@ -298,7 +341,9 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             boxShadow={
               props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
             }
-            padding={{ base: '25px', md: '25px 50px' }}
+            padding={
+              props.registerForm ? { base: '25px', md: '25px 50px' } : '0px'
+            }
           >
             <FormInput
               id="nome"
@@ -331,7 +376,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
             </Flex>
             <Box
               width="100%"
-              margin="10px auto"
+              height="100%"
+              margin="10px auto 0px auto"
               sx={{ '.filepond--credits': { display: 'none' } }}
             >
               <FormLabel
@@ -347,14 +393,61 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 onupdatefiles={setFiles}
                 instantUpload={false}
                 allowMultiple={false}
-                imageValidateSizeMinWidth={400}
-                imageValidateSizeMinHeight={400}
-                imageValidateSizeMaxWidth={1080}
-                imageValidateSizeMaxHeight={1080}
+                imageValidateSizeMinWidth={200}
+                imageValidateSizeMinHeight={200}
+                imageValidateSizeMaxWidth={2000}
+                imageValidateSizeMaxHeight={2000}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['image/jpg', 'image/jpeg']}
                 name="files"
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />
             </Box>
+            <Flex direction="column">
+              <FormLabel
+                htmlFor={`range_label`}
+                color="primary"
+                fontWeight="bold"
+                fontSize={{ base: '1rem', md: '1.4rem' }}
+              >
+                Cupons liberados pelo estabelecimento
+              </FormLabel>
+              <Text color="primary">
+                *O estabelecimento receberá moedas da aplicação relativo ao
+                nível de cupom permitido pelo mesmo*
+              </Text>
+              {couponValue >= 0 ? (
+                <>
+                  <Slider
+                    id="coupon"
+                    defaultValue={couponValue}
+                    min={0}
+                    max={3}
+                    step={1}
+                    marginTop="10px"
+                    onChange={(value) => setCouponValue(value)}
+                  >
+                    <SliderTrack bg="empty_gray">
+                      <Box position="relative" right={10} />
+                      <SliderFilledTrack bg="primary" />
+                    </SliderTrack>
+                    <SliderThumb boxSize={6} />
+                  </Slider>
+                  <CouponInfoEstablishmentForm
+                    iconColor={couponArray[couponValue].color}
+                    text={`${couponArray[couponValue].value}%`}
+                  />
+                </>
+              ) : (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="primary"
+                  size="md"
+                />
+              )}
+            </Flex>
             <Stack
               direction="row"
               justify="center"
@@ -365,6 +458,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Cancelar"
+                disabled={submitLoading || couponValue < 0}
                 onClick={() => {
                   props.clickBackButton();
                 }}
@@ -373,7 +467,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
                 bg="primary"
                 color="default_white"
                 text="Enviar"
-                isLoading={submitLoading}
+                isLoading={submitLoading || couponValue < 0}
+                disabled={submitLoading}
                 type="submit"
               />
             </Stack>

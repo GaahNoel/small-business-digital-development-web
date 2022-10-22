@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { PrincipalButton } from '../components/home/principal-button';
 import { FooterMenu } from '../components/shared/footer-menu';
@@ -9,6 +9,7 @@ import { Footer } from '../components/home/footer';
 import Lottie from 'react-lottie';
 import * as animationData from '../../public/business-idea-animation.json';
 import { InputMap } from '../components/home/input-map';
+import { GlobalLoader } from '../components/shared/global-loader';
 
 const Home: NextPage = () => (
   <>
@@ -134,7 +135,7 @@ const Home: NextPage = () => (
                     '1.7rem',
                   ]}
                 >
-                  Busque produtos e serviços que deseja
+                  Anuncie os produtos e serviços que desejar
                 </Text>
               </Flex>
               <EntrepreneurButton />

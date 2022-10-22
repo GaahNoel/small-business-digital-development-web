@@ -3,6 +3,7 @@ import {
   Flex,
   Icon,
   IconButton,
+  Image,
   Img,
   Stack,
   Text,
@@ -16,6 +17,7 @@ type SideCartCardProps = {
   name: string;
   img: string;
   price: number;
+  type: 'product' | 'service';
   businessName: string;
   quantity: number;
 };
@@ -25,6 +27,7 @@ export const SideCartCard = ({
   name,
   img,
   price,
+  type,
   businessName,
   quantity,
 }: SideCartCardProps) => {
@@ -53,7 +56,7 @@ export const SideCartCard = ({
         borderRadius="2xl"
         border="1px solid #5647B2"
         width="95%"
-        minHeight={{
+        height={{
           base: '120px',
           sm: '140px',
           md: '160px',
@@ -63,9 +66,10 @@ export const SideCartCard = ({
         spacing={1}
       >
         <Flex height="100%" width="160px" align="center" justify="start">
-          <Img
+          <Image
             objectFit="cover"
             src={img}
+            fallbackSrc="/imgLoader.gif"
             width="100%"
             height="100%"
             borderBottomRightRadius="100px"
@@ -80,7 +84,10 @@ export const SideCartCard = ({
         >
           <Flex wordBreak="break-all">
             <Text
-              maxWidth="300px"
+              maxWidth={{ base: '123px', sm: '175px', md: '193px' }}
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
               fontSize={{ base: '14px', md: '16px' }}
               fontWeight="bold"
             >
@@ -145,6 +152,7 @@ export const SideCartCard = ({
               borderRadius="full"
               size="xs"
               _hover={{ bg: 'primary_hover' }}
+              disabled={type === 'service'}
               onClick={incrementQuantity}
             >
               <Icon as={FiPlus} fontSize="20px"></Icon>

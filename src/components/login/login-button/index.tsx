@@ -22,7 +22,7 @@ export const LoginButton = ({
 
   const handleClick = (provider: 'custom' | 'facebook' | 'google') => {
     if (provider === 'custom') {
-      router.push('/user-register');
+      router.push('/credential-user');
     } else {
       signIn(provider);
     }
@@ -33,7 +33,10 @@ export const LoginButton = ({
       <Button
         bg={colorButton}
         color={colorText}
-        _hover={{ bgColor: `${colorButton}_hover` }}
+        _hover={{
+          bgColor: `${colorButton}_hover`,
+          transform: 'scale(1.05)',
+        }}
         variant="solid"
         width="100%"
         height="50px"

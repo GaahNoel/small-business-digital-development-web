@@ -49,6 +49,7 @@ const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
             imageUrl=""
             lat=""
             lng=""
+            maxPermittedCouponPercentage={0}
             registerForm={true}
             clickBackButton={() => {
               router.push('entrepreneur');

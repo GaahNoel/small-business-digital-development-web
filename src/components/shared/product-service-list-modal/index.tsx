@@ -10,10 +10,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   MdOutlineAttachMoney,
   MdOutlineCategory,
@@ -74,11 +76,18 @@ export const ProductServiceListModal = ({
     currency: 'BRL',
   };
   const cart = useCart();
+  const [routerLoading, setRouterLoading] = useState(false);
 
   const addCart = (item: ProductInfo) => {
     cart.addItem(item);
-    toast.success(`${item.name} adicionado ao carrinho com sucesso!`);
   };
+
+  const navigateToBusinessPage = async (businessId: string) => {
+    setRouterLoading(true);
+    await router.push(`/business-items/${businessId}`);
+    setRouterLoading(false);
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -97,7 +106,7 @@ export const ProductServiceListModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="500px"
+            maxWidth="600px"
             wordBreak="break-all"
           >
             {name}
@@ -110,9 +119,15 @@ export const ProductServiceListModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="400px"
+            maxWidth="600px"
           >
-            <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
+            <Image
+              src={imageUrl}
+              fallbackSrc="/imgLoader.gif"
+              boxSize="300px"
+              borderRadius="2xl"
+              objectFit="cover"
+            />
             <Stack
               spacing={1}
               marginTop="30px"
@@ -121,7 +136,7 @@ export const ProductServiceListModal = ({
               alignItems="center"
               width="100%"
             >
-              <Flex justifyContent="space-between" w="90%" direction="column">
+              <Flex justifyContent="space-between" w="100%" direction="column">
                 <Flex alignItems="center" gap={2}>
                   <Icon as={MdOutlineDescription} />
                   <Text fontWeight="semibold">Descrição:</Text>
@@ -168,9 +183,20 @@ export const ProductServiceListModal = ({
                 <Button
                   bg="primary"
                   _hover={{ bg: 'primary_hover' }}
-                  onClick={() => router.push(`/business-items/${businessId}`)}
+                  disabled={routerLoading}
+                  onClick={() => navigateToBusinessPage(businessId)}
                 >
-                  Visitar página da loja
+                  {!routerLoading ? (
+                    <Text>Visitar página da loja</Text>
+                  ) : (
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="primary"
+                      size="md"
+                    />
+                  )}
                 </Button>
               )}
               <Button

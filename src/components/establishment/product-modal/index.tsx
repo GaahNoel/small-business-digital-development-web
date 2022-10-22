@@ -68,7 +68,7 @@ export const ProductModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px"
+            maxWidth="600px"
             wordBreak="break-all"
           >
             {name}
@@ -81,9 +81,15 @@ export const ProductModal = ({
             justifyContent="center"
             alignItems="center"
             width="90vw"
-            maxWidth="300px"
+            maxWidth="600px"
           >
-            <Image src={imageUrl} boxSize="250px" borderRadius="2xl" />
+            <Image
+              src={imageUrl}
+              fallbackSrc="/imgLoader.gif"
+              boxSize="300px"
+              borderRadius="2xl"
+              objectFit="cover"
+            />
             <Stack
               spacing={1}
               marginTop="30px"
@@ -92,7 +98,7 @@ export const ProductModal = ({
               alignItems="center"
               width="100%"
             >
-              <Flex justifyContent="space-between" w="90%" direction="column">
+              <Flex justifyContent="space-between" w="100%" direction="column">
                 <Flex alignItems="center" gap={2}>
                   <Icon as={MdOutlineDescription} />
                   <Text fontWeight="semibold">Descrição:</Text>

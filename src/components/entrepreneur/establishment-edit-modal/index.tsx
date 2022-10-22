@@ -22,6 +22,7 @@ type EstablishmentProps = {
   state?: string;
   zip?: string;
   country?: string;
+  maxPermittedCouponPercentage?: number;
 };
 
 type EstablishmentEditModalProps = {
@@ -32,6 +33,7 @@ type EstablishmentEditModalProps = {
   lat: string;
   lng: string;
   imageUrl: string;
+  maxPermittedCouponPercentage: number;
   isOpen: boolean;
   onClose: () => void;
   updateState: (id: string, establishmentFound: EstablishmentProps) => void;
@@ -45,6 +47,7 @@ export const EstablishmentEditModal = ({
   lat,
   lng,
   imageUrl,
+  maxPermittedCouponPercentage,
   isOpen,
   onClose,
   updateState,
@@ -67,7 +70,7 @@ export const EstablishmentEditModal = ({
             color="primary"
             fontSize="30px"
             fontWeight="bold"
-            maxWidth="300px"
+            maxWidth="500px"
             wordBreak="break-all"
           >
             {name}
@@ -79,7 +82,7 @@ export const EstablishmentEditModal = ({
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            width="90vw"
+            width="100%"
             maxWidth="500px"
           >
             <EstablishmentForm
@@ -90,6 +93,7 @@ export const EstablishmentEditModal = ({
               lat={lat}
               lng={lng}
               imageUrl={imageUrl}
+              maxPermittedCouponPercentage={maxPermittedCouponPercentage}
               registerForm={false}
               clickBackButton={onClose}
               updateState={updateState}

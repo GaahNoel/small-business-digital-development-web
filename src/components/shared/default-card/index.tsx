@@ -1,4 +1,4 @@
-import { Flex, IconButton, Img, Stack, Text } from '@chakra-ui/react';
+import { Flex, IconButton, Img, Image, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FiTool, FiChevronRight } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -45,7 +45,7 @@ export const DefaultCard = ({
         cursor="pointer"
         overflow="hidden"
         transition="0.2s border ease-in-out"
-        _hover={{ border: '1px solid #000' }}
+        _hover={{ transform: 'scale(1.02)' }}
         onClick={detailClick}
         spacing={1}
       >
@@ -55,8 +55,9 @@ export const DefaultCard = ({
           align="center"
           justify={{ base: 'center', md: 'start' }}
         >
-          <Img
+          <Image
             src={img}
+            fallbackSrc="/imgLoader.gif"
             width={{
               base: '80px',
               sm: '100px',

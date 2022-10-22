@@ -27,6 +27,7 @@ type FormProductServiceSearchData = {
 type Items = {
   business: {
     distance: number;
+    highlighted: boolean;
     id: string;
     latitude: string;
     longitude: string;
@@ -87,7 +88,7 @@ export const FormProductServiceSearch = ({
             direction="row"
           >
             <Input
-              placeholder={`Digite o nome do ${name} desejado`}
+              placeholder={`Digite o nome do ${name}`}
               required={true}
               bg="default_white"
               borderRadius="15px"

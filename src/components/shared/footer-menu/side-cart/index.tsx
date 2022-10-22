@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Icon,
@@ -7,11 +6,13 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Router, useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import useCart from '../../../../hooks/cart';
+import { GlobalLoader } from '../../global-loader';
 import { SideCartCard } from './side-cart-card';
 
 type SideCartProps = {
@@ -20,32 +21,13 @@ type SideCartProps = {
 };
 
 export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
-  const [finalizeOrderLoading, setFinalizeOrderLoading] = useState(false);
+  const router = useRouter();
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
     currency: 'BRL',
   };
   const cart = useCart();
-
-  const finalizeOrder = () => {
-    Swal.fire({
-      title: 'Tem certeza que deseja finalizar o pedido?',
-      showDenyButton: true,
-      confirmButtonText: 'Sim',
-      denyButtonText: `Não`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        confirmFinalizeOrder();
-      }
-    });
-  };
-
-  const confirmFinalizeOrder = async () => {
-    setFinalizeOrderLoading(true);
-    await cart.finalize();
-    setFinalizeOrderLoading(false);
-  };
 
   const cleanOrder = () => {
     Swal.fire({
@@ -61,8 +43,15 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
     });
   };
 
+  const finalizeOrder = () => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
+    router.push('/finalize-order');
+  };
+
   return (
     <>
+      <GlobalLoader />
       <Flex
         className="sidecart"
         width="100%"
@@ -89,7 +78,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
           direction="column"
           opacity="1"
           transition="0.2s ease-in-out"
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
           }}
         >
@@ -146,6 +135,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   img={item.imageUrl}
                   price={item.price}
                   quantity={item.quantity}
+                  type={item.type}
                   businessName={cart.businessName as string}
                   key={key}
                 />
@@ -167,9 +157,10 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   bg="error_red"
                   _hover={{ bg: 'error_red_hover' }}
                   color="default_white"
-                  width={{ base: '185px', md: '205px' }}
+                  width={{ base: '150px', sm: '185px', md: '205px' }}
                   height="60px"
-                  fontSize="22px"
+                  fontSize={{ base: '18px', sm: '22px' }}
+                  disabled={cart.itemsLength === 0}
                   onClick={cleanOrder}
                 >
                   Limpar pedido
@@ -178,22 +169,13 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
                   bg="primary"
                   _hover={{ bg: 'primary_hover' }}
                   color="default_white"
-                  width={{ base: '185px', md: '205px' }}
+                  width={{ base: '150px', sm: '185px', md: '205px' }}
                   height="60px"
-                  fontSize="22px"
+                  fontSize={{ base: '18px', sm: '22px' }}
+                  disabled={cart.itemsLength === 0}
                   onClick={finalizeOrder}
                 >
-                  {!finalizeOrderLoading ? (
-                    'Finalizar pedido'
-                  ) : (
-                    <Spinner
-                      thickness="4px"
-                      speed="0.65s"
-                      emptyColor="gray.200"
-                      color="default_white"
-                      size="md"
-                    />
-                  )}
+                  Finalizar pedido
                 </Button>
               </Flex>
             </Flex>

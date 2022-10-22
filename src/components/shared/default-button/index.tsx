@@ -6,6 +6,7 @@ type DefaultButtonProps = {
   text: string;
   type?: 'button' | 'submit';
   isLoading?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -15,6 +16,7 @@ export const DefaultButton = ({
   text,
   type = 'button',
   isLoading = false,
+  disabled = false,
   onClick,
 }: DefaultButtonProps) => {
   return (
@@ -28,6 +30,7 @@ export const DefaultButton = ({
         height={{ base: '40px', md: '50px' }}
         width={{ base: '125px', md: '180px' }}
         fontSize={{ base: '16px', md: '20px' }}
+        disabled={disabled}
         onClick={onClick}
       >
         {!isLoading ? (

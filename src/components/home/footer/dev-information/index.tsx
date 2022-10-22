@@ -3,9 +3,9 @@ import {
   Grid,
   GridItem,
   Icon,
+  Image,
   Img,
   Link,
-  Stack,
   Text,
 } from '@chakra-ui/react';
 import { BsGithub } from 'react-icons/bs';
@@ -33,7 +33,13 @@ export const DevInformation = ({
         gap={2}
       >
         <GridItem colSpan={1} rowSpan={1}>
-          <Img src={img} width="100px" borderRadius="90px" objectFit="cover" />
+          <Image
+            src={img}
+            fallbackSrc="/imgLoader.gif"
+            width="100px"
+            borderRadius="90px"
+            objectFit="cover"
+          />
         </GridItem>
         <GridItem colSpan={3} rowSpan={1}>
           <Flex
@@ -52,7 +58,8 @@ export const DevInformation = ({
             <Icon
               as={BsGithub}
               color="primary"
-              _hover={{ color: 'primary_hover' }}
+              transition="all 0.3s"
+              _hover={{ color: 'default_black' }}
               fontSize="50px"
             />
           </Link>

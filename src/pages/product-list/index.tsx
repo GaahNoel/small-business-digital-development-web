@@ -43,6 +43,7 @@ type Location = {
 type Products = {
   business: {
     distance: number;
+    highlighted: boolean;
     id: string;
     latitude: string;
     longitude: string;
@@ -128,7 +129,7 @@ const ProductList = ({ cities }: ProductListProps) => {
           type: 'product',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 25,
+          radius: 5,
         },
       });
       console.log(response.data);
@@ -286,6 +287,14 @@ const ProductList = ({ cities }: ProductListProps) => {
                         salePrice={product.salePrice}
                         businessId={product.business.id}
                         businessName={product.business.name}
+                        highlighted={product.business.highlighted}
+                        distance={
+                          product.business.distance
+                            ? product.business.distance
+                                .toString()
+                                .replace('.', ',')
+                            : ''
+                        }
                         detailClick={() => {
                           openModal({
                             id: product.id,
@@ -349,6 +358,14 @@ const ProductList = ({ cities }: ProductListProps) => {
                             salePrice={product.salePrice}
                             businessId={product.business.id}
                             businessName={product.business.name}
+                            highlighted={product.business.highlighted}
+                            distance={
+                              product.business.distance
+                                ? product.business.distance
+                                    .toString()
+                                    .replace('.', ',')
+                                : ''
+                            }
                             detailClick={() => {
                               openModal({
                                 id: product.id,
@@ -419,9 +436,11 @@ const ProductList = ({ cities }: ProductListProps) => {
 const getAllCitiesWithBusiness = async () => {
   try {
     const response = await api.get('business/cities', {});
+    console.log(response.data);
     return response.data;
   } catch (e) {
     console.log(e);
+    return [];
   }
 };
 
@@ -434,14 +453,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const cities = await getAllCitiesWithBusiness();
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   return {
     props: { session, cities },

@@ -47,6 +47,7 @@ type Services = {
     latitude: string;
     longitude: string;
     name: string;
+    highlighted: boolean;
   };
   category: {
     id: string;
@@ -128,7 +129,7 @@ const ServiceList = ({ cities }: ServiceListProps) => {
           type: 'service',
           latitude: locationInfo.lat,
           longitude: locationInfo.lng,
-          radius: 25,
+          radius: 5,
         },
       });
       console.log(response);
@@ -288,6 +289,14 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                         salePrice={service.salePrice}
                         businessId={service.business.id}
                         businessName={service.business.name}
+                        highlighted={service.business.highlighted}
+                        distance={
+                          service.business.distance
+                            ? service.business.distance
+                                .toString()
+                                .replace('.', ',')
+                            : ''
+                        }
                         detailClick={() => {
                           openModal({
                             id: service.id,
@@ -351,6 +360,14 @@ const ServiceList = ({ cities }: ServiceListProps) => {
                             salePrice={service.salePrice}
                             businessId={service.business.id}
                             businessName={service.business.name}
+                            highlighted={service.business.highlighted}
+                            distance={
+                              service.business.distance
+                                ? service.business.distance
+                                    .toString()
+                                    .replace('.', ',')
+                                : ''
+                            }
                             detailClick={() => {
                               openModal({
                                 id: service.id,
@@ -424,6 +441,7 @@ const getAllCitiesWithBusiness = async () => {
     return response.data;
   } catch (e) {
     console.log(e);
+    return [];
   }
 };
 
@@ -436,14 +454,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const cities = await getAllCitiesWithBusiness();
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   return {
     props: { session, cities },

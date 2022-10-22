@@ -29,6 +29,7 @@ type Businesses = {
   zip: string;
   country: string;
   accountId: string;
+  highlighted: boolean;
 }[];
 
 const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
@@ -37,19 +38,24 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
     mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
     const map = new mapboxgl.Map({
       container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
       center: [Number(lng), Number(lat)], // starting position [lng, lat]
       zoom: 10, // starting zoom
-      minZoom: 15,
+      minZoom: 14,
     });
 
     businesses.map((business) => {
       const element = document.createElement('div');
+      const elementImage = document.createElement('img');
+      elementImage.style.visibility = 'hidden';
+      elementImage.src = business.imageUrl;
+      element.appendChild(elementImage);
 
+      // url(${business.imageUrl})
       element.style.cssText = `
           height: 100px;
           width: 100px;
-          background-image: url(${business.imageUrl});
+          background-image: url(imgLoader.gif);
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center;
@@ -59,8 +65,15 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
           transform-style: preserve-3d;
           cursor: pointer;
         `;
+      elementImage.onload = () => {
+        element.style.backgroundImage = `url(${business.imageUrl})`;
+        console.log(element.style.backgroundImage);
+        elementImage.remove();
+      };
 
-      element.className = 'selected-marker';
+      element.className = business.highlighted
+        ? 'selected-marker highlighted'
+        : 'selected-marker';
 
       element.addEventListener('click', () => {
         router.push(`/business-items/${business.id}`);
@@ -106,7 +119,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
             borderColor: 'primary_hover',
             transition: '0.2s ease-in-out',
           },
-          '.selected-marker:before': {
+          '.selected-marker:after': {
             content: '""',
             width: ' 58px',
             height: '60px',
@@ -116,8 +129,18 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
             transform: 'rotate(45deg) translateZ(-1px)',
             backgroundColor: 'primary',
           },
-          '.selected-marker:hover:before': {
+          '.selected-marker:hover:after': {
             backgroundColor: 'primary_hover',
+          },
+          '.highlighted::before': {
+            fontFamily: 'FontAwesome',
+            fontWeight: 900,
+            content: '"\\f005"',
+            fontSize: '40px',
+            color: 'default_yellow',
+            left: 6,
+            top: -4,
+            position: 'absolute',
           },
         }}
       />
@@ -132,10 +155,9 @@ const getBusinessesNearby = async (lat: number, lng: number) => {
       params: {
         latitude: lat,
         longitude: lng,
-        radius: 25,
+        radius: 5,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -152,6 +174,15 @@ export const getServerSideProps: GetServerSideProps = async ({
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
   // if(!query.lat || !query.lng){
   //   return {
   //     redirect: {
@@ -165,15 +196,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   console.log(query);
 
   const businesses = await getBusinessesNearby(Number(lat), Number(lng));
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
 
   return {
     props: { session, lat, lng, businesses },

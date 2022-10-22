@@ -33,15 +33,19 @@ import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+// Import the plugin code
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { runIfFn } from '@chakra-ui/utils';
 import { toast } from 'react-toastify';
 import { stringify } from 'querystring';
 
 // Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-// Register the plugin
-registerPlugin(FilePondPluginImageValidateSize);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginImageValidateSize,
+  FilePondPluginFileValidateType,
+);
 
 type ProductSecondFormProps = {
   id?: string;
@@ -144,8 +148,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           name,
           type,
           description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
           businessId: props.establishmentBase.id,
           categoryId: category,
@@ -157,8 +161,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
+
+      await router.push(`/establishment/${props.establishmentBase.id}`);
       toast.success('Produto cadastrado com sucesso!');
-      router.push(`/establishment/${props.establishmentBase.id}`);
     } catch (e) {
       console.error(e);
     }
@@ -183,8 +188,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
         {
           name,
           description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
           productId: props.id,
         },
@@ -200,12 +205,13 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           id: props?.id as string,
           name: name,
           description: description,
-          listPrice: parseFloat(price),
-          salePrice: parseFloat(price),
+          listPrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
+          salePrice: parseFloat(price.replaceAll('.', '').replaceAll(',', '.')),
           imageUrl: imageUrlReturned,
         });
-      toast.success('Produto alterado com sucesso!');
+
       props.clickBackButton();
+      toast.success('Produto alterado com sucesso!');
       //router.push('/entrepreneur');
     } catch (e) {
       console.error(e);
@@ -238,7 +244,8 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           <Stack
             direction="column"
             spacing={3}
-            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '25vw' }}
+            width="100%"
+            maxWidth={{ base: '90vw', md: '50vw', lg: '40vw', xl: '35vw' }}
             margin="0px auto"
             border="2px #000"
             borderRadius="3xl"
@@ -246,7 +253,9 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
             boxShadow={
               props.registerForm ? '-14px 15px 15px -8px rgba(0,0,0,0.35);' : ''
             }
-            padding={{ base: '25px', md: '25px 50px' }}
+            padding={
+              props.registerForm ? { base: '25px', md: '25px 50px' } : '0px'
+            }
           >
             <FormInput
               id="name"
@@ -288,10 +297,12 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 allowMultiple={false}
                 name="files"
                 allowImageValidateSize={true}
-                imageValidateSizeMinWidth={400}
-                imageValidateSizeMinHeight={400}
-                imageValidateSizeMaxWidth={1080}
-                imageValidateSizeMaxHeight={1080}
+                imageValidateSizeMinWidth={200}
+                imageValidateSizeMinHeight={200}
+                imageValidateSizeMaxWidth={2000}
+                imageValidateSizeMaxHeight={2000}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['image/jpg', 'image/jpeg']}
                 labelIdle='Drag &amp; Drop your files or <span class="filepond--label-action">Browse</span> '
               />
             </Box>
@@ -306,6 +317,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 bg="default_black"
                 color="default_white"
                 text="Cancelar"
+                disabled={submitLoading}
                 onClick={() => props.clickBackButton()}
               />
               <DefaultButton
@@ -313,6 +325,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
                 color="default_white"
                 text="Enviar"
                 isLoading={submitLoading}
+                disabled={submitLoading}
                 type="submit"
               />
             </Stack>

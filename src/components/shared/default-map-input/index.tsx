@@ -21,7 +21,7 @@ export const DefaultMapInput = ({
       mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
       const map = new mapboxgl.Map({
         container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
         center: [editLng as number, editLat as number], // starting position [lng, lat]
         zoom: 15, // starting zoom
       });
@@ -54,7 +54,7 @@ export const DefaultMapInput = ({
           mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
           const map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
             center: [
               geolocaltion.coords.longitude,
               geolocaltion.coords.latitude,
@@ -89,7 +89,7 @@ export const DefaultMapInput = ({
           mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
           const map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            style: 'mapbox://styles/mapbox/streets-v11?optimize=true', // style URL
             center: [-46.637934, -23.56813], // starting position [lng, lat]
             zoom: 15, // starting zoom
           });

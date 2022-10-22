@@ -25,6 +25,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 import { EstablishmentEditModal } from '../../components/entrepreneur/establishment-edit-modal';
+import Error from 'next/error';
+import axios from 'axios';
 
 type EstablishmentProps = {
   id: string;
@@ -39,6 +41,7 @@ type EstablishmentProps = {
   state?: string;
   zip?: string;
   country?: string;
+  maxPermittedCouponPercentage?: number;
 };
 
 type EstablishmentsProps = EstablishmentProps[];
@@ -56,6 +59,7 @@ type EstablishmentModalProps = {
   lat: string;
   lng: string;
   imageUrl: string;
+  maxPermittedCouponPercentage: number;
 };
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
@@ -97,6 +101,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     city: string,
     reference: string,
   ) => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
     router.push(`/establishment/${id}`);
   };
 
@@ -108,6 +114,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     lat,
     lng,
     imageUrl,
+    maxPermittedCouponPercentage,
   }: EstablishmentModalProps) => {
     setEstablishmentModal({
       session,
@@ -117,6 +124,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
       lat,
       lng,
       imageUrl,
+      maxPermittedCouponPercentage,
     });
     editEstablishmentOnOpen();
   };
@@ -135,8 +143,12 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
         }),
       );
       toast.success('Estabelecimento apagado com sucesso!');
-    } catch (e: any) {
-      console.log(e);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.message.includes('500')) {
+        toast.error(
+          'Não é possível apagar um estabelecimento que contém itens registrados!',
+        );
+      }
     }
   };
 
@@ -179,6 +191,9 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
         lat={establishmentModal?.lat as string}
         lng={establishmentModal?.lng as string}
         imageUrl={establishmentModal?.imageUrl as string}
+        maxPermittedCouponPercentage={
+          establishmentModal?.maxPermittedCouponPercentage as number
+        }
         isOpen={editEstablishmentIsOpen}
         onClose={editEstablishmentOnClose}
         updateState={updateEstablishmentState}
@@ -249,6 +264,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
             </Flex>
             <Flex direction="column" align="center" marginBottom="100px">
               <Text
+                color="primary"
                 fontSize={{ base: '18px', sm: '22px', md: '24px', lg: '28px' }}
                 fontWeight="bold"
                 marginBottom="20px"
@@ -287,6 +303,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                           lat: establishment.latitude,
                           lng: establishment.longitude,
                           imageUrl: establishment.imageUrl,
+                          maxPermittedCouponPercentage:
+                            establishment.maxPermittedCouponPercentage as number,
                         });
                       }}
                       removeItem={(event) => {
@@ -339,6 +357,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                               lat: establishment.latitude,
                               lng: establishment.longitude,
                               imageUrl: establishment.imageUrl,
+                              maxPermittedCouponPercentage:
+                                establishment.maxPermittedCouponPercentage as number,
                             });
                           }}
                           removeItem={(event) => {
@@ -371,12 +391,16 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 };
 
 const getBusinessList = async (token: string) => {
-  const { sub: id } = jwt_decode(token) as {
-    sub: string;
-  };
-  console.log(id);
-  const response = await api.get(`business/list/${id}`, {});
-  return response.data;
+  try {
+    const { id } = jwt_decode(token) as {
+      id: string;
+    };
+    const response = await api.get(`business/list/${id}`, {});
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

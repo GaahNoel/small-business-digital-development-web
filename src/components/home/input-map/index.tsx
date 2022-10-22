@@ -20,6 +20,8 @@ export const InputMap = () => {
     // Add geocoder result to container.
     geocoder.on('result', (e) => {
       const [lng, lat] = e.result.center;
+      const homeLoader = document.getElementById('global-loader');
+      homeLoader?.classList.add('active');
       router.push({
         pathname: '/businesses-nearby',
         query: {
@@ -44,6 +46,7 @@ export const InputMap = () => {
         margin={{ base: '30px auto 100px auto', md: '30px auto 50px auto' }}
         align="center"
         justify="center"
+        zIndex={2}
         sx={{
           '.mapboxgl-ctrl': {
             width: '100%',
@@ -56,6 +59,7 @@ export const InputMap = () => {
             padding: '25px 50px',
             borderRadius: '20px',
             bg: 'default_white',
+            zIndex: 2,
           },
           '.mapboxgl-ctrl-geocoder--icon-search': {
             width: '40px',

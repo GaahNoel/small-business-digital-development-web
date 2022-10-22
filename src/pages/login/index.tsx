@@ -30,6 +30,7 @@ const Login = () => {
               }}
               maxWidth="80%"
               src="Shop.svg"
+              fallbackSrc="/imgLoaderGrey.gif"
               alt="Shop"
             />
           </HeaderHalfCircleTop>

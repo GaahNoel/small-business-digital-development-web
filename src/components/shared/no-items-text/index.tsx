@@ -12,13 +12,15 @@ export const NoItemsText = ({ text, color }: NoItemsTextProps) => {
         direction="row"
         align="center"
         justify="center"
-        fontWeight="bold"
+        fontWeight="medium"
         width="90%"
         margin="30px auto"
         textAlign="center"
         color={color}
       >
-        <Text fontSize={{ base: '24px', md: '30px', lg: '36px' }}>{text}</Text>
+        <Text fontSize={{ base: '16px', sm: '20px', md: '22px', lg: '26px' }}>
+          {text}
+        </Text>
       </Flex>
     </>
   );

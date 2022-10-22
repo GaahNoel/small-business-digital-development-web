@@ -1,9 +1,16 @@
 import { Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BsArrowUpRight } from 'react-icons/bs';
+import { FiTrendingUp } from 'react-icons/fi';
 
 export const EntrepreneurButton = () => {
   const router = useRouter();
+
+  const navigateToEntrepreneurPage = () => {
+    const homeLoader = document.getElementById('global-loader');
+    homeLoader?.classList.add('active');
+    router.push('entrepreneur');
+  };
   return (
     <>
       <Flex
@@ -11,13 +18,31 @@ export const EntrepreneurButton = () => {
       >
         <Button
           bg="primary"
-          _hover={{ bg: 'primary_hover' }}
+          _hover={{
+            bgColor: `primary_hover`,
+            svg: {
+              animation: 'drawIconsEntrepreneur 1s ease 1',
+              animationFillMode: 'backwards',
+            },
+            '@keyframes drawIconsEntrepreneur': {
+              '0%': {
+                strokeWidth: 0,
+                strokeDasharray: '1 100',
+                strokeDashoffset: '0',
+              },
+              '100%': {
+                strokeWidth: 1.5,
+                strokeDasharray: '100 0',
+                strokeDashoffset: '100',
+              },
+            },
+          }}
           padding="50px"
           h="100px"
           minW="100px"
           margin={{ base: '15px auto', md: '15px auto 0px auto' }}
           boxShadow="dark-lg"
-          onClick={() => router.push('entrepreneur')}
+          onClick={navigateToEntrepreneurPage}
         >
           <Stack
             direction="row"
@@ -27,8 +52,9 @@ export const EntrepreneurButton = () => {
           >
             <Flex bg="default_white" padding="14px" borderRadius="full">
               <Icon
-                as={BsArrowUpRight}
+                as={FiTrendingUp}
                 color="primary"
+                strokeWidth={1.5}
                 fontSize={{ base: '25px', xl: '30px', '2xl': '35px' }}
               />
             </Flex>
@@ -42,7 +68,7 @@ export const EntrepreneurButton = () => {
                 fontSize={{ base: '1rem', xl: '1.3rem', '2xl': '1.45rem' }}
                 fontWeight="normal"
               >
-                Anuncie já seus produtos
+                Gerencie aqui seus negócios
               </Text>
             </Flex>
           </Stack>

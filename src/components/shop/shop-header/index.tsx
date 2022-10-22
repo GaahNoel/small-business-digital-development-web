@@ -1,4 +1,4 @@
-import { Icon, Img, Stack, Text } from '@chakra-ui/react';
+import { Icon, Image, Img, Stack, Text } from '@chakra-ui/react';
 import { BsCoin } from 'react-icons/bs';
 
 export const ShopHeader = () => {
@@ -11,7 +11,7 @@ export const ShopHeader = () => {
         margin="15px 0px 10px 0px"
         spacing={24}
       >
-        <Img src="Logo.svg"></Img>
+        <Image src="Logo.svg" />
         <Stack
           bg="default_white"
           borderRadius="14px"

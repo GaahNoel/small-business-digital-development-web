@@ -43,6 +43,9 @@ export const DefaultTextArea = ({
           border="2px"
           fontSize={{ base: '1rem', md: '1.3rem' }}
           height={{ base: '80px', md: '160px' }}
+          _hover={{
+            borderColor: errors[id] ? 'error_red_hover' : 'primary_hover',
+          }}
           {...register(id, { required, maxLength })}
         />
       </Flex>

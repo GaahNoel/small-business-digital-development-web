@@ -13,7 +13,13 @@ export const HalfImage = () => {
         height={{ base: '35vh', lg: '100vh' }}
         width="100%"
       >
-        <Image width="400px" marginRight="10%" src="Item.svg" alt="Shop" />
+        <Image
+          fallbackSrc="/imgLoaderGrey.gif"
+          width="400px"
+          marginRight="10%"
+          src="/Item.svg"
+          alt="Shop"
+        />
       </Flex>
     </>
   );

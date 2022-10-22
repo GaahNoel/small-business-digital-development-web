@@ -13,6 +13,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Image,
   Img,
   Input,
   Select,
@@ -41,7 +42,14 @@ import { ProductServiceListModal } from '../../components/shared/product-service
 import { InputType } from 'zlib';
 import { InputSearchItems } from '../../components/business-items/input-search-items';
 import { AccordionPanelItems } from '../../components/business-items/accordion-panel-items';
-import { AccordionButtonItems } from '../../components/business-items/accordion-button-items';
+import { AccordionButtonItems } from '../../components/shared/accordion-button-items';
+import {
+  default_orange,
+  default_yellow,
+  empty_gray,
+  service_blue,
+} from '../../styles/theme';
+import { CouponInfo } from '../../components/shared/coupon-info';
 
 type ParamsProps = {
   id: string;
@@ -77,6 +85,7 @@ type Business = {
   state: string;
   zip: string;
   country: string;
+  maxPermittedCouponPercentage: number;
 };
 
 type ItemModalProps = {
@@ -100,11 +109,23 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
     onClose: viewItemOnClose,
   } = useDisclosure();
   const searchBar = useRef<HTMLInputElement>();
+  const couponArray = [
+    { color: empty_gray, value: 0 },
+    { color: default_yellow, value: 5 },
+    { color: default_orange, value: 7 },
+    { color: service_blue, value: 10 },
+  ];
 
   useEffect(() => {
     setFilteredItems(items);
-    console.log(items);
   }, []);
+
+  const getCouponColor = () => {
+    const couponIndex = couponArray.findIndex((coupon) => {
+      return coupon.value === business.maxPermittedCouponPercentage;
+    });
+    return couponArray[couponIndex].color;
+  };
 
   const openModal = ({
     id,
@@ -150,8 +171,9 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
               color="default_white"
               spacing={1}
             >
-              <Img
+              <Image
                 src={business.imageUrl}
+                fallbackSrc="/imgLoader.gif"
                 width={{ base: '120px', md: '200px', lg: '240px' }}
                 height={{ base: '120px', md: '200px', lg: '240px' }}
                 objectFit="cover"
@@ -200,6 +222,70 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
           paddingBottom={{ base: '80px', md: '0px' }}
         >
           <Flex align="center" direction="column" width="100%" marginTop="40px">
+            <Flex
+              id="coupon"
+              align="center"
+              direction="column"
+              paddingBottom="40px"
+            >
+              <Stack direction="column" align="center" spacing={3}>
+                <Text
+                  fontSize={{
+                    base: '18px',
+                    sm: '22px',
+                    md: '26px',
+                    lg: '30px',
+                    '2xl': '34px',
+                  }}
+                  fontWeight="bold"
+                  color="primary"
+                >
+                  {`Cupons disponíveis`}
+                </Text>
+                {business.maxPermittedCouponPercentage > 0 ? (
+                  <Flex>
+                    <CouponInfo
+                      iconColor={couponArray[1].color}
+                      text={`${couponArray[1].value}%`}
+                      value={couponArray[1].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                    <CouponInfo
+                      iconColor={couponArray[2].color}
+                      text={`${couponArray[2].value}%`}
+                      value={couponArray[2].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                    <CouponInfo
+                      iconColor={couponArray[3].color}
+                      text={`${couponArray[3].value}%`}
+                      value={couponArray[3].value}
+                      maxPermittedCouponPercentage={
+                        business.maxPermittedCouponPercentage
+                      }
+                    />
+                  </Flex>
+                ) : (
+                  <Text
+                    fontSize={{
+                      base: '14px',
+                      sm: '18px',
+                      md: '20px',
+                      lg: '24px',
+                    }}
+                    fontWeight="medium"
+                    color="primary"
+                  >
+                    {`O estabelecimento não disponibiliza o uso de cupons`}
+                  </Text>
+                )}
+              </Stack>
+            </Flex>
+
             <Flex align="center" direction="column" paddingBottom="40px">
               <InputSearchItems
                 items={items}
@@ -297,10 +383,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const { id } = params as ParamsProps;
-  const business = await getBusinessInfo(id);
-  const items = await getAllItems(id);
-
   if (!session) {
     return {
       redirect: {
@@ -309,6 +391,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+
+  const { id } = params as ParamsProps;
+  const business = await getBusinessInfo(id);
+  const items = await getAllItems(id);
 
   return {
     props: { session, items, business },
