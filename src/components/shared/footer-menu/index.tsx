@@ -97,7 +97,7 @@ const MobileFooterMenu = ({
       borderTopRadius="2xl"
       position="fixed"
       bottom="0"
-      zIndex="1"
+      zIndex="10"
       display={{ base: 'flex', md: 'none' }}
     >
       <IconMenu
