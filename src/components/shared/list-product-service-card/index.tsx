@@ -144,7 +144,7 @@ export const ListProductServiceCard = ({
           >
             <Text
               maxWidth={{
-                base: '200px',
+                base: '170px',
                 sm: '230px',
                 lg: '150px',
                 xl: '200px',
