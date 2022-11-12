@@ -64,6 +64,7 @@ type EstablishmentModalProps = {
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
+  const dynamicRoute = router.asPath;
   const {
     isOpen: editEstablishmentIsOpen,
     onOpen: editEstablishmentOnOpen,
@@ -91,7 +92,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
 
   useEffect(() => {
     setEstablishmentsState(businesses);
-  }, []);
+  }, [businesses]);
 
   const clickCard = (
     id: string,
