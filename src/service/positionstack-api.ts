@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const positionstackApi = axios.create({
-  baseURL: 'http://api.positionstack.com/v1/',
+  baseURL: 'https://api.positionstack.com/v1/',
 });
