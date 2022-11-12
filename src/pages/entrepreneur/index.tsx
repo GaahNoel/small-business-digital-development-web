@@ -404,7 +404,11 @@ const getBusinessList = async (token: string) => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  res.setHeader(
+    'Cache-Control',
+    'no-cache, no-store, max-age=0, must-revalidate',
+  );
   const token = await getToken({
     req,
     raw: true,
