@@ -92,7 +92,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   ) => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    routerNavigateUrl(router, `/establishment/${id}`);
+    router.push(`/establishment/${id}`);
   };
 
   const editEstablishment = ({
@@ -235,8 +235,8 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                 borderRadius="2xl"
                 position="relative"
                 top={{ base: '-23px', sm: '-35', md: '-45' }}
-                onClick={() => {
-                  routerNavigateUrl(router, '/establishment-register');
+                onClick={async () => {
+                  await routerNavigateUrl(router, '/establishment-register');
                 }}
               >
                 <Stack

@@ -93,7 +93,7 @@ export const DefaultHeader = () => {
 
           <DefaultHeaderIcon
             icon={FiTarget}
-            onClick={() => routerNavigateUrl(router, '/shop?type=mission')}
+            onClick={() => router.push('/shop?type=mission')}
           />
           <Button
             onClick={status !== 'authenticated' ? login : logout}

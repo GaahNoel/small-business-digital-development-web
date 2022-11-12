@@ -77,7 +77,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
         : 'selected-marker';
 
       element.addEventListener('click', () => {
-        routerNavigateUrl(router, `/business-items/${business.id}`);
+        router.push(`/business-items/${business.id}`);
       });
 
       new mapboxgl.Marker(element)

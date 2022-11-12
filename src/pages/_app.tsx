@@ -8,7 +8,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../node_modules/video-react/dist/video-react.css';
 import { CartProvider } from '../context/cart';
+import { useRouter } from 'next/router';
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <>
       <ToastContainer />
@@ -17,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ProductFormProvider>
             <SessionProvider>
               <ChakraProvider theme={Theme}>
-                <Component {...pageProps} />
+                <Component {...pageProps} key={router.asPath} />
               </ChakraProvider>
             </SessionProvider>
           </ProductFormProvider>

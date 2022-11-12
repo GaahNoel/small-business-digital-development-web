@@ -233,7 +233,8 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
         },
       );
       toast.success('Estabelecimento cadastrado com sucesso!');
-      routerNavigateUrl(router, '/entrepreneur');
+      //await routerNavigateUrl(router, '/entrepreneur');
+      await router.push('/entrepreneur');
     } catch (e: any) {
       console.error(e);
     }

@@ -44,10 +44,10 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
     });
   };
 
-  const finalizeOrder = () => {
+  const finalizeOrder = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    routerNavigateUrl(router, `/finalize-order`);
+    await routerNavigateUrl(router, `/finalize-order`);
   };
 
   return (
