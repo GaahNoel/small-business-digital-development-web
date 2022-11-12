@@ -2,6 +2,7 @@ import { Flex, FormControl, Stack, Text } from '@chakra-ui/react';
 import { Router, useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useProductForm } from '../../../hooks/product-form';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 import { DefaultButton } from '../../shared/default-button';
 import { ItemFormSelect } from '../item-form-select';
 
@@ -107,7 +108,10 @@ export const ItemRegisterForm = ({
               color="default_white"
               text="Cancelar"
               onClick={() =>
-                router.push(`/establishment/${establishmentBase.id}`)
+                routerNavigateUrl(
+                  router,
+                  `/establishment/${establishmentBase.id}`,
+                )
               }
             />
             <DefaultButton

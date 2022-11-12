@@ -1,6 +1,7 @@
 import { Button, Icon, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { IconType } from 'react-icons';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 type PrincipalButtonProps = {
   colorButton: string;
@@ -21,7 +22,7 @@ export const PrincipalButton = ({
   const handleClick = () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    router.push(page);
+    routerNavigateUrl(router, page);
   };
   return (
     <Button

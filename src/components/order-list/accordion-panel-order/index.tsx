@@ -29,6 +29,7 @@ import FormErrorMessage from '../../shared/form-error-message';
 import { ListProductServiceCard } from '../../shared/list-product-service-card';
 import { NoItemsText } from '../../shared/no-items-text';
 import { Router, useRouter } from 'next/router';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 type AccordionPanelOrderProps = {
   orderId: string;
@@ -102,7 +103,7 @@ export const AccordionPanelOrder = ({
     if (!navigateLoading) {
       setNavigateLoadingLocal(true);
       setNavigateLoading(true);
-      await router.push(`/order-info/${orderId}`);
+      routerNavigateUrl(router, `/order-info/${orderId}`);
       setNavigateLoadingLocal(false);
       setNavigateLoading(false);
     }

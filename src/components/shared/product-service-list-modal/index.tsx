@@ -25,6 +25,7 @@ import {
 import { RiCheckboxMultipleBlankLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import useCart from '../../../hooks/cart';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 import { ModalInfo } from '../../establishment/modal-info';
 import { DefaultButton } from '../../shared/default-button';
 
@@ -84,7 +85,7 @@ export const ProductServiceListModal = ({
 
   const navigateToBusinessPage = async (businessId: string) => {
     setRouterLoading(true);
-    await router.push(`/business-items/${businessId}`);
+    routerNavigateUrl(router, `/business-items/${businessId}`);
     setRouterLoading(false);
   };
 

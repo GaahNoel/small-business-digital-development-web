@@ -25,6 +25,7 @@ import { useSession } from 'next-auth/react';
 import { expectsResolvedDragConstraints } from 'framer-motion/types/gestures/drag/VisualElementDragControls';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 export const FooterMenu = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -32,7 +33,7 @@ export const FooterMenu = () => {
   const router = useRouter();
   const { status } = useSession();
   const routerNavigate = (page: string) => {
-    router.push(page);
+    routerNavigateUrl(router, page);
   };
   const routerBack = () => {
     router.back();

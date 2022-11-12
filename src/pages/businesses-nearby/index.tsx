@@ -9,6 +9,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type BusinessesNearbyProps = {
   lat: string;
@@ -76,7 +77,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
         : 'selected-marker';
 
       element.addEventListener('click', () => {
-        router.push(`/business-items/${business.id}`);
+        routerNavigateUrl(router, `/business-items/${business.id}`);
       });
 
       new mapboxgl.Marker(element)

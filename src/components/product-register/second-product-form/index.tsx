@@ -38,6 +38,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { runIfFn } from '@chakra-ui/utils';
 import { toast } from 'react-toastify';
 import { stringify } from 'querystring';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 // Register the plugins
 registerPlugin(
@@ -161,8 +162,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
-
-      await router.push(`/establishment/${props.establishmentBase.id}`);
+      routerNavigateUrl(router, `/establishment/${props.establishmentBase.id}`);
       toast.success('Produto cadastrado com sucesso!');
     } catch (e) {
       console.error(e);

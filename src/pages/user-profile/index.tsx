@@ -19,6 +19,7 @@ import { api } from '../../service/api';
 import { UserEditForm } from '../../components/user-profile/user-edit-form';
 import axios from 'axios';
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type UserEditProps = {
   session: string;
@@ -236,10 +237,12 @@ export const UserSelection = ({ userInfo, setIsOpened }: UserInfo) => {
         }}
       >
         <Button onClick={() => setIsOpened(false)}>Editar dados</Button>
-        <Button onClick={() => router.push('entrepreneur')}>
+        <Button onClick={() => routerNavigateUrl(router, 'entrepreneur')}>
           Meus estabelecimentos
         </Button>
-        <Button onClick={() => router.push('order-list')}>Meus pedidos</Button>
+        <Button onClick={() => routerNavigateUrl(router, 'order-list')}>
+          Meus pedidos
+        </Button>
       </Flex>
     </Flex>
   );

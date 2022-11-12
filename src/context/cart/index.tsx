@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { ReactNode, useEffect, createContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../../service/api';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type CartItems = Item[];
 
@@ -177,7 +178,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
 
     try {
       await axios.post('/api/create-order', finalCart);
-      await router.push('/order-list');
+      routerNavigateUrl(router, '/order-list');
       toast.success('Pedido realizado com sucesso!');
       clean();
     } catch (error) {

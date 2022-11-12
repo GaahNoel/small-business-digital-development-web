@@ -12,6 +12,7 @@ import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import useCart from '../../../../hooks/cart';
+import { routerNavigateUrl } from '../../../../utils/router-navigate';
 import { GlobalLoader } from '../../global-loader';
 import { SideCartCard } from './side-cart-card';
 
@@ -46,7 +47,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
   const finalizeOrder = () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    router.push('/finalize-order');
+    routerNavigateUrl(router, `/finalize-order`);
   };
 
   return (

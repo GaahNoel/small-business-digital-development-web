@@ -34,6 +34,7 @@ import {
   service_blue,
 } from '../../styles/theme';
 import { CouponInfo } from '../../components/shared/coupon-info';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type ParamsProps = {
   id: string;
@@ -72,6 +73,7 @@ type ProductProps = {
 };
 
 type ProductsProps = {
+  id: string;
   token: string;
   products: ProductProps[];
   establishmentInfo: EstablishmentProps;
@@ -96,16 +98,14 @@ type EstablishmentBaseProps = {
 };
 
 const Establishment = ({
+  id,
   token,
   products,
   establishmentInfo,
 }: ProductsProps) => {
   const router = useRouter();
   const [establishmentBase, setEstablishmentBase] =
-    useState<EstablishmentBaseProps>({
-      id: '',
-      name: '',
-    });
+    useState<EstablishmentBaseProps>(establishmentInfo);
   const { form, setStage } = useProductForm();
   const { setToken } = form;
   const {
@@ -119,23 +119,8 @@ const Establishment = ({
     onClose: editProductOnClose,
   } = useDisclosure();
   const [productModal, setProductModal] = useState<ProductModalProps>();
-  const [productsState, setProductsState] = useState<ProductsStateProps>([
-    {
-      id: '',
-      name: '',
-      listPrice: 0,
-      salePrice: 0,
-      description: '',
-      createdAt: '',
-      businessId: '',
-      imageUrl: '',
-      type: '',
-      category: {
-        id: '',
-        name: '',
-      },
-    },
-  ]);
+  const [productsState, setProductsState] =
+    useState<ProductsStateProps>(products);
 
   const couponArray = [
     { color: empty_gray, value: 0 },
@@ -145,12 +130,13 @@ const Establishment = ({
   ];
 
   useEffect(() => {
-    setProductsState(products);
-    setToken(token);
-    setEstablishmentBase({
-      id: establishmentInfo.id,
-      name: establishmentInfo.name,
+    getEstablishmentInfo(id).then((receivedEstablishment) => {
+      setEstablishmentBase(receivedEstablishment);
     });
+    getProductList(id).then((receivedProducts) => {
+      setProductsState(receivedProducts);
+    });
+    setToken(token);
   }, []);
 
   const getCouponColor = () => {
@@ -162,7 +148,7 @@ const Establishment = ({
 
   const clickNewProduct = (id: string) => {
     setStage('first');
-    router.push(`/product-register/${id}`);
+    routerNavigateUrl(router, `/product-register/${id}`);
   };
 
   const openModal = ({
@@ -594,7 +580,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    props: { products, establishmentInfo, token },
+    props: { products, establishmentInfo, token, id },
   };
 };
 

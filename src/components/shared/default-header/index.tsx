@@ -12,6 +12,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { FiMap, FiTarget } from 'react-icons/fi';
 import { DefaultHeaderIcon } from './default-header-icon';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 type Location = {
   lat: number;
@@ -92,7 +93,7 @@ export const DefaultHeader = () => {
 
           <DefaultHeaderIcon
             icon={FiTarget}
-            onClick={() => router.push('/shop?type=mission')}
+            onClick={() => routerNavigateUrl(router, '/shop?type=mission')}
           />
           <Button
             onClick={status !== 'authenticated' ? login : logout}
