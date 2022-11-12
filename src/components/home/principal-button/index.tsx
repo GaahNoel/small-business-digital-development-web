@@ -19,10 +19,10 @@ export const PrincipalButton = ({
   page,
 }: PrincipalButtonProps) => {
   const router = useRouter();
-  const handleClick = () => {
+  const handleClick = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    routerNavigateUrl(router, page);
+    await routerNavigateUrl(router, page);
   };
   return (
     <Button

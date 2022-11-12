@@ -178,7 +178,7 @@ export const CartProvider = ({ children }: CartContextProps) => {
 
     try {
       await axios.post('/api/create-order', finalCart);
-      routerNavigateUrl(router, '/order-list');
+      await routerNavigateUrl(router, '/order-list');
       toast.success('Pedido realizado com sucesso!');
       clean();
     } catch (error) {

@@ -148,7 +148,7 @@ const Establishment = ({
 
   const clickNewProduct = (id: string) => {
     setStage('first');
-    routerNavigateUrl(router, `/product-register/${id}`);
+    router.push(`/product-register/${id}`);
   };
 
   const openModal = ({

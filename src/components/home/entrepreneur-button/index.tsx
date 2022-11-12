@@ -7,10 +7,10 @@ import { routerNavigateUrl } from '../../../utils/router-navigate';
 export const EntrepreneurButton = () => {
   const router = useRouter();
 
-  const navigateToEntrepreneurPage = () => {
+  const navigateToEntrepreneurPage = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    routerNavigateUrl(router, 'entrepreneur');
+    router.push('entrepreneur');
   };
   return (
     <>

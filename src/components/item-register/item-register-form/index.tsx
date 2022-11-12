@@ -108,10 +108,7 @@ export const ItemRegisterForm = ({
               color="default_white"
               text="Cancelar"
               onClick={() =>
-                routerNavigateUrl(
-                  router,
-                  `/establishment/${establishmentBase.id}`,
-                )
+                router.push(`/establishment/${establishmentBase.id}`)
               }
             />
             <DefaultButton

@@ -52,8 +52,8 @@ const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
             lng=""
             maxPermittedCouponPercentage={0}
             registerForm={true}
-            clickBackButton={() => {
-              routerNavigateUrl(router, 'entrepreneur');
+            clickBackButton={async () => {
+              await routerNavigateUrl(router, 'entrepreneur');
             }}
           />
         </Flex>

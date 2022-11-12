@@ -85,7 +85,7 @@ export const ProductServiceListModal = ({
 
   const navigateToBusinessPage = async (businessId: string) => {
     setRouterLoading(true);
-    routerNavigateUrl(router, `/business-items/${businessId}`);
+    router.push(`/business-items/${businessId}`);
     setRouterLoading(false);
   };
 
