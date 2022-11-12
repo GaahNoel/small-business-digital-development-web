@@ -2,6 +2,7 @@ import { Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BsArrowUpRight } from 'react-icons/bs';
 import { FiTrendingUp } from 'react-icons/fi';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 export const EntrepreneurButton = () => {
   const router = useRouter();
@@ -9,7 +10,7 @@ export const EntrepreneurButton = () => {
   const navigateToEntrepreneurPage = () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    router.push('entrepreneur');
+    routerNavigateUrl(router, 'entrepreneur');
   };
   return (
     <>

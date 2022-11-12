@@ -56,6 +56,7 @@ type ParamsProps = {
 };
 
 type BusinessItemsProps = {
+  id: string;
   items: Items;
   business: Business;
 };
@@ -99,9 +100,13 @@ type ItemModalProps = {
   categoryName: string;
 };
 
-const BusinessItems = ({ items, business }: BusinessItemsProps) => {
+const BusinessItems = ({
+  id,
+  items,
+  business: serverSideBusiness,
+}: BusinessItemsProps) => {
   const router = useRouter();
-  const [filteredItems, setFilteredItems] = useState<Items>([]);
+  const [filteredItems, setFilteredItems] = useState<Items>(items);
   const [itemModal, setItemModal] = useState<ItemModalProps>();
   const {
     isOpen: viewItemIsOpen,
@@ -115,9 +120,15 @@ const BusinessItems = ({ items, business }: BusinessItemsProps) => {
     { color: default_orange, value: 7 },
     { color: service_blue, value: 10 },
   ];
+  const [business, setBusiness] = useState<Business>(serverSideBusiness);
 
   useEffect(() => {
-    setFilteredItems(items);
+    getAllItems(id).then((receivedItems) => {
+      setFilteredItems(receivedItems);
+    });
+    getBusinessInfo(id).then((receivedBusiness) => {
+      setBusiness(receivedBusiness);
+    });
   }, []);
 
   const getCouponColor = () => {
@@ -397,7 +408,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const items = await getAllItems(id);
 
   return {
-    props: { session, items, business },
+    props: { id, session, items, business },
   };
 };
 

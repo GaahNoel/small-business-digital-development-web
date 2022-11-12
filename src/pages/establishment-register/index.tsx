@@ -6,6 +6,7 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
 import { EstablishmentHalfImage } from '../../components/establishment-register/establishment-half-image';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type EstablishmentRegisterProps = {
   session: string;
@@ -52,7 +53,7 @@ const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
             maxPermittedCouponPercentage={0}
             registerForm={true}
             clickBackButton={() => {
-              router.push('entrepreneur');
+              routerNavigateUrl(router, 'entrepreneur');
             }}
           />
         </Flex>

@@ -27,6 +27,7 @@ import jwt_decode from 'jwt-decode';
 import { EstablishmentEditModal } from '../../components/entrepreneur/establishment-edit-modal';
 import Error from 'next/error';
 import axios from 'axios';
+import { routerNavigateUrl } from '../../utils/router-navigate';
 
 type EstablishmentProps = {
   id: string;
@@ -64,7 +65,7 @@ type EstablishmentModalProps = {
 
 const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const router = useRouter();
-  const dynamicRoute = router.asPath;
+
   const {
     isOpen: editEstablishmentIsOpen,
     onOpen: editEstablishmentOnOpen,
@@ -73,26 +74,13 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   const [establishmentModal, setEstablishmentModal] =
     useState<EstablishmentModalProps>();
   const [establishmentsState, setEstablishmentsState] =
-    useState<EstablishmentsProps>([
-      {
-        id: '',
-        name: '',
-        description: '',
-        createdAt: '',
-        imageUrl: '',
-        latitude: '',
-        longitude: '',
-        street: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-      },
-    ]);
+    useState<EstablishmentsProps>(businesses);
 
   useEffect(() => {
-    setEstablishmentsState(businesses);
-  }, [businesses]);
+    getBusinessList(token).then((e) => {
+      setEstablishmentsState(e);
+    });
+  }, []);
 
   const clickCard = (
     id: string,
@@ -104,7 +92,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
   ) => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    router.push(`/establishment/${id}`);
+    routerNavigateUrl(router, `/establishment/${id}`);
   };
 
   const editEstablishment = ({
@@ -248,7 +236,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                 position="relative"
                 top={{ base: '-23px', sm: '-35', md: '-45' }}
                 onClick={() => {
-                  router.push('/establishment-register');
+                  routerNavigateUrl(router, '/establishment-register');
                 }}
               >
                 <Stack
@@ -397,18 +385,13 @@ const getBusinessList = async (token: string) => {
       id: string;
     };
     const response = await api.get(`business/list/${id}`, {});
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'no-cache, no-store, max-age=0, must-revalidate',
-  );
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = await getToken({
     req,
     raw: true,

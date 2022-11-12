@@ -53,6 +53,7 @@ import { positionstackApi } from '../../../service/positionstack-api';
 import { CouponInfo } from '../../shared/coupon-info';
 import { CouponInfoEstablishmentForm } from './coupon-info-establishment-form';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import { routerNavigateUrl } from '../../../utils/router-navigate';
 
 // Register the plugins
 registerPlugin(
@@ -232,7 +233,7 @@ export const EstablishmentForm = (props: EstablishmentFormProps) => {
         },
       );
       toast.success('Estabelecimento cadastrado com sucesso!');
-      router.push('/entrepreneur');
+      routerNavigateUrl(router, '/entrepreneur');
     } catch (e: any) {
       console.error(e);
     }
