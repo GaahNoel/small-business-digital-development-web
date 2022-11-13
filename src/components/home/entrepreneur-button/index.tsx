@@ -10,7 +10,7 @@ export const EntrepreneurButton = () => {
   const navigateToEntrepreneurPage = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    router.push('entrepreneur');
+    await router.push('entrepreneur');
   };
   return (
     <>

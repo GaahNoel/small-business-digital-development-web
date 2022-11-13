@@ -16,7 +16,7 @@ import { DefaultCard } from '../../components/shared/default-card';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { api } from '../../service/api';
-import { getSession } from 'next-auth/react';
+import { getCsrfToken, getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { NoItemsText } from '../../components/shared/no-items-text';
@@ -77,8 +77,11 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
     useState<EstablishmentsProps>(businesses);
 
   useEffect(() => {
-    getBusinessList(token).then((e) => {
-      setEstablishmentsState(e);
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as { token: string };
+      getBusinessList(sessionFounded.token).then((e) => {
+        setEstablishmentsState(e);
+      });
     });
   }, []);
 
@@ -236,7 +239,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                 position="relative"
                 top={{ base: '-23px', sm: '-35', md: '-45' }}
                 onClick={async () => {
-                  await routerNavigateUrl(router, '/establishment-register');
+                  router.push('/establishment-register');
                 }}
               >
                 <Stack

@@ -58,8 +58,10 @@ import {
   export_service_blue_hover,
 } from '../../styles/theme';
 import { jwtDecoder } from '../../utils/jwt-decode';
+import { getSession } from 'next-auth/react';
 
 type FinalizeOrderProps = {
+  accountId: string;
   token: string;
   userCoupons: UserCoupons;
   quantityUserCoupons: QuantityUserCoupons;
@@ -126,9 +128,10 @@ type QuantityUserCoupons = {
 };
 
 const FinalizeOrder = ({
-  token,
-  userCoupons,
-  quantityUserCoupons,
+  accountId: accountIdServerSide,
+  token: tokenServerSide,
+  userCoupons: userCouponsServerSide,
+  quantityUserCoupons: quantityUserCouponsServerSide,
 }: FinalizeOrderProps) => {
   const cart = useCart();
   const router = useRouter();
@@ -149,6 +152,12 @@ const FinalizeOrder = ({
     register,
     setError,
   } = methods;
+  const [userCoupons, setUserCoupons] = useState(userCouponsServerSide);
+  const [quantityUserCoupons, setQuantityUserCoupons] = useState(
+    quantityUserCouponsServerSide,
+  );
+  const [accountId, setAccountId] = useState(accountIdServerSide);
+  const [token, setToken] = useState(tokenServerSide);
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -156,7 +165,20 @@ const FinalizeOrder = ({
   };
 
   useEffect(() => {
-    console.log(quantityUserCoupons);
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      setToken(sessionFounded.token);
+      setAccountId(sessionFounded.id);
+      getUserCoupons(sessionFounded.token, sessionFounded.id).then(
+        (userCouponsFounded: UserCoupons) => {
+          setUserCoupons(userCouponsFounded);
+          setQuantityUserCoupons(getQuantityUserCoupons(userCouponsFounded));
+        },
+      );
+    });
   }, []);
 
   useEffect(() => {
@@ -725,25 +747,7 @@ const getUserCoupons = async (token: string, accountId: string) => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getToken({
-    req,
-    raw: true,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  const { accountId } = await jwtDecoder(req);
-
-  const userCoupons = (await getUserCoupons(session, accountId)) as UserCoupons;
+const getQuantityUserCoupons = (userCoupons: UserCoupons) => {
   let quantityUserCoupons: QuantityUserCoupons;
 
   if (userCoupons) {
@@ -770,10 +774,33 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
   console.log(quantityUserCoupons);
+  return quantityUserCoupons;
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const { accountId } = await jwtDecoder(req);
+
+  const userCoupons = (await getUserCoupons(session, accountId)) as UserCoupons;
+  const quantityUserCoupons = getQuantityUserCoupons(userCoupons);
 
   const token = session;
   return {
-    props: { token, userCoupons, quantityUserCoupons },
+    props: { accountId, token, userCoupons, quantityUserCoupons },
   };
 };
 

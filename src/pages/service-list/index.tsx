@@ -80,7 +80,7 @@ type ItemModalProps = {
   businessId: string;
 };
 
-const ServiceList = ({ cities }: ServiceListProps) => {
+const ServiceList = ({ cities: citiesServerSide }: ServiceListProps) => {
   const type = 'serviço';
   const router = useRouter();
   const [location, setLocation] = useState<Location>();
@@ -96,8 +96,13 @@ const ServiceList = ({ cities }: ServiceListProps) => {
     onClose: viewItemOnClose,
   } = useDisclosure();
   const searchBar = useRef<HTMLInputElement>();
+  const [cities, setCities] = useState(citiesServerSide);
 
   useEffect(() => {
+    getAllCitiesWithBusiness().then((citiesSearched) => {
+      setCities(citiesSearched);
+    });
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocation({

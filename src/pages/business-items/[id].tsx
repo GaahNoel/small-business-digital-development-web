@@ -102,11 +102,11 @@ type ItemModalProps = {
 
 const BusinessItems = ({
   id,
-  items,
+  items: serverSideItems,
   business: serverSideBusiness,
 }: BusinessItemsProps) => {
   const router = useRouter();
-  const [filteredItems, setFilteredItems] = useState<Items>(items);
+  const [filteredItems, setFilteredItems] = useState<Items>(serverSideItems);
   const [itemModal, setItemModal] = useState<ItemModalProps>();
   const {
     isOpen: viewItemIsOpen,
@@ -121,9 +121,11 @@ const BusinessItems = ({
     { color: service_blue, value: 10 },
   ];
   const [business, setBusiness] = useState<Business>(serverSideBusiness);
+  const [items, setItems] = useState(serverSideItems);
 
   useEffect(() => {
     getAllItems(id).then((receivedItems) => {
+      setItems(receivedItems);
       setFilteredItems(receivedItems);
     });
     getBusinessInfo(id).then((receivedBusiness) => {

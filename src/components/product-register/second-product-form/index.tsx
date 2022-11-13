@@ -162,7 +162,7 @@ export const SecondProductForm = (props: ProductSecondFormProps) => {
           },
         },
       );
-      router.push(`/establishment/${props.establishmentBase.id}`);
+      await router.push(`/establishment/${props.establishmentBase.id}`);
       toast.success('Produto cadastrado com sucesso!');
     } catch (e) {
       console.error(e);

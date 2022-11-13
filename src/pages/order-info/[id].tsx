@@ -58,6 +58,7 @@ type ParamsProps = {
 };
 
 type OrderInfoProps = {
+  orderId: string;
   token: string;
   id: string;
   orderInfo: OrderInfo;
@@ -147,6 +148,7 @@ type LocationProps = {
 };
 
 const OrderInfo = ({
+  orderId,
   token,
   id,
   orderInfo,
@@ -846,7 +848,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 
   return {
-    props: { token: session, id, orderInfo, businessInfo, usersInfo },
+    props: { orderId, token: session, id, orderInfo, businessInfo, usersInfo },
   };
 };
 

@@ -75,8 +75,8 @@ type UserFormated = {
 type VideosWatched = { videos: [] };
 
 const Shop = ({
-  token,
-  accountId,
+  token: tokenServerSide,
+  accountId: accountIdServerSide,
   userFormated,
   type,
   consumerDailyQuests,
@@ -88,10 +88,28 @@ const Shop = ({
   const [formOption, setFormOption] = useState(type);
   const [balance, setBalance] = useState(0);
   const [numberOfVideosWatched, setNumberOfVideosWatched] = useState(0);
+  const [token, setToken] = useState(tokenServerSide);
+  const [accountId, setAccountId] = useState(accountIdServerSide);
 
   useEffect(() => {
-    setBalance(userFormated.balance);
-    setNumberOfVideosWatched(videosWatched.videos.length);
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      setToken(sessionFounded.token);
+      setAccountId(sessionFounded.id);
+      getUserInfo(sessionFounded.token, sessionFounded.id).then(
+        (userSearched: User) => {
+          setBalance(userSearched.balance);
+        },
+      );
+      getAllVideosWatchedInTheDay(sessionFounded.token, sessionFounded.id).then(
+        (videosWatchedSearched) => {
+          setNumberOfVideosWatched(videosWatchedSearched.videos.length);
+        },
+      );
+    });
   }, []);
 
   const changeOption = (option: FormOption) => {

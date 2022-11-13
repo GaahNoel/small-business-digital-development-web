@@ -7,13 +7,25 @@ import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
 import { EstablishmentHalfImage } from '../../components/establishment-register/establishment-half-image';
 import { routerNavigateUrl } from '../../utils/router-navigate';
+import { useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
 
 type EstablishmentRegisterProps = {
   session: string;
 };
 
-const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
+const EstablishmentRegister = ({
+  session: sessionServerSide,
+}: EstablishmentRegisterProps) => {
   const router = useRouter();
+  const [session, setSession] = useState(sessionServerSide);
+
+  useEffect(() => {
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as { token: string };
+      setSession(sessionFounded.token);
+    });
+  }, []);
 
   return (
     <>
@@ -53,7 +65,7 @@ const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
             maxPermittedCouponPercentage={0}
             registerForm={true}
             clickBackButton={async () => {
-              await routerNavigateUrl(router, 'entrepreneur');
+              router.push('entrepreneur');
             }}
           />
         </Flex>

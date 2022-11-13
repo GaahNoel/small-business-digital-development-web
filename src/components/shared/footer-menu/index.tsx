@@ -33,7 +33,7 @@ export const FooterMenu = () => {
   const router = useRouter();
   const { status } = useSession();
   const routerNavigate = async (page: string) => {
-    await routerNavigateUrl(router, page);
+    await router.push(page);
   };
 
   const routerBack = async () => {

@@ -103,7 +103,7 @@ export const AccordionPanelOrder = ({
     if (!navigateLoading) {
       setNavigateLoadingLocal(true);
       setNavigateLoading(true);
-      router.push(`/order-info/${orderId}`);
+      await routerNavigateUrl(router, `/order-info/${orderId}`);
       setNavigateLoadingLocal(false);
       setNavigateLoading(false);
     }
