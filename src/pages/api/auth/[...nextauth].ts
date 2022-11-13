@@ -44,6 +44,26 @@ export default NextAuth({
 
       return token;
     },
+    async session({ session, token }) {
+      const encode = async ({
+        secret,
+        token,
+      }: {
+        secret: string;
+        token: JWT;
+      }) => {
+        return jwt.sign({ ...token, userId: token?.id }, secret, {
+          algorithm: 'HS256',
+        });
+      };
+
+      session.token = await encode({
+        secret: process.env.NEXTAUTH_SECRET as string,
+        token,
+      });
+      session.id = token.id;
+      return session;
+    },
   },
   providers: [
     FacebookProvider({

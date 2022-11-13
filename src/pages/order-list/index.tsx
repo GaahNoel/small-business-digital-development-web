@@ -40,6 +40,7 @@ import { AccordionPanelOrder } from '../../components/order-list/accordion-panel
 import { BiMoney } from 'react-icons/bi';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { InputSearchStatusOrder } from '../../components/order-list/input-search-status-order';
+import { getSession } from 'next-auth/react';
 
 type OrderListProps = {
   id: string;
@@ -101,13 +102,23 @@ const OrderList = ({
     useState<OrderByBusiness>(sellOrders);
 
   useEffect(() => {
-    getOrders(id, session, 'buy').then((buyOrdersFounded) => {
-      setBuyOrders(buyOrdersFounded);
-      setBuyOrdersFiltered(buyOrdersFounded);
-    });
-    getOrders(id, session, 'sell').then((sellOrdersFounded) => {
-      setSellOrders(sellOrdersFounded);
-      setSellOrdersFiltered(sellOrdersFounded);
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      getOrders(sessionFounded.id, sessionFounded.token, 'buy').then(
+        (buyOrdersFounded) => {
+          setBuyOrders(buyOrdersFounded);
+          setBuyOrdersFiltered(buyOrdersFounded);
+        },
+      );
+      getOrders(sessionFounded.id, sessionFounded.token, 'sell').then(
+        (sellOrdersFounded) => {
+          setSellOrders(sellOrdersFounded);
+          setSellOrdersFiltered(sellOrdersFounded);
+        },
+      );
     });
   }, []);
 

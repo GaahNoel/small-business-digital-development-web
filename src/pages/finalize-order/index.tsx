@@ -58,6 +58,7 @@ import {
   export_service_blue_hover,
 } from '../../styles/theme';
 import { jwtDecoder } from '../../utils/jwt-decode';
+import { getSession } from 'next-auth/react';
 
 type FinalizeOrderProps = {
   accountId: string;
@@ -127,8 +128,8 @@ type QuantityUserCoupons = {
 };
 
 const FinalizeOrder = ({
-  accountId,
-  token,
+  accountId: accountIdServerSide,
+  token: tokenServerSide,
   userCoupons: userCouponsServerSide,
   quantityUserCoupons: quantityUserCouponsServerSide,
 }: FinalizeOrderProps) => {
@@ -155,6 +156,8 @@ const FinalizeOrder = ({
   const [quantityUserCoupons, setQuantityUserCoupons] = useState(
     quantityUserCouponsServerSide,
   );
+  const [accountId, setAccountId] = useState(accountIdServerSide);
+  const [token, setToken] = useState(tokenServerSide);
   const format = {
     minimumFractionDigits: 2,
     style: 'currency',
@@ -162,14 +165,21 @@ const FinalizeOrder = ({
   };
 
   useEffect(() => {
-    getUserCoupons(token, accountId).then((userCouponsFounded: UserCoupons) => {
-      setUserCoupons(userCouponsFounded);
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      setToken(sessionFounded.token);
+      setAccountId(sessionFounded.id);
+      getUserCoupons(sessionFounded.token, sessionFounded.id).then(
+        (userCouponsFounded: UserCoupons) => {
+          setUserCoupons(userCouponsFounded);
+          setQuantityUserCoupons(getQuantityUserCoupons(userCouponsFounded));
+        },
+      );
     });
   }, []);
-
-  useEffect(() => {
-    setQuantityUserCoupons(getQuantityUserCoupons(userCoupons));
-  }, [userCoupons]);
 
   useEffect(() => {
     if (cart.businessId) {

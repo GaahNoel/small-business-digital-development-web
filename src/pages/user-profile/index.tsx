@@ -13,13 +13,14 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useRouter } from 'next/router';
 import { EstablishmentHalfImage } from '../../components/establishment-register/establishment-half-image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { api } from '../../service/api';
 import { UserEditForm } from '../../components/user-profile/user-edit-form';
 import axios from 'axios';
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
 import { routerNavigateUrl } from '../../utils/router-navigate';
+import { getSession } from 'next-auth/react';
 
 type UserEditProps = {
   session: string;
@@ -34,9 +35,32 @@ type UserInfos = {
   provider: string;
 };
 
-const UserEdit = ({ session, id, userInfos }: UserEditProps) => {
+const UserEdit = ({
+  session: sessionServerSide,
+  id: idServerSide,
+  userInfos: userInfosServerSide,
+}: UserEditProps) => {
   const [isEditMounted, setIsEditMounted] = useState(false);
   const [isUserInfoMounted, setIsUserInfoMounted] = useState(true);
+  const [session, setSession] = useState(sessionServerSide);
+  const [id, setId] = useState(idServerSide);
+  const [userInfos, setUserInfos] = useState(userInfosServerSide);
+
+  useEffect(() => {
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      setSession(sessionFounded.token);
+      setId(sessionFounded.id);
+      getUserInfos(sessionFounded.id, sessionFounded.token).then(
+        (userInfosFounded) => {
+          setUserInfos(userInfosFounded);
+        },
+      );
+    });
+  }, []);
 
   return (
     <>

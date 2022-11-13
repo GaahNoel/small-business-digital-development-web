@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { getCsrfToken } from 'next-auth/react';
+import { getCsrfToken, getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { ProductRegisterFirstStep } from '../../components/product-register/product-register-first-step';
 import { ProductRegisterSecondStep } from '../../components/product-register/product-register-second-step';
@@ -12,6 +12,7 @@ type ParamsProps = {
 };
 
 type ProductRegisterProps = {
+  id: string;
   categories: { id: string; name: string }[];
   session: string;
   establishmentInfo: EstablishmentProps;
@@ -43,23 +44,34 @@ type CategoryProps = {
 };
 
 const ProductRegister = ({
+  id,
   categories,
   establishmentInfo,
   session,
 }: ProductRegisterProps) => {
   const [establishmentBase, setEstablishmentBase] =
     useState<EstablishmentBaseProps>({
-      id: '',
-      name: '',
+      id: establishmentInfo.id,
+      name: establishmentInfo.name,
     });
   const { stage, form } = useProductForm();
   const { setToken } = form;
   useEffect(() => {
-    setEstablishmentBase({
-      id: establishmentInfo.id,
-      name: establishmentInfo.name,
+    getSession().then((sessionInfos) => {
+      const sessionFounded = sessionInfos as unknown as {
+        token: string;
+        id: string;
+      };
+      setToken(sessionFounded.token);
+      getEstablishmentInfo(id).then(
+        (establishmentInfoFounded: EstablishmentBaseProps) => {
+          setEstablishmentBase({
+            id: establishmentInfoFounded.id,
+            name: establishmentInfoFounded.name,
+          });
+        },
+      );
     });
-    setToken(session);
   }, []);
 
   return (
@@ -120,6 +132,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      id,
       session,
       categories,
       establishmentInfo,
