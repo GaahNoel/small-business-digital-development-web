@@ -4,7 +4,7 @@ import Router, { useRouter } from 'next/router';
 import { api } from '../../service/api';
 import { FooterMenu } from '../../components/shared/footer-menu';
 import { Flex, Text } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { toast } from 'react-toastify';
@@ -33,8 +33,19 @@ type Businesses = {
   highlighted: boolean;
 }[];
 
-const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
+const BusinessesNearby = ({
+  lat,
+  lng,
+  businesses: businessesServerSideProps,
+}: BusinessesNearbyProps) => {
   const router = useRouter();
+  const [businesses, setBusinesses] = useState(businessesServerSideProps);
+  useEffect(() => {
+    getBusinessesNearby(Number(lat), Number(lng)).then((businessesFounded) => {
+      setBusinesses(businessesFounded);
+    });
+  }, []);
+
   useEffect(() => {
     mapboxgl.accessToken = process.env.MAPBOX_TOKEN as string;
     const map = new mapboxgl.Map({
@@ -99,7 +110,7 @@ const BusinessesNearby = ({ lat, lng, businesses }: BusinessesNearbyProps) => {
     } else {
       toast.error('Nenhum estabelecimento encontrado próximo a localização!');
     }
-  }, []);
+  }, [businesses]);
 
   return (
     <>

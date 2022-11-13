@@ -236,7 +236,7 @@ const Enterpreneur = ({ businesses, token }: EnterpreneurProps) => {
                 position="relative"
                 top={{ base: '-23px', sm: '-35', md: '-45' }}
                 onClick={async () => {
-                  await routerNavigateUrl(router, '/establishment-register');
+                  router.push('/establishment-register');
                 }}
               >
                 <Stack

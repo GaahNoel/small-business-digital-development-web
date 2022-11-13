@@ -90,8 +90,14 @@ const Shop = ({
   const [numberOfVideosWatched, setNumberOfVideosWatched] = useState(0);
 
   useEffect(() => {
-    setBalance(userFormated.balance);
-    setNumberOfVideosWatched(videosWatched.videos.length);
+    getUserInfo(token, accountId).then((userSearched: User) => {
+      setBalance(userSearched.balance);
+    });
+    getAllVideosWatchedInTheDay(token, accountId).then(
+      (videosWatchedSearched) => {
+        setNumberOfVideosWatched(videosWatchedSearched.videos.length);
+      },
+    );
   }, []);
 
   const changeOption = (option: FormOption) => {

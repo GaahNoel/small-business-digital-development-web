@@ -237,14 +237,10 @@ export const UserSelection = ({ userInfo, setIsOpened }: UserInfo) => {
         }}
       >
         <Button onClick={() => setIsOpened(false)}>Editar dados</Button>
-        <Button
-          onClick={async () => await routerNavigateUrl(router, 'entrepreneur')}
-        >
+        <Button onClick={async () => await router.push('entrepreneur')}>
           Meus estabelecimentos
         </Button>
-        <Button
-          onClick={async () => await routerNavigateUrl(router, 'order-list')}
-        >
+        <Button onClick={async () => await router.push('order-list')}>
           Meus pedidos
         </Button>
       </Flex>

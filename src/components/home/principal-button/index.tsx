@@ -22,7 +22,7 @@ export const PrincipalButton = ({
   const handleClick = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    await routerNavigateUrl(router, page);
+    await router.push(page);
   };
   return (
     <Button

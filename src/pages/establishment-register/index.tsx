@@ -53,7 +53,7 @@ const EstablishmentRegister = ({ session }: EstablishmentRegisterProps) => {
             maxPermittedCouponPercentage={0}
             registerForm={true}
             clickBackButton={async () => {
-              await routerNavigateUrl(router, 'entrepreneur');
+              router.push('entrepreneur');
             }}
           />
         </Flex>

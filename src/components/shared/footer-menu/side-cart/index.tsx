@@ -47,7 +47,7 @@ export const SideCart = ({ isOpen, setIsOpen }: SideCartProps) => {
   const finalizeOrder = async () => {
     const homeLoader = document.getElementById('global-loader');
     homeLoader?.classList.add('active');
-    await routerNavigateUrl(router, `/finalize-order`);
+    await router.push(`/finalize-order`);
   };
 
   return (

@@ -107,8 +107,8 @@ export const ItemRegisterForm = ({
               bg="default_black"
               color="default_white"
               text="Cancelar"
-              onClick={() =>
-                router.push(`/establishment/${establishmentBase.id}`)
+              onClick={async () =>
+                await router.push(`/establishment/${establishmentBase.id}`)
               }
             />
             <DefaultButton

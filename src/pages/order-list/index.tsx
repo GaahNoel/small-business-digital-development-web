@@ -42,6 +42,7 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { InputSearchStatusOrder } from '../../components/order-list/input-search-status-order';
 
 type OrderListProps = {
+  id: string;
   session: string;
   buyOrders: OrderByBusiness;
   sellOrders: OrderByBusiness;
@@ -81,19 +82,33 @@ type Item = {
   };
 };
 
-const OrderList = ({ buyOrders, sellOrders }: OrderListProps) => {
+const OrderList = ({
+  id,
+  session,
+  buyOrders: buyOrdersServerSide,
+  sellOrders: sellOrdersServerSide,
+}: OrderListProps) => {
   const router = useRouter();
   const searchBar = useRef<HTMLSelectElement>();
   const [viewMode, setViewMode] = useState('Compras');
   const [navigateLoading, setNavigateLoading] = useState(false);
+
+  const [buyOrders, setBuyOrders] = useState(buyOrdersServerSide);
   const [buyOrdersFiltered, setBuyOrdersFiltered] =
     useState<OrderByBusiness>(buyOrders);
+  const [sellOrders, setSellOrders] = useState(sellOrdersServerSide);
   const [sellOrdersFiltered, setSellOrdersFiltered] =
     useState<OrderByBusiness>(sellOrders);
 
   useEffect(() => {
-    console.log(buyOrders);
-    console.log(sellOrders);
+    getOrders(id, session, 'buy').then((buyOrdersFounded) => {
+      setBuyOrders(buyOrdersFounded);
+      setBuyOrdersFiltered(buyOrdersFounded);
+    });
+    getOrders(id, session, 'sell').then((sellOrdersFounded) => {
+      setSellOrders(sellOrdersFounded);
+      setSellOrdersFiltered(sellOrdersFounded);
+    });
   }, []);
 
   return (
@@ -284,7 +299,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const sellOrders = await getOrders(id, session, 'sell');
 
   return {
-    props: { session, buyOrders, sellOrders },
+    props: { id, session, buyOrders, sellOrders },
   };
 };
 
