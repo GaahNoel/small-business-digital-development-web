@@ -79,10 +79,10 @@ const Shop = ({
   accountId: accountIdServerSide,
   userFormated,
   type,
-  consumerDailyQuests,
-  consumerWeeklyQuests,
-  entrepreneurDailyQuests,
-  entrepreneurWeeklyQuests,
+  consumerDailyQuests: consumerDailyQuestsServerSide,
+  consumerWeeklyQuests: consumerWeeklyQuestsServerSide,
+  entrepreneurDailyQuests: entrepreneurDailyQuestsServerSide,
+  entrepreneurWeeklyQuests: entrepreneurWeeklyQuestsServerSide,
   videosWatched,
 }: ShopProps) => {
   const [formOption, setFormOption] = useState(type);
@@ -90,6 +90,18 @@ const Shop = ({
   const [numberOfVideosWatched, setNumberOfVideosWatched] = useState(0);
   const [token, setToken] = useState(tokenServerSide);
   const [accountId, setAccountId] = useState(accountIdServerSide);
+  const [consumerDailyQuests, setConsumerDailyQuests] = useState(
+    consumerDailyQuestsServerSide,
+  );
+  const [consumerWeeklyQuests, setConsumerWeeklyQuests] = useState(
+    consumerWeeklyQuestsServerSide,
+  );
+  const [entrepreneurDailyQuests, setEntrepreneurDailyQuests] = useState(
+    entrepreneurDailyQuestsServerSide,
+  );
+  const [entrepreneurWeeklyQuests, setEntrepreneurWeeklyQuests] = useState(
+    entrepreneurWeeklyQuestsServerSide,
+  );
 
   useEffect(() => {
     getSession().then((sessionInfos) => {
@@ -107,6 +119,14 @@ const Shop = ({
       getAllVideosWatchedInTheDay(sessionFounded.token, sessionFounded.id).then(
         (videosWatchedSearched) => {
           setNumberOfVideosWatched(videosWatchedSearched.videos.length);
+        },
+      );
+      getMissionsInfo(sessionFounded.token, sessionFounded.id).then(
+        (missionsInfo) => {
+          setConsumerDailyQuests(missionsInfo.consumerDailyQuests);
+          setConsumerWeeklyQuests(missionsInfo.consumerWeeklyQuests);
+          setEntrepreneurDailyQuests(missionsInfo.entrepreneurDailyQuests);
+          setEntrepreneurWeeklyQuests(missionsInfo.entrepreneurWeeklyQuests);
         },
       );
     });
@@ -315,41 +335,8 @@ const getAllVideosWatchedInTheDay = async (
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  query,
-}) => {
-  const session = await getToken({
-    req,
-    raw: true,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  let type;
-  if (query.type && query.type === 'mission') {
-    type = 'Missões';
-  } else {
-    type = 'Consumidor';
-  }
-
-  const { id } = jwt_decode(session) as {
-    id: string;
-  };
-  const user: User = await getUserInfo(session, id);
-  const userFormated: UserFormated = { balance: user.balance };
+const getMissionsInfo = async (session: string, id: string) => {
   const missions: Challenge = await getAllMissions(session, id);
-  const videosWatched: VideosWatched = await getAllVideosWatchedInTheDay(
-    session,
-    id,
-  );
   let consumerDailyQuests: Challenge = [];
   let consumerWeeklyQuests: Challenge = [];
   let entrepreneurDailyQuests: Challenge = [];
@@ -385,6 +372,54 @@ export const getServerSideProps: GetServerSideProps = async ({
         return true;
     });
   }
+  return {
+    consumerDailyQuests,
+    consumerWeeklyQuests,
+    entrepreneurDailyQuests,
+    entrepreneurWeeklyQuests,
+  };
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getToken({
+    req,
+    raw: true,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  let type;
+  if (query.type && query.type === 'mission') {
+    type = 'Missões';
+  } else {
+    type = 'Consumidor';
+  }
+
+  const { id } = jwt_decode(session) as {
+    id: string;
+  };
+  const user: User = await getUserInfo(session, id);
+  const userFormated: UserFormated = { balance: user.balance };
+  const videosWatched: VideosWatched = await getAllVideosWatchedInTheDay(
+    session,
+    id,
+  );
+  const {
+    consumerDailyQuests,
+    consumerWeeklyQuests,
+    entrepreneurDailyQuests,
+    entrepreneurWeeklyQuests,
+  } = await getMissionsInfo(session, id);
 
   return {
     props: {

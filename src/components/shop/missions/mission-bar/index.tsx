@@ -46,13 +46,15 @@ export const MissionBar = ({
           </Stack>
         </Flex>
         <Flex w="100%" align="center" gap={3}>
-          {progress !== goal ? (
+          {progress < goal ? (
             <Text>{`${progress}/${goal}`}</Text>
           ) : (
             <Icon as={MdDone} color="green" />
           )}
 
-          <MissionProgressBar progress={progress / goal} />
+          <MissionProgressBar
+            progress={(progress <= goal ? progress : goal) / goal}
+          />
         </Flex>
       </Flex>
     </>
